@@ -1,0 +1,69 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "indent": ["error", 2],
+        "comma-dangle": ["error", "never"],
+        "no-console": "off",
+        "object-shorthand": "off",
+        "no-plusplus": "off",
+        "no-shadow": "off",
+        "no-tabs": "off",
+        "import/extensions": "off",
+        "prefer-destructuring": "off",
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
+        "no-bitwise": "off",
+        "react/jsx-wrap-multilines": ["error", {
+            "declaration": "parens-new-line",
+            "assignment": "parens-new-line",
+            "return": "parens-new-line",
+            "arrow": "parens-new-line",
+            "condition": "parens-new-line",
+            "logical": "ignore",
+            "prop": "ignore"
+        }],
+        "import/no-dynamic-require": "off",
+        "global-require": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "prefer-template": "off", // warn
+        "no-nested-ternary": "off",
+        "class-methods-use-this": "off",
+        "react/require-default-props": "off",
+        "react/forbid-prop-types": "off",
+        "quote-props": "off",
+        "react/no-array-index-key": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "no-lonely-if": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-noninteractive-element-interactions": "off",
+        "max-len": "warn",
+        "react/prop-types": "off",
+        "react/jsx-one-expression-per-line": "off",
+        "no-param-reassign": "off",
+        "jsx-a11y/media-has-caption": "off",
+        "no-useless-escape": "off",
+        "camelcase": "off",
+        "react/jsx-props-no-spreading": "off"
+    }
+}

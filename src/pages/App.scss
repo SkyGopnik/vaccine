@@ -1,0 +1,10 @@
+body::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+}
+
+:global {
+  .Tabbar {
+    background: red !important;
+  }
+}
