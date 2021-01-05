@@ -6,7 +6,7 @@ import {
   changePanel,
   changeViewPanelStory,
   changeModal
-} from '../store/app/actions';
+} from '../../store/app/actions';
 import Game from './Game';
 
 const GameContainer = (props) => <Game {...props} />;

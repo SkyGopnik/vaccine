@@ -7,7 +7,7 @@ import {
   updateHistory
 } from './actions';
 
-export interface AppReducerIterface {
+export interface AppReducerInterface {
   view: string,
   panel: string,
   story: string,

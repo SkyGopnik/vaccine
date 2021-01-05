@@ -2,6 +2,32 @@
   padding-bottom: 0 !important;
 }
 
+.userItem {
+  margin: 0 12px;
+
+  display: flex;
+  align-items: center;
+
+  .topNumber {
+    min-width: 25px;
+    text-align: center;
+
+    font-weight: bold;
+
+    color: var(--header_tint);
+  }
+
+  :global {
+    .SimpleCell {
+      width: 100%;
+
+      padding-right: 0;
+
+      overflow: hidden;
+    }
+  }
+}
+
 .items {
   display: flex;
 }

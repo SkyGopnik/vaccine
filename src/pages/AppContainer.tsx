@@ -9,6 +9,8 @@ import {
   changeStory,
   updateHistory
 } from '../store/app/actions';
+import { syncUser } from '../store/user/actions';
+import { connectWs } from "../store/webSocket/actions";
 import App from './App';
 
 const AppContainer = (props) => <App {...props} />;
@@ -18,7 +20,10 @@ const mapStateToProps = (state) => {
     view: state.app.view,
     panel: state.app.panel,
     modal: state.app.modal,
-    story: state.app.story
+    story: state.app.story,
+    wsLoading: state.webSocket.loading,
+    wsError: state.webSocket.error,
+    wsData: state.webSocket.data
   };
 
   return props;
@@ -30,7 +35,9 @@ const mapDispatchToProps = {
   changeViewPanelStory,
   changeModal,
   changeStory,
-  updateHistory
+  updateHistory,
+  connectWs,
+  syncUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

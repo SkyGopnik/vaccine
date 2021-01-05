@@ -1,14 +1,15 @@
 import React from 'react';
 
 interface IProps {
-  className: string
+  className: string,
+  onClick?: Function
 }
 
 export default (props: IProps) => {
-  const { className } = props;
+  const { className, onClick } = props;
 
   return (
-    <div className={className}>
+    <div className={className} onClick={() => onClick && onClick()}>
       <svg width="183" height="231" viewBox="0 0 183 231" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M177.038 182.993L121.846 104.163C120.281 101.928 119.442 99.265 119.442 96.5363V21.5037L106.439 12.2078H71.9512L63.5571 21.5037V96.5363C63.5571 99.265 62.7175 101.928 61.1524 104.163L5.9619 182.993C-8.19542 203.213 6.27005 231 30.9541 231H152.046C176.73 231 191.195 203.213 177.038 182.993V182.993Z" fill="#D3EFFB"/>
         <path d="M177.038 182.993L121.846 104.163C120.281 101.928 119.442 99.265 119.442 96.5363V30.2407V21.5037L107.464 12.2078H71.9517L63.5576 21.5037V30.2407H95.9906C102.327 30.2407 107.464 35.3772 107.464 41.714V96.5363C107.464 99.265 108.303 101.928 109.869 104.163L165.06 182.993C179.218 203.213 164.752 231 140.068 231H152.046C176.73 231 191.196 203.213 177.038 182.993Z" fill="#BED8FB"/>

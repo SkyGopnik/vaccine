@@ -1,0 +1,39 @@
+.card {
+  padding: 0 12px;
+
+  .userItem {
+    display: flex;
+    align-items: center;
+
+    &:first-child {
+      padding-top: 12px;
+    }
+
+    &:last-child {
+      padding-bottom: 12px;
+    }
+
+    .topNumber {
+      min-width: 25px;
+      text-align: center;
+
+      font-weight: bold;
+
+      color: var(--header_tint);
+    }
+
+    :global {
+      .SimpleCell {
+        width: 100%;
+
+        padding-right: 0;
+
+        overflow: hidden;
+      }
+    }
+
+    &:not(:first-child):last-child {
+      margin-bottom: 80px;
+    }
+  }
+}

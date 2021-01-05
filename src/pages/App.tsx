@@ -1,22 +1,32 @@
 import React from 'react';
-import {
-  ConfigProvider,
-  Root,
-  Epic
-} from '@vkontakte/vkui';
+import axios from 'axios';
+import {ConfigProvider, Epic, Platform, Root} from '@vkontakte/vkui';
 
-import GameView from '../views/GameContainer';
+import Rating from "src/views/Rating/RatingContainer";
+import Game from '../views/Game/GameContainer';
+import Onboard from "../views/Onboard";
+import Loading from "../views/Loading";
+import Error from "../views/Error";
+
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
 
 import unixTime from '../functions/unixtime';
 
-import { AppReducerIterface } from "src/store/app/reducers";
+import {AppReducerInterface} from "src/store/app/reducers";
+import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 
 import '../styles/all.scss';
+import {connectWs} from "src/store/webSocket/actions";
 
 let historyDelay = Number(new Date().getTime() / 1000);
 
-interface IProps extends AppReducerIterface {}
+interface IProps extends AppReducerInterface, WebSocketReducerInterface {
+  getUser(),
+  syncUser(data: object),
+  wsLoading: boolean,
+  wsError: any,
+  wsData: null | object
+}
 
 interface IState {
   scheme: 'client_light' | 'client_dark' | 'space_gray' | 'bright_light'
@@ -33,7 +43,18 @@ export default class extends React.Component<IProps, IState> {
     this.menu = this.menu.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { changeView, connectWs, syncUser } = this.props;
+
+    const user = await axios.get('/user');
+    syncUser(user.data);
+
+    connectWs('ws://localhost:3245');
+    // getUser();
+    // setTimeout(() => {
+    //   changeView('onboard');
+    // }, 5000);
+
     // Навешиваем обработчик кнопку вперёд/назад
     window.addEventListener('popstate', (e) => {
       // Отменяем стандартное событие
@@ -42,6 +63,7 @@ export default class extends React.Component<IProps, IState> {
       this.menu(e);
     });
 
+    // Тема приложения
     const vars = [
       '--button_secondary_foreground',
       '--accent',
@@ -53,6 +75,9 @@ export default class extends React.Component<IProps, IState> {
     const color = '#6A9EE5';
 
     vars.forEach((name) => document.documentElement.style.setProperty(name, color));
+
+    document.documentElement.style.setProperty('--background_content', '#F8FCFE');
+    document.documentElement.style.setProperty('--header_background', '#F8FCFE');
   }
 
   menu = (e) => {
@@ -79,7 +104,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { view, story, changeStory } = this.props;
+    const { view, story } = this.props;
     const { scheme } = this.state;
 
     return (
@@ -94,8 +119,12 @@ export default class extends React.Component<IProps, IState> {
               <TabbarLight />
             }
           >
-            <GameView id="game" />
+            <Rating id="rating" />
+            <Game id="game" />
           </Epic>
+          <Onboard id="onboard" />
+          <Loading id="loading" />
+          <Error id="error" />
         </Root>
       </ConfigProvider>
     );

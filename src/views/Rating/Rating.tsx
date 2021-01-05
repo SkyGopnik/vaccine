@@ -1,15 +1,14 @@
 import React from 'react';
 
 // Панели
-import GamePanel from '../panels/Game/Game';
-import ImprovementsPanel from "src/panels/Improvements";
+import RatingPanel from '../../panels/Rating/Rating';
 
 // Компоненты
-import ViewLight from '../components/ViewLight';
+import ViewLight from '../../components/ViewLight';
 
-import {AppReducerIterface} from "src/store/app/reducers";
+import {AppReducerInterface} from "src/store/app/reducers";
 
-interface IProps extends AppReducerIterface {
+interface IProps extends AppReducerInterface {
   id: string
 }
 
@@ -31,11 +30,7 @@ export default class extends React.Component<IProps> {
         panelList={[
           {
             id: 'main',
-            component: GamePanel
-          },
-          {
-            id: 'improvements',
-            component: ImprovementsPanel
+            component: RatingPanel
           }
         ]}
       />

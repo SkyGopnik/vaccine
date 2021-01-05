@@ -2,18 +2,26 @@ import React from 'react';
 import {
   Button,
   Tabbar,
-  Div
+  Div,
+  SimpleCell,
+  Avatar,
+  IconButton
 } from '@vkontakte/vkui';
 
-import {Icon28GameOutline, Icon28PollSquareOutline, Icon28Profile} from "@vkontakte/icons";
+import {
+  Icon28GameOutline,
+  Icon28PollSquareOutline,
+  Icon28Profile,
+  Icon28ShareOutline
+} from "@vkontakte/icons";
 
 import TabbarItemLight from '../TabbarItemLight.jsx';
 
-import {AppReducerIterface} from "src/store/app/reducers";
+import {AppReducerInterface} from "src/store/app/reducers";
 
 import style from './TabbarLight.scss';
 
-interface IProps extends AppReducerIterface {}
+interface IProps extends AppReducerInterface {}
 
 interface IState {
   tabbarItems: Array<{
@@ -29,7 +37,7 @@ export default class extends React.Component<IProps, IState> {
     this.state = {
       tabbarItems: [
         {
-          name: 'raiting',
+          name: 'rating',
           icon: <Icon28PollSquareOutline />
         },
         {
@@ -50,6 +58,22 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Tabbar>
+        {(story === 'rating' && panel === 'main') && (
+          <div className={style.userItem}>
+            <div className={style.topNumber}>15k</div>
+            <SimpleCell
+              target="_blank"
+              href={`https://vk.com/skgopnik`}
+              before={<Avatar size={48} src="https://sun9-61.userapi.com/O-2f7t0yecmx38WXoF37RkhkJTG2rcjL4Yq88w/J39s0u1f90c.jpg?ava=1" />}
+              after={<IconButton icon={<Icon28ShareOutline />} />}
+              description="21354562478,31"
+              multiline
+              disabled
+            >
+              Антон Иванков
+            </SimpleCell>
+          </div>
+        )}
         {(story === 'game' && panel === 'main') && (
           <Div className={style.button}>
             <Button

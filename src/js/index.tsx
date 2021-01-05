@@ -30,7 +30,7 @@ if (document.location.href) {
   axios.defaults.headers.common.user = document.location.href;
 }
 
-axios.defaults.baseURL = 'https://bugtracker.skyreglis.studio/api/rest';
+axios.defaults.baseURL = 'http://127.0.0.1:3244/api/rest';
 axios.defaults.responseType = 'json';
 
 // Init VK Mini App
