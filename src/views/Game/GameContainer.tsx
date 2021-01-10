@@ -6,7 +6,8 @@ import {
   changePanel,
   changeViewPanelStory,
   changeModal
-} from '../../store/app/actions';
+} from 'src/store/app/actions';
+import { sendWsMessage } from "src/store/webSocket/actions";
 import Game from './Game';
 
 const GameContainer = (props) => <Game {...props} />;
@@ -25,7 +26,8 @@ const mapDispatchToProps = {
   changeView,
   changePanel,
   changeViewPanelStory,
-  changeModal
+  changeModal,
+  sendWsMessage
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameContainer);

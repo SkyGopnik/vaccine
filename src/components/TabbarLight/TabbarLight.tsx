@@ -5,7 +5,8 @@ import {
   Div,
   SimpleCell,
   Avatar,
-  IconButton
+  IconButton,
+  Headline
 } from '@vkontakte/vkui';
 
 import {
@@ -16,12 +17,16 @@ import {
 } from "@vkontakte/icons";
 
 import TabbarItemLight from '../TabbarItemLight.jsx';
+import MainIcon from "src/components/MainIcon";
 
 import {AppReducerInterface} from "src/store/app/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 import style from './TabbarLight.scss';
 
-interface IProps extends AppReducerInterface {}
+interface IProps extends AppReducerInterface {
+  user: UserInterface
+}
 
 interface IState {
   tabbarItems: Array<{
@@ -53,7 +58,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { panel, story, changeStory, changePanel } = this.props;
+    const { panel, story, user, changeStory, changePanel } = this.props;
     const { tabbarItems } = this.state;
 
     return (
@@ -86,6 +91,9 @@ export default class extends React.Component<IProps, IState> {
             </Button>
           </Div>
         )}
+        {/*{(story === 'game' && panel === 'improvements') && user && (*/}
+        {/*  <Headline className={style.balance} weight="medium"><div>У вас {user.data.balance}</div> <MainIcon /></Headline>*/}
+        {/*)}*/}
         <Div className={style.items}>
           {tabbarItems.map((item) => (
             <TabbarItemLight

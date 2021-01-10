@@ -24,7 +24,6 @@ export const changePanel = (panel: string, panelData: Object = null) => {
 };
 
 export const changeStory = (story: string, panelData: Object = null) => {
-  console.log(story)
   return {
     type: APP_CHANGE_STORY,
     payload: {
@@ -46,7 +45,7 @@ export const changeViewPanelStory = (view: string, panel: string, story: string 
   };
 };
 
-export const changeModal = (modal: null | string, modalData: Object = null) => {
+export const changeModal = (modal: null | string, modalData?: Object) => {
   return {
     type: APP_CHANGE_MODAL,
     payload: {
@@ -56,6 +55,6 @@ export const changeModal = (modal: null | string, modalData: Object = null) => {
   };
 };
 
-export const updateHistory = (view: string, panel: string, story: string = null, history?: any) => {
-  window.history.pushState({ view, panel, story, history: history ? JSON.stringify(history) : null }, `${view}/${panel}/${story}`);
+export const updateHistory = (view: string, panel: string, story: string = null, data?: any) => {
+  window.history.pushState({ view, panel, story, data: data ? JSON.stringify(data) : null }, `${view}/${panel}/${story}`);
 }

@@ -19,7 +19,7 @@ export const connectWs = (socketUrl: string) => {
 
     socket.onmessage = (msg) => {
       const { type, data } = JSON.parse(msg.data);
-      console.log(msg.data);
+      // console.log(msg.data);
 
       if (type === 'SyncUser') {
         dispatch(syncUser(data));

@@ -8,6 +8,9 @@ interface CssExports {
   'card': string;
   'content': string;
   'header': string;
+  'icon': string;
+  'list': string;
+  'subHeader': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

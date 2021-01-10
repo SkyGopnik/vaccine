@@ -5,6 +5,7 @@ import {
 } from './actions';
 
 export interface UserInterface {
+  id: string
   type: string
   ref: string
   platform: string
@@ -21,10 +22,6 @@ export interface UserInterface {
     click: number
     additional: object
   }
-}
-
-export interface UserReducerInterface {
-  data: UserInterface | null
 }
 
 const defaultState = {

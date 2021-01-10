@@ -16,7 +16,6 @@ import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 
 import '../styles/all.scss';
-import {connectWs} from "src/store/webSocket/actions";
 
 let historyDelay = Number(new Date().getTime() / 1000);
 
@@ -44,12 +43,22 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { changeView, connectWs, syncUser } = this.props;
+    const {
+      changeView,
+      connectWs,
+      syncUser
+    } = this.props;
 
-    const user = await axios.get('/user');
-    syncUser(user.data);
+    changeView('loading');
 
-    connectWs('ws://localhost:3245');
+    try {
+      const user = await axios.get('/user');
+      syncUser(user.data);
+
+      connectWs('ws://localhost:3245');
+    } catch (e) {
+      changeView('error');
+    }
     // getUser();
     // setTimeout(() => {
     //   changeView('onboard');
@@ -86,6 +95,8 @@ export default class extends React.Component<IProps, IState> {
     if (e.state) {
       // Отменяем стандартное событие
       e.preventDefault();
+
+      console.log(e.state);
 
       const { view, panel, story } = e.state;
 

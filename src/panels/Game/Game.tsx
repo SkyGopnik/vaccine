@@ -19,8 +19,7 @@ import style from './Game.scss';
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
   user: UserInterface | null,
-  loading: boolean,
-  syncUser(data: any)
+  syncUser(data: UserInterface)
 }
 
 export default class extends React.Component<IProps> {
@@ -31,7 +30,6 @@ export default class extends React.Component<IProps> {
   render() {
     const {
       id,
-      loading,
       user,
       sendWsMessage,
       syncUser
@@ -44,7 +42,6 @@ export default class extends React.Component<IProps> {
           <div className={style.info}>
             {/*64px top*/}
             <div className={style.balance}>
-              {loading}
               <Caption
                 level="1"
                 weight="semibold"

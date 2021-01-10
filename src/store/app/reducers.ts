@@ -43,20 +43,22 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_PANEL:
-    updateHistory(state.view, action.payload.panel, action.payload.panelData);
+    updateHistory(state.view, action.payload.panel, state.story, action.payload.panelData);
 
     return {
       ...state,
+      modal: null,
       panel: action.payload.panel,
       panelData: action.payload.panelData
     };
 
   case APP_CHANGE_STORY:
-    updateHistory(state.view, state.panel, action.payload.story, action.payload.panelData);
+    updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
 
     return {
       ...state,
       story: action.payload.story,
+      panel: 'main',
       panelData: action.payload.panelData
     };
 
@@ -73,7 +75,7 @@ export const appReducer = (state = defaultState, action) => {
     return {
       ...state,
       modal: action.payload.modal,
-      modalData: action.payload.modalData
+      modalData: action.payload.modalData ? action.payload.modalData : state.modalData // Если данные не меняются, то оставляем их
     };
 
   default:

@@ -2,6 +2,24 @@
   padding-bottom: 0 !important;
 }
 
+.balance {
+  padding: 12px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #818C99;
+
+  svg {
+    margin-top: 2px;
+    margin-left: 4px;
+
+    width: 14px;
+    height: 16px;
+  }
+}
+
 .userItem {
   margin: 0 12px;
 

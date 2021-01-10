@@ -1,67 +1,82 @@
-.card {
-  padding: 12px 16px;
+.subHeader {
+  background: var(--header_background);
+}
 
-  &:not(:last-child) {
-    margin-bottom: 12px;
-  }
+.list {
+  margin-top: 50px;
 
-  :global {
-    .Card__in {
-      display: flex;
-      align-items: flex-start;
+  .card {
+    padding: 12px 16px;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
     }
-  }
 
-  .content {
-    margin-left: 8px;
+    :global {
+      .Card__in {
+        display: flex;
+        align-items: flex-start;
+      }
+    }
 
-    .header {
-      display: flex;
-      align-items: center;
+    .icon {
+      width: 48px;
+      height: 48px;
 
-      :global {
-        .Caption {
-          margin-left: 4px;
+      object-fit: cover;
+    }
+
+    .content {
+      margin-left: 8px;
+
+      .header {
+        display: flex;
+        align-items: center;
+
+        :global {
+          .Caption {
+            margin-left: 4px;
+
+            color: #818C99;
+          }
+        }
+      }
+
+      .body {
+        margin-top: 4px;
+
+        color: #6D7885;
+      }
+
+      .button {
+        margin-top: 8px;
+
+        display: flex;
+        align-items: center;
+
+        :global {
+          .Button__content {
+            display: flex;
+            align-items: center;
+          }
+        }
+
+        .btnIcon {
+          margin-left: 6px;
+
+          display: flex;
+
+          svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+
+        .buyInfo {
+          margin-left: 12px;
 
           color: #818C99;
         }
-      }
-    }
-
-    .body {
-      margin-top: 4px;
-
-      color: #6D7885;
-    }
-
-    .button {
-      margin-top: 8px;
-
-      display: flex;
-      align-items: center;
-
-      :global {
-        .Button__content {
-          display: flex;
-          align-items: center;
-        }
-      }
-
-      .btnIcon {
-        margin-left: 6px;
-
-        display: flex;
-
-        svg {
-          width: 16px;
-          height: 16px;
-        }
-      }
-
-      .buyInfo {
-        margin-left: 12px;
-
-        color: #818C99;
       }
     }
   }
