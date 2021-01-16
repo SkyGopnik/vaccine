@@ -14,7 +14,8 @@ import {
   Button,
   Snackbar,
   Avatar,
-  FixedLayout
+  FixedLayout,
+  Spinner
 } from '@vkontakte/vkui';
 
 import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
@@ -39,7 +40,10 @@ interface IState {
   snackbar: ReactElement | null,
   history: Array<{
     name: string
-  }>
+  }>,
+  type: 'vaccine' | 'scientists' | 'pharmacy',
+  buttons: Array<boolean>,
+  firstLoading: boolean
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -48,32 +52,40 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       snackbar: null,
-      history: []
+      history: [],
+      type: 'vaccine',
+      buttons: [],
+      firstLoading: true
     };
   }
 
   async componentDidMount() {
+    const { type } = this.state;
     const { data } = await axios.get('/improvement/');
+    const buttons = [];
 
-    // console.log(data);
-    // console.log(lo.find(data, { name: `vaccine.Вода` }));
-    // console.log(lo.filter(data, (item) => item.name === 'vaccine.Вода').length)
+    improvements[type].forEach(() => buttons.push(false));
 
     this.setState({
-      history: data
+      history: data,
+      firstLoading: false,
+      buttons
     });
   }
 
   async buyImprovement(index: number, price: number) {
     const { user } = this.props;
+    const { type } = this.state;
 
     if (user) {
       if (user.data.balance - price >= 0) {
-        const {syncUser} = this.props;
+        const { syncUser } = this.props;
 
         try {
+          this.changeButtonType(index, true);
+
           const {data} = await axios.post('/improvement/buy', {
-            type: 'vaccine',
+            type,
             index
           });
 
@@ -81,15 +93,18 @@ export default class extends React.Component<IProps, IState> {
             history: data.data.history
           });
 
+          this.changeButtonType(index, false);
+
           syncUser(data);
 
           this.changeSnackbar(
             <Snackbar
               layout="vertical"
               onClose={() => this.setState({snackbar: null})}
-              before={<Avatar size={24} style={{background: 'var(--accent)'}}><Icon16Done fill="#fff" width={14} height={14}/></Avatar>}
+              before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
             >
-              Вы успешно купили улучшение вакцины, ваш баланс <span style={{color: 'var(--accent)'}}>20 124</span>
+              <div>Вы успешно купили улучшение.</div>
+              <Text weight="medium">Осталось {(user.data.balance - price).toLocaleString()} вакцины</Text>
             </Snackbar>
           );
         } catch (e) {
@@ -103,7 +118,7 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         }
-      } else if (user.data.click * 5 + user.data.balance - price > 0) {
+      } else if (this.getBalanceBribeLimit() + user.data.balance - price > 0) {
         // Если доступен просмотр рекламы
         const { changeModal } = this.props;
 
@@ -128,6 +143,19 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
+  changeButtonType(index: number, type: boolean) {
+    const { buttons } = this.state;
+    const newButtons = [...buttons];
+
+    newButtons[index] = type;
+
+    // console.log(newButtons);
+
+    this.setState({
+      buttons: newButtons
+    });
+  }
+
   // Подсчёт стоимости улучшения
   calculatePrice(price: number, multiple: number) {
     if (multiple !== 0) {
@@ -139,14 +167,42 @@ export default class extends React.Component<IProps, IState> {
 
   // Подсчёт купленых улучшений
   itemCount(name: string) {
-    const { history } = this.state;
+    const { history, type } = this.state;
 
-    return lo.filter(history, (historyItem) => historyItem.name === `vaccine.${name}`).length;
+    return lo.filter(history, (historyItem) => historyItem.name === `${type}.${name}`).length;
+  }
+
+  changeType(name: 'vaccine' | 'scientists' | 'pharmacy') {
+    const { type } = this.state;
+    const buttons = [];
+
+    improvements[type].forEach(() => buttons.push(false));
+
+    window.scroll({ top: 0, behavior: type === name ? 'smooth' : 'auto' });
+
+    this.setState({
+      type: name,
+      buttons
+    });
+  }
+
+  getBalanceBribeLimit() {
+    const { user } = this.props;
+    const { type } = this.state;
+    const multiplier = 5;
+
+    return user.data[type === 'vaccine' ? 'click' : 'passive'] * multiplier;
   }
 
   render() {
     const { id, user } = this.props;
-    const { snackbar, history } = this.state;
+    const {
+      snackbar,
+      history,
+      type,
+      buttons,
+      firstLoading
+    } = this.state;
 
     return (
       <Panel id={id}>
@@ -155,19 +211,28 @@ export default class extends React.Component<IProps, IState> {
         </PanelHeader>
         <FixedLayout className={style.subHeader} vertical="top">
           <Tabs>
-            <TabsItem selected>
+            <TabsItem
+              onClick={() => this.changeType('vaccine')}
+              selected={type === 'vaccine'}
+            >
               Вакцина
             </TabsItem>
-            <TabsItem>
+            <TabsItem
+              onClick={() => this.changeType('scientists')}
+              selected={type === 'scientists'}
+            >
               Учёные
             </TabsItem>
-            <TabsItem>
-              Аптека
-            </TabsItem>
+            {/*<TabsItem*/}
+            {/*  onClick={() => this.setState({ type: 'pharmacy' })}*/}
+            {/*  selected={type === 'pharmacy'}*/}
+            {/*>*/}
+            {/*  Аптека*/}
+            {/*</TabsItem>*/}
           </Tabs>
         </FixedLayout>
         <Div className={style.list}>
-          {improvements['vaccine'].map((item, index) => (
+          {improvements[type].map((item, index) => (
             <Card
               className={style.card}
               key={index}
@@ -178,7 +243,7 @@ export default class extends React.Component<IProps, IState> {
               <div className={style.content}>
                 <div className={style.header}>
                   <Headline weight="medium">{item.name}</Headline>
-                  <Caption level="1" weight="regular">{item.count}/клик</Caption>
+                  <Caption level="1" weight="regular">{item.count}/{item.pref}</Caption>
                 </div>
                 <Text
                   className={style.body}
@@ -192,11 +257,15 @@ export default class extends React.Component<IProps, IState> {
                     size="m"
                     // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                     // item.price * lo.filter - стоимость с множителем
-                    disabled={user && ((user.data.click * 5 + user.data.balance) - this.calculatePrice(item.price, this.itemCount(item.name)) < 0)}
-                    onClick={() => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
+                    disabled={buttons[index] || firstLoading || user && ((this.getBalanceBribeLimit() + user.data.balance) - this.calculatePrice(item.price, this.itemCount(item.name)) < 0)}
+                    onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                   >
-                    <div>{this.calculatePrice(item.price, this.itemCount(item.name))}</div>
-                    <div><MainIcon className={style.btnIcon} /></div>
+                    {!firstLoading && !buttons[index] ? (
+                      <>
+                        <div>{this.calculatePrice(item.price, this.itemCount(item.name))}</div>
+                        <div><MainIcon className={style.btnIcon} /></div>
+                      </>
+                    ) : <Spinner size="small" />}
                   </Button>
                   {history.length !== 0 && this.itemCount(item.name) !== 0 && (
                     <Caption className={style.buyInfo} level="1" weight="regular">{this.itemCount(item.name)} куплено</Caption>

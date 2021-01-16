@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Панели
-import ErrorPanel from '../panels/Error/Error';
+import ErrorPanel from '../panels/Error/ErrorContainer';
 
 import {View} from "@vkontakte/vkui";
 

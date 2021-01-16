@@ -5,6 +5,9 @@ import bridge from '@vkontakte/vk-bridge';
 import { createStore, applyMiddleware  } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import queryGet from "src/functions/query_get";
+
+import { config } from 'src/js/config';
 
 // Import scroll helper for safari
 import mVKMiniAppsScrollHelper from '@vkontakte/mvk-mini-apps-scroll-helper';
@@ -30,11 +33,22 @@ if (document.location.href) {
   axios.defaults.headers.common.user = document.location.href;
 }
 
-axios.defaults.baseURL = 'http://127.0.0.1:3244/api/rest';
+axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
-// Init VK Mini App
-bridge.send('VKWebAppInit');
+if (queryGet('platform') === 'vk') {
+  // Change scheme
+  bridge.send(
+    'VKWebAppSetViewSettings',
+    {
+      'status_bar_style': 'dark',
+      'action_bar_color': '#ffffff'
+    }
+  );
+
+  // Init VK Mini App
+  bridge.send('VKWebAppInit');
+}
 
 ReactDOM.render(
   <Provider store={store}>

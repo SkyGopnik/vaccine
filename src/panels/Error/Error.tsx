@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Panel,
-  Spinner,
   Placeholder,
   Button,
   Div
@@ -11,10 +10,13 @@ import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
 
 import Error from "src/img/Error.png";
 
+import { config } from 'src/js/config';
+
 import style from './Error.scss';
 
 interface IProps {
-  id: string
+  id: string,
+  connectWs(socketUrl: string)
 }
 
 export default class extends React.Component<IProps> {
@@ -23,7 +25,7 @@ export default class extends React.Component<IProps> {
   }
 
   render() {
-    const { id } = this.props;
+    const { id, connectWs } = this.props;
 
     return (
       <Panel id={id}>
@@ -40,9 +42,10 @@ export default class extends React.Component<IProps> {
           <Div>
             <Button
               size="l"
+              onClick={() => connectWs(config.wsUrl)}
               stretched
             >
-              Ок, отдохну...
+              Попробовать ещё раз
             </Button>
           </Div>
         </div>

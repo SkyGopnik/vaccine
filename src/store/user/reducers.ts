@@ -4,24 +4,30 @@ import {
   SYNC_USER
 } from './actions';
 
+export interface UserInfoInterface {
+  firstName: string
+  lastName: string
+  photo: string
+  sex: 0 | 1 | 2
+  city?: string | null
+}
+
+export interface UserDataInterface {
+  userId?: number
+  balance: number
+  passive: number
+  click: number
+  additional: object
+  user?: UserInterface
+}
+
 export interface UserInterface {
   id: string
   type: string
   ref: string
   platform: string
-  info: {
-    fistName: string
-    lastName: string
-    photo: string
-    sex: 0 | 1 | 2
-    city?: string | null
-  }
-  data: {
-    balance: number
-    passive: number
-    click: number
-    additional: object
-  }
+  info: UserInfoInterface
+  data: UserDataInterface
 }
 
 const defaultState = {

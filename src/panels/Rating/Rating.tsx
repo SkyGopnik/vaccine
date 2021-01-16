@@ -8,14 +8,19 @@ import {
   Card,
   SimpleCell,
   Avatar,
-  IconButton
+  IconButton,
+  Spinner
 } from '@vkontakte/vkui';
 
 import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
+import {RatingReducerIterface} from "src/store/rating/reducers";
+
+import balanceFormat from "src/functions/balanceFormat";
+
 import style from './Rating.scss';
 
-interface IProps {
+interface IProps extends RatingReducerIterface {
   id: string
 }
 
@@ -24,8 +29,14 @@ export default class extends React.Component<IProps> {
     super(props);
   }
 
+  componentDidMount() {
+    const { getRating } = this.props;
+
+    getRating();
+  }
+
   render() {
-    const { id } = this.props;
+    const { id, list } = this.props;
 
     return (
       <Panel id={id}>
@@ -46,61 +57,26 @@ export default class extends React.Component<IProps> {
             size="l"
             mode="shadow"
           >
-            <div className={style.userItem}>
-              <div className={style.topNumber}>1.</div>
-              <SimpleCell
-                target="_blank"
-                href={`https://vk.com/skgopnik`}
-                before={<Avatar size={48} src="https://sun9-61.userapi.com/O-2f7t0yecmx38WXoF37RkhkJTG2rcjL4Yq88w/J39s0u1f90c.jpg?ava=1" />}
-                description="21354562478,31"
-                multiline
-                disabled
-              >
-                Антон Иванков
-              </SimpleCell>
-            </div>
-            <div className={style.userItem}>
-              <div className={style.topNumber}>2.</div>
-              <SimpleCell
-                target="_blank"
-                href={`https://vk.com/skgopnik`}
-                before={<Avatar size={48} src="https://sun9-61.userapi.com/O-2f7t0yecmx38WXoF37RkhkJTG2rcjL4Yq88w/J39s0u1f90c.jpg?ava=1" />}
-                after={<IconButton icon={<Icon28MoneySendOutline />} />}
-                description="21354562478,31"
-                multiline
-                disabled
-              >
-                Антон Иванков
-              </SimpleCell>
-            </div>
-            <div className={style.userItem}>
-              <div className={style.topNumber}>3.</div>
-              <SimpleCell
-                target="_blank"
-                href={`https://vk.com/skgopnik`}
-                before={<Avatar size={48} src="https://sun9-61.userapi.com/O-2f7t0yecmx38WXoF37RkhkJTG2rcjL4Yq88w/J39s0u1f90c.jpg?ava=1" />}
-                after={<IconButton icon={<Icon28MoneySendOutline />} />}
-                description="21354562478,31"
-                multiline
-                disabled
-              >
-                Антон Иванков
-              </SimpleCell>
-            </div>
-            <div className={style.userItem}>
-              <div className={style.topNumber}>4.</div>
-              <SimpleCell
-                target="_blank"
-                href={`https://vk.com/skgopnik`}
-                before={<Avatar size={48} src="https://sun9-61.userapi.com/O-2f7t0yecmx38WXoF37RkhkJTG2rcjL4Yq88w/J39s0u1f90c.jpg?ava=1" />}
-                after={<IconButton icon={<Icon28MoneySendOutline />} />}
-                description="21354562478,31"
-                multiline
-                disabled
-              >
-                Антон Иванков
-              </SimpleCell>
-            </div>
+            {!list.loading ? list.data.map((item, index) => (
+              <div className={style.userItem} key={index}>
+                <div className={style.topNumber}>{index + 1}.</div>
+                <SimpleCell
+                  target="_blank"
+                  href={`https://vk.com/skgopnik`}
+                  before={<Avatar size={48} src={item.user.info.photo} />}
+                  after={(item.userId !== list.user.userId) && <IconButton icon={<Icon28MoneySendOutline />} />}
+                  description={balanceFormat(item.balance)}
+                  multiline
+                  disabled
+                >
+                  {item.user.info.firstName} {item.user.info.lastName}
+                </SimpleCell>
+              </div>
+            )) : (
+              <Div>
+                <Spinner />
+              </Div>
+            )}
           </Card>
         </Div>
       </Panel>

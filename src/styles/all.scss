@@ -1,10 +1,23 @@
 #main {
   .Panel__in {
-    background-color: gray !important;
+    //background-color: gray !important;
   }
 }
 
+//6A9EE5
+
 :global {
+  #bg-elast {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #F8FCFE;
+  }
+
   .Tabbar {
     height: auto !important;
 
@@ -15,6 +28,18 @@
 
     &:before {
       height: 0 !important;
+    }
+  }
+
+  .Snackbar__in {
+    .Snackbar__body {
+      background: #6A9EE5;
+
+      .Snackbar__content {
+        .Text {
+          color: #fff;
+        }
+      }
     }
   }
 }

@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   ModalCard,
-  Button
+  Button,
+  ModalPageHeader, ANDROID, IOS, usePlatform
 } from "@vkontakte/vkui";
 
 import img from 'src/img/NoMoney.png';
@@ -28,6 +29,7 @@ export default (props: IProps) => {
           Посмотреть
         </Button>
       }
+      onClose={() => props.changeModal(null)}
     />
   );
 };

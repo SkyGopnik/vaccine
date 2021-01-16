@@ -1,0 +1,39 @@
+.avatar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  :global {
+    .Headline {
+      margin-top: 8px;
+    }
+
+    .Caption {
+      margin-top: 4px;
+
+      color: #818C99;
+    }
+  }
+}
+
+.card {
+  padding: 12px 16px;
+
+  &:not(:last-child) {
+    margin-bottom: 12px;
+  }
+
+  :global {
+    .Card__in {
+      display: flex;
+      align-items: flex-start;
+    }
+  }
+
+  //.icon {
+  //  width: 48px;
+  //  height: 48px;
+  //
+  //  object-fit: cover;
+  //}
+}

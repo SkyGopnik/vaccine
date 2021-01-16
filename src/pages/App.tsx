@@ -1,12 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import {ConfigProvider, Epic, Platform, Root} from '@vkontakte/vkui';
+import bridge, {AppearanceSchemeType, AppearanceType} from '@vkontakte/vk-bridge';
+import {Appearance, ConfigProvider, Epic, Root, Scheme} from '@vkontakte/vkui';
 
 import Rating from "src/views/Rating/RatingContainer";
-import Game from '../views/Game/GameContainer';
-import Onboard from "../views/Onboard";
-import Loading from "../views/Loading";
-import Error from "../views/Error";
+import Game from 'src/views/Game/GameContainer';
+import Profile from "src/views/Profile/ProfileContainer";
+import Onboard from "src/views/Onboard";
+import Loading from "src/views/Loading";
+import Error from "src/views/Error";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
 
@@ -14,6 +16,8 @@ import unixTime from '../functions/unixtime';
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
+
+import { config } from 'src/js/config';
 
 import '../styles/all.scss';
 
@@ -28,8 +32,10 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  scheme: 'client_light' | 'client_dark' | 'space_gray' | 'bright_light'
+  scheme: AppearanceSchemeType
 }
+
+let isExit;
 
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -55,7 +61,7 @@ export default class extends React.Component<IProps, IState> {
       const user = await axios.get('/user');
       syncUser(user.data);
 
-      connectWs('ws://localhost:3245');
+      connectWs(config.wsUrl);
     } catch (e) {
       changeView('error');
     }
@@ -90,7 +96,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   menu = (e) => {
-    const { changeViewPanelStory } = this.props;
+    const { changeViewPanelStory, changeModal } = this.props;
     // Если история переходов существует
     if (e.state) {
       // Отменяем стандартное событие
@@ -98,7 +104,9 @@ export default class extends React.Component<IProps, IState> {
 
       console.log(e.state);
 
-      const { view, panel, story } = e.state;
+      const { view, panel, story, modal, modalData } = e.state;
+
+      changeModal(null, null, true);
 
       if (historyDelay < unixTime()) {
         // Обновляем блокировку
@@ -132,6 +140,7 @@ export default class extends React.Component<IProps, IState> {
           >
             <Rating id="rating" />
             <Game id="game" />
+            <Profile id="profile" />
           </Epic>
           <Onboard id="onboard" />
           <Loading id="loading" />

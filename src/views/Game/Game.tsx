@@ -1,4 +1,5 @@
 import React from 'react';
+import lo from 'lodash';
 import { ModalRoot } from "@vkontakte/vkui";
 
 // Панели
@@ -13,9 +14,12 @@ import ViewLight from '../../components/ViewLight';
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
-  id: string
+  id: string,
+  user: UserInterface | null,
+  syncUser(data: UserInterface)
 }
 
 let timer;
@@ -26,10 +30,19 @@ export default class extends React.Component<IProps> {
   }
 
   componentDidMount() {
-    const { sendWsMessage } = this.props;
+    const { sendWsMessage, syncUser } = this.props;
 
     timer = setInterval(() => {
-      sendWsMessage({ type: 'ClickPassive' });
+      const { user } = this.props;
+
+      if (user) {
+        syncUser(lo.merge(user, {
+          data: {
+            balance: user.data.balance + user.data.passive
+          }
+        }));
+        sendWsMessage({ type: 'ClickPassive' });
+      }
     }, 1000);
   }
 
@@ -41,21 +54,18 @@ export default class extends React.Component<IProps> {
     const {
       id,
       panel,
-      modal,
-      changeModal
+      modal
     } = this.props;
-
-    const modalComponent = (
-      <ModalRoot activeModal={modal} onClose={() => changeModal(null)}>
-        <NeedMoney id="needMoney" />
-      </ModalRoot>
-    );
 
     return (
       <ViewLight
         id={id}
         activePanel={panel}
-        modal={modalComponent}
+        modal={
+          <ModalRoot activeModal={modal} onClose={() => window.history.back()}>
+            <NeedMoney id="needMoney" />
+          </ModalRoot>
+        }
         panelList={[
           {
             id: 'main',

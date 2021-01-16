@@ -17,7 +17,7 @@ export interface AppReducerInterface {
   changeView(view: string),
   changePanel(panel: string, panelData?: any),
   changeViewPanelStory(view: string, panel: string, story?: string, panelData?: any),
-  changeModal(modal: null | string, modalData?: any),
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
   changeStory(story: string, panelData?: any),
   updateHistory(view: string, panel: string, story: string, history?: any)
 }
@@ -72,6 +72,17 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_MODAL:
+    if (!action.payload.isPopstate) {
+      window.history.pushState({
+        view: state.view,
+        panel: state.panel,
+        story: state.story,
+        data: JSON.stringify(state.panelData),
+        modal: action.payload.modal,
+        modalData: JSON.stringify(action.payload.modalData)
+      }, `${state.view}/${state.panel}/${state.story}/${action.payload.modal}`);
+    }
+
     return {
       ...state,
       modal: action.payload.modal,

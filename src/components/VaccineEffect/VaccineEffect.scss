@@ -1,0 +1,110 @@
+.icon {
+  position: absolute;
+
+  transition: 1s;
+  opacity: 1;
+
+  animation: 1s linear 1;
+  animation-fill-mode: forwards;
+}
+
+.icon1 {
+  left: calc(50% - 65px);
+  animation-name: icon1;
+}
+
+.icon2 {
+  right: calc(50% - 100px);
+  animation-name: icon2;
+}
+
+.icon3 {
+  left: calc(50% - 115px);
+  animation-name: icon3;
+}
+
+.icon4 {
+  right: calc(50% - 65px);
+  animation-name: icon4;
+}
+
+.icon5 {
+  right: calc(50% - 115px);
+  animation-name: icon3;
+}
+
+@keyframes icon1 {
+  from {
+    top: calc(40%);
+  }
+  25% {
+    top: calc(40% - 25px);
+  }
+  50% {
+    top: calc(40% - 50px);
+  }
+  75% {
+    top: calc(40% - 75px);
+  }
+  to {
+    top: calc(40% - 100px);
+    opacity: 0;
+  }
+}
+
+@keyframes icon2 {
+  from {
+    top: calc(50%);
+  }
+  25% {
+    top: calc(50% - 25px);
+  }
+  50% {
+    top: calc(50% - 50px);
+  }
+  75% {
+    top: calc(50% - 75px);
+  }
+  to {
+    top: calc(50% - 100px);
+    opacity: 0;
+  }
+}
+
+@keyframes icon3 {
+  from {
+    top: calc(60%);
+  }
+  25% {
+    top: calc(60% - 25px);
+  }
+  50% {
+    top: calc(60% - 50px);
+  }
+  75% {
+    top: calc(60% - 75px);
+  }
+  to {
+    top: calc(60% - 100px);
+    opacity: 0;
+  }
+}
+
+@keyframes icon4 {
+  from {
+    top: calc(45%);
+  }
+  25% {
+    top: calc(45% - 25px);
+  }
+  50% {
+    top: calc(45% - 50px);
+  }
+  75% {
+    top: calc(45% - 75px);
+  }
+  to {
+    top: calc(45% - 100px);
+    opacity: 0;
+  }
+}

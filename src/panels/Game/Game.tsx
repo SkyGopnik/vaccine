@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import lo from 'lodash';
 import {
   Panel,
@@ -9,6 +9,9 @@ import {
 
 import MainIcon from "src/components/MainIcon";
 import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
+import VaccineEffect from "src/components/VaccineEffect/VaccineEffect";
+
+import getRandomInt from 'src/functions/get_random_int'
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
@@ -22,9 +25,39 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   syncUser(data: UserInterface)
 }
 
-export default class extends React.Component<IProps> {
+interface IState {
+  effects: Array<number>
+}
+
+let effectTimeout;
+
+export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      effects: []
+    };
+  }
+
+  balanceFormat(balance: number) {
+    if (balance.toString().split('.').length === 2) {
+      return balance.toLocaleString();
+    }
+
+    return `${balance.toLocaleString()},0`;
+  }
+
+  renderEffect() {
+    const { effects } = this.state;
+
+    const lastChild = effects.length === 0 ? 1 : effects[effects.length - 1] + 1;
+
+    effects.push(lastChild <= 5 ? lastChild : 1);
+
+    this.setState({
+      effects: effects.length < 100 ? effects : [1]
+    });
   }
 
   render() {
@@ -34,6 +67,7 @@ export default class extends React.Component<IProps> {
       sendWsMessage,
       syncUser
     } = this.props;
+    const { effects } = this.state;
 
     return (
       <Panel id={id}>
@@ -53,7 +87,7 @@ export default class extends React.Component<IProps> {
                 level="1"
                 weight="bold"
               >
-                {user.data.balance}
+                {this.balanceFormat(user.data.balance)}
               </Title>
             </div>
             <div className={style.stat}>
@@ -73,6 +107,9 @@ export default class extends React.Component<IProps> {
           </div>
         )}
         <div className={style.iconWithProgress}>
+          {effects.map((item, index) => (
+            <VaccineEffect key={index} variant={item} />
+          ))}
           <MainIcon
             className={style.icon}
             onClick={() => {
@@ -82,6 +119,8 @@ export default class extends React.Component<IProps> {
                 }
               }));
               sendWsMessage({ type: 'ClickUser' });
+
+              this.renderEffect();
             }}
           />
           <Progress className={style.progress} value={40} />

@@ -17,15 +17,17 @@ import {
 } from "@vkontakte/icons";
 
 import TabbarItemLight from '../TabbarItemLight.jsx';
-import MainIcon from "src/components/MainIcon";
 
 import {AppReducerInterface} from "src/store/app/reducers";
-import {UserInterface} from "src/store/user/reducers";
+import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+
+import balanceFormat from "src/functions/balanceFormat";
 
 import style from './TabbarLight.scss';
 
 interface IProps extends AppReducerInterface {
-  user: UserInterface
+  user: UserInterface,
+  ratingUser: UserDataInterface | null
 }
 
 interface IState {
@@ -58,24 +60,24 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { panel, story, user, changeStory, changePanel } = this.props;
+    const { panel, story, user, ratingUser, changeStory, changePanel } = this.props;
     const { tabbarItems } = this.state;
 
     return (
       <Tabbar>
-        {(story === 'rating' && panel === 'main') && (
+        {(story === 'rating' && panel === 'main') && ratingUser && (
           <div className={style.userItem}>
             <div className={style.topNumber}>15k</div>
             <SimpleCell
               target="_blank"
               href={`https://vk.com/skgopnik`}
-              before={<Avatar size={48} src="https://sun9-61.userapi.com/O-2f7t0yecmx38WXoF37RkhkJTG2rcjL4Yq88w/J39s0u1f90c.jpg?ava=1" />}
+              before={<Avatar size={48} src={ratingUser.user.info.photo} />}
               after={<IconButton icon={<Icon28ShareOutline />} />}
-              description="21354562478,31"
+              description={balanceFormat(ratingUser.balance)}
               multiline
               disabled
             >
-              Антон Иванков
+              {ratingUser.user.info.firstName} {ratingUser.user.info.lastName}
             </SimpleCell>
           </div>
         )}

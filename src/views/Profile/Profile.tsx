@@ -1,7 +1,7 @@
 import React from 'react';
 
 // Панели
-import RatingPanel from '../../panels/Rating/RatingContainer';
+import ProfilePanel from '../../panels/Profile/ProfileContainer';
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -30,7 +30,7 @@ export default class extends React.Component<IProps> {
         panelList={[
           {
             id: 'main',
-            component: RatingPanel
+            component: ProfilePanel
           }
         ]}
       />

@@ -45,16 +45,17 @@ export const changeViewPanelStory = (view: string, panel: string, story: string 
   };
 };
 
-export const changeModal = (modal: null | string, modalData?: Object) => {
+export const changeModal = (modal: null | string, modalData?: Object, isPopstate?: boolean) => {
   return {
     type: APP_CHANGE_MODAL,
     payload: {
       modal,
-      modalData
+      modalData,
+      isPopstate
     }
   };
 };
 
 export const updateHistory = (view: string, panel: string, story: string = null, data?: any) => {
-  window.history.pushState({ view, panel, story, data: data ? JSON.stringify(data) : null }, `${view}/${panel}/${story}`);
+  window.history.pushState({ view, panel, story, data: data ? JSON.stringify(data) : null, modal: null, modalData: null }, `${view}/${panel}/${story}/null`);
 }
