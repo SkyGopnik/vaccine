@@ -16,24 +16,18 @@
   }
 }
 
-.card {
-  padding: 12px 16px;
+.achievement {
+  min-width: 96px;
+  min-height: 96px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 0.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
 
   &:not(:last-child) {
-    margin-bottom: 12px;
+    margin-right: 8px;
   }
-
-  :global {
-    .Card__in {
-      display: flex;
-      align-items: flex-start;
-    }
-  }
-
-  //.icon {
-  //  width: 48px;
-  //  height: 48px;
-  //
-  //  object-fit: cover;
-  //}
 }

@@ -2,7 +2,13 @@
 // Please do not change this file!
 interface CssExports {
   'achievement': string;
-  'avatar': string;
+  'actions': string;
+  'body': string;
+  'btnWithInfo': string;
+  'card': string;
+  'icon': string;
+  'info': string;
+  'title': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

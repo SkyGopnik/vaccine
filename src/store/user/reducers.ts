@@ -18,6 +18,7 @@ export interface UserDataInterface {
   passive: number
   click: number
   additional: object
+  position?: number,
   user?: UserInterface
 }
 
@@ -38,7 +39,9 @@ export const userReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
   case SYNC_USER:
     return {
-      data: lo.cloneDeep(payload)
+      data: {
+        ...payload
+      }
     };
 
   default:

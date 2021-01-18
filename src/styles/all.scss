@@ -7,6 +7,10 @@
 //6A9EE5
 
 :global {
+  body {
+    margin: 0 !important;
+  }
+
   #bg-elast {
     position: fixed;
     top: 0;
@@ -31,13 +35,29 @@
     }
   }
 
-  .Snackbar__in {
-    .Snackbar__body {
-      background: #6A9EE5;
+  .success-snack {
+    .Snackbar__in {
+      .Snackbar__body {
+        background: #6A9EE5;
 
-      .Snackbar__content {
-        .Text {
-          color: #fff;
+        .Snackbar__content {
+          .Text {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  .error-snack {
+    .Snackbar__in {
+      .Snackbar__body {
+        background: #000000;
+
+        .Snackbar__content {
+          .Text {
+            color: #fff;
+          }
         }
       }
     }

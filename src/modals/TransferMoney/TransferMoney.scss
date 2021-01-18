@@ -1,0 +1,16 @@
+.modal {
+  :global {
+    .FormItem {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .ModalCard__actions {
+      margin-top: 0;
+    }
+  }
+}
+
+.snackbar {
+  padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 65px) !important;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {
   Panel,
   PanelHeader,
@@ -16,12 +16,12 @@ import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
 import {RatingReducerIterface} from "src/store/rating/reducers";
 
-import balanceFormat from "src/functions/balanceFormat";
-
 import style from './Rating.scss';
 
 interface IProps extends RatingReducerIterface {
-  id: string
+  id: string,
+  snackbar: ReactNode | null,
+  changeModal(modal: string | null, modalData?: Object)
 }
 
 export default class extends React.Component<IProps> {
@@ -29,14 +29,19 @@ export default class extends React.Component<IProps> {
     super(props);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { getRating } = this.props;
 
-    getRating();
+    await getRating();
   }
 
   render() {
-    const { id, list } = this.props;
+    const {
+      id,
+      list,
+      snackbar,
+      changeModal
+    } = this.props;
 
     return (
       <Panel id={id}>
@@ -54,7 +59,6 @@ export default class extends React.Component<IProps> {
         <Div>
           <Card
             className={style.card}
-            size="l"
             mode="shadow"
           >
             {!list.loading ? list.data.map((item, index) => (
@@ -62,10 +66,15 @@ export default class extends React.Component<IProps> {
                 <div className={style.topNumber}>{index + 1}.</div>
                 <SimpleCell
                   target="_blank"
-                  href={`https://vk.com/skgopnik`}
+                  // href={`https://vk.com/skgopnik`}
                   before={<Avatar size={48} src={item.user.info.photo} />}
-                  after={(item.userId !== list.user.userId) && <IconButton icon={<Icon28MoneySendOutline />} />}
-                  description={balanceFormat(item.balance)}
+                  after={(item.userId !== list.user.userId) && (
+                    <IconButton
+                      icon={<Icon28MoneySendOutline />}
+                      onClick={() => changeModal('transferMoney', item)}
+                    />
+                  )}
+                  description={item.balance.toLocaleString()}
                   multiline
                   disabled
                 >
@@ -79,6 +88,7 @@ export default class extends React.Component<IProps> {
             )}
           </Card>
         </Div>
+        {snackbar}
       </Panel>
     );
   }

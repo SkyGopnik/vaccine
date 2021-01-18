@@ -36,7 +36,8 @@ if (document.location.href) {
 axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
-if (queryGet('platform') === 'vk') {
+if (queryGet('reglis_platform') === 'vk') {
+  console.log('dawawdadw');
   // Change scheme
   bridge.send(
     'VKWebAppSetViewSettings',

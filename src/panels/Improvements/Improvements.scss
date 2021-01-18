@@ -12,6 +12,10 @@
       margin-bottom: 12px;
     }
 
+    &:last-child {
+      margin-bottom: 70px;
+    }
+
     :global {
       .Card__in {
         display: flex;

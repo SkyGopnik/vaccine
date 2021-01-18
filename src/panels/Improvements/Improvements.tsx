@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, ReactNode} from 'react';
 import axios from 'axios';
 import lo from 'lodash';
 import {
@@ -32,17 +32,20 @@ import style from './Improvements.scss';
 interface IProps {
   id: string,
   user: UserInterface | null,
+  snackbar: ReactNode | null,
+  changeSnackbar(snackbar: ReactNode | null),
+  closeSnackbar(),
   syncUser(data: UserInterface),
   changeModal(modal: string | null, modalData?: Object)
 }
 
 interface IState {
-  snackbar: ReactElement | null,
   history: Array<{
     name: string
   }>,
   type: 'vaccine' | 'scientists' | 'pharmacy',
   buttons: Array<boolean>,
+  loading: boolean,
   firstLoading: boolean
 }
 
@@ -51,10 +54,10 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      snackbar: null,
       history: [],
       type: 'vaccine',
       buttons: [],
+      loading: false,
       firstLoading: true
     };
   }
@@ -74,12 +77,16 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async buyImprovement(index: number, price: number) {
-    const { user } = this.props;
+    const { user, changeSnackbar } = this.props;
     const { type } = this.state;
 
     if (user) {
       if (user.data.balance - price >= 0) {
         const { syncUser } = this.props;
+
+        this.setState({
+          loading: true
+        });
 
         try {
           this.changeButtonType(index, true);
@@ -90,17 +97,18 @@ export default class extends React.Component<IProps, IState> {
           });
 
           this.setState({
-            history: data.data.history
+            history: data.data.history,
+            loading: false
           });
 
           this.changeButtonType(index, false);
 
           syncUser(data);
 
-          this.changeSnackbar(
+          changeSnackbar(
             <Snackbar
               layout="vertical"
-              onClose={() => this.setState({snackbar: null})}
+              onClose={() => changeSnackbar(null)}
               before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
             >
               <div>Вы успешно купили улучшение.</div>
@@ -108,10 +116,12 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         } catch (e) {
-          this.changeSnackbar(
+          this.changeButtonType(index, false);
+
+          changeSnackbar(
             <Snackbar
               layout="vertical"
-              onClose={() => this.setState({snackbar: null})}
+              onClose={() => changeSnackbar(null)}
               before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
             >
               {e.response.data.message}
@@ -129,18 +139,6 @@ export default class extends React.Component<IProps, IState> {
         console.log('watch ads ' + (price - user.data.balance));
       }
     }
-  }
-
-  changeSnackbar(snackbar: ReactElement | null) {
-    this.setState({
-      snackbar: null
-    },  () =>  {
-      if (snackbar) {
-        this.setState({
-          snackbar
-        });
-      }
-    });
   }
 
   changeButtonType(index: number, type: boolean) {
@@ -195,12 +193,12 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, user } = this.props;
+    const { id, user, snackbar } = this.props;
     const {
-      snackbar,
       history,
       type,
       buttons,
+      loading,
       firstLoading
     } = this.state;
 
@@ -236,7 +234,6 @@ export default class extends React.Component<IProps, IState> {
             <Card
               className={style.card}
               key={index}
-              size="l"
               mode="shadow"
             >
               <img className={style.icon} src={item.icon} alt=""/>
@@ -257,7 +254,7 @@ export default class extends React.Component<IProps, IState> {
                     size="m"
                     // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                     // item.price * lo.filter - стоимость с множителем
-                    disabled={buttons[index] || firstLoading || user && ((this.getBalanceBribeLimit() + user.data.balance) - this.calculatePrice(item.price, this.itemCount(item.name)) < 0)}
+                    disabled={buttons[index] || loading || firstLoading || user && ((this.getBalanceBribeLimit() + user.data.balance) - this.calculatePrice(item.price, this.itemCount(item.name)) < 0)}
                     onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                   >
                     {!firstLoading && !buttons[index] ? (

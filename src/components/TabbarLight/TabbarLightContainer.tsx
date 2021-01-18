@@ -20,7 +20,8 @@ const mapStateToProps = (state) => {
     modal: state.app.modal,
     story: state.app.story,
     user: state.user.data,
-    ratingUser: state.rating.list.user
+    ratingUser: state.rating.list.user,
+    ratingLoading: state.rating.list.loading
   };
 
   return props;

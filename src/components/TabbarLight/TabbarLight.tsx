@@ -21,13 +21,12 @@ import TabbarItemLight from '../TabbarItemLight.jsx';
 import {AppReducerInterface} from "src/store/app/reducers";
 import {UserDataInterface, UserInterface} from "src/store/user/reducers";
 
-import balanceFormat from "src/functions/balanceFormat";
-
 import style from './TabbarLight.scss';
 
 interface IProps extends AppReducerInterface {
   user: UserInterface,
-  ratingUser: UserDataInterface | null
+  ratingUser: UserDataInterface | null,
+  ratingLoading: boolean
 }
 
 interface IState {
@@ -60,20 +59,28 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { panel, story, user, ratingUser, changeStory, changePanel } = this.props;
+    const {
+      panel,
+      story,
+      user,
+      ratingUser,
+      ratingLoading,
+      changeStory,
+      changePanel
+    } = this.props;
     const { tabbarItems } = this.state;
 
     return (
       <Tabbar>
-        {(story === 'rating' && panel === 'main') && ratingUser && (
+        {(story === 'rating' && panel === 'main') && (ratingUser && !ratingLoading) && (
           <div className={style.userItem}>
-            <div className={style.topNumber}>15k</div>
+            <div className={style.topNumber}>{ratingUser.position.toFixed(0)}.</div>
             <SimpleCell
               target="_blank"
               href={`https://vk.com/skgopnik`}
               before={<Avatar size={48} src={ratingUser.user.info.photo} />}
-              after={<IconButton icon={<Icon28ShareOutline />} />}
-              description={balanceFormat(ratingUser.balance)}
+              after={<IconButton icon={<Icon28ShareOutline />} disabled />}
+              description={ratingUser.balance.toLocaleString()}
               multiline
               disabled
             >

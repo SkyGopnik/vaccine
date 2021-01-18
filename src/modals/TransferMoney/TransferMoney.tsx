@@ -1,0 +1,208 @@
+import React, {ReactNode} from 'react';
+import axios from 'axios';
+import lo from 'lodash';
+import {
+  ModalCard,
+  Button,
+  Input,
+  FormItem,
+  Spinner, Avatar, Text, Snackbar
+} from "@vkontakte/vkui";
+
+import {Icon16Done, Icon28MoneySendOutline} from "@vkontakte/icons";
+
+import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+
+import isset from "src/functions/isset";
+
+import style from './TransferMoney.scss';
+
+interface IProps {
+  id: string,
+  modalData: UserDataInterface,
+  user: UserInterface,
+  syncUser(data: UserInterface),
+  getRating(needLoading?: boolean),
+  changeSnackbar(snackbar: ReactNode | null),
+  sendWsMessage(data: object)
+}
+
+interface IState {
+  value: null | string,
+  error: string,
+  loading: boolean,
+  btnType: 'transfer' | 'close'
+}
+
+export default class extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      value: '',
+      error: undefined,
+      loading: false,
+      btnType: 'transfer'
+    }
+  }
+
+  componentDidMount() {
+    const { user } = this.props;
+
+    this.setState({
+      btnType: user.data.balance !== 0 ? 'transfer' : 'close'
+    });
+  }
+
+  declBySex(sex: 0 | 1 | 2, array: Array<string>) {
+    return array[sex];
+  }
+
+  handleInputChange(value: string) {
+    const { user } = this.props;
+
+    let error;
+
+    if (value.length !== 0) {
+      if (/^\d+\,?\d*$/.test(value)) {
+        const numValue = Number(value.replace(',', '.'));
+
+        if (numValue !== 0) {
+          if (numValue <= user.data.balance) {
+            error = '';
+          } else {
+            error = 'Недостаточно вакцины';
+          }
+        } else {
+          error = 'Серьёзно, ноль?';
+        }
+      } else {
+        error = 'Неправильный формат';
+      }
+    } else {
+      error = 'А что переводим?';
+    }
+
+    this.setState({
+      value,
+      error
+    });
+  }
+
+  async transferMoney() {
+    const { value } = this.state;
+    const {
+      user,
+      modalData,
+      syncUser,
+      changeSnackbar,
+      getRating,
+      sendWsMessage
+    } = this.props;
+
+    const { firstName, lastName, photo } = modalData.user.info;
+    const toName = `${firstName} ${lastName}`;
+    const numValue = +Number(value.replace(',', '.')).toFixed(2);
+
+    // Обнуляем форму и включаем загрузку
+    this.setState({
+      value: '',
+      error: undefined,
+      loading: true
+    });
+
+    // Передаем деньги
+    await axios.post('/user/transfer/money', {
+      sum: numValue,
+      toUserId: modalData.userId
+    });
+
+    // Обновляем рейтинг
+    await getRating(false);
+
+    // Уменьшаем баланс пользователю
+    syncUser(lo.merge(user, {
+      data: {
+        balance: user.data.balance - numValue
+      }
+    }));
+
+    // Синхронизируем другого пользователя если он в игре
+    sendWsMessage({
+      type: 'TransferMoney',
+      toUserId: modalData.userId
+    });
+
+    // Закрываем модалку
+    window.history.back();
+
+    // Показываем уведомление
+    changeSnackbar(
+      <Snackbar
+        className={style.snackbar}
+        layout="vertical"
+        onClose={() => changeSnackbar(null)}
+        before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+        after={<Avatar src={photo} size={32} />}
+      >
+        <div>{toName} получил</div>
+        <Text weight="medium">{numValue.toLocaleString()} вакцины</Text>
+      </Snackbar>
+    );
+  }
+
+  render() {
+    const { modalData, user } = this.props;
+    const {
+      value,
+      error,
+      loading,
+      btnType
+    } = this.state;
+
+    const { firstName, lastName, sex } = modalData.user.info;
+    const toName = `${firstName} ${lastName}`;
+
+    return (
+      <ModalCard
+        className={style.modal}
+        header="Передача вакцины"
+        subheader={<>
+          <div><span style={{ fontWeight: 500 }}>{toName}</span> получит вакцину, когда я {this.declBySex(sex, ['его/её', 'её', 'его'])} увижу. В городе полно заражённых и банк закрыт.</div>
+          <br/>
+          <div>У меня {user.data.balance !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{user.data.balance.toLocaleString()}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
+        </>}
+        actions={
+          btnType === 'transfer' ? (
+            <Button
+              before={!loading && <Icon28MoneySendOutline width={24} height={24} />}
+              size="m"
+              disabled={loading || isset(error) ? (error !== '') : true}
+              onClick={() => this.transferMoney()}
+            >
+              {!loading ? 'Передать' : <Spinner style={{ color: '#fff' }} size="small" />}
+            </Button>
+          ) : (
+            <Button size="m" onClick={() => window.history.back()}>
+              Закрыть
+            </Button>
+          )
+        }
+        onClose={() => window.history.back()}
+      >
+        <FormItem
+          status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
+          bottom={error ? error : ''}
+        >
+          <Input
+            value={value}
+            type="text"
+            placeholder="21354562478,31"
+            disabled={user.data.balance === 0 || loading}
+            onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+          />
+        </FormItem>
+      </ModalCard>
+    );
+  }
+}

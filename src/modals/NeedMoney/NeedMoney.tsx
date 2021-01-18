@@ -1,8 +1,7 @@
 import React from 'react';
 import {
   ModalCard,
-  Button,
-  ModalPageHeader, ANDROID, IOS, usePlatform
+  Button
 } from "@vkontakte/vkui";
 
 import img from 'src/img/NoMoney.png';
@@ -19,7 +18,7 @@ export default (props: IProps) => {
   return (
     <ModalCard
       icon={<img src={img} alt="" />}
-      header={`Не хватает ${props.modalData && props.modalData.need} вакцины`}
+      header={`Не хватает ${props.modalData && Math.ceil(props.modalData.need)} вакцины`}
       subheader={<>
         <div>Вам не хватает вакцины для покупки.</div>
         <div>Посмотрите рекламу и получите вакцину бесплатно!</div>
@@ -29,7 +28,7 @@ export default (props: IProps) => {
           Посмотреть
         </Button>
       }
-      onClose={() => props.changeModal(null)}
+      onClose={() => window.history.back()}
     />
   );
 };

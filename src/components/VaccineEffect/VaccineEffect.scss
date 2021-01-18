@@ -28,11 +28,6 @@
   animation-name: icon4;
 }
 
-.icon5 {
-  right: calc(50% - 115px);
-  animation-name: icon3;
-}
-
 @keyframes icon1 {
   from {
     top: calc(40%);
@@ -92,19 +87,19 @@
 
 @keyframes icon4 {
   from {
-    top: calc(45%);
+    top: calc(35%);
   }
   25% {
-    top: calc(45% - 25px);
+    top: calc(35% - 25px);
   }
   50% {
-    top: calc(45% - 50px);
+    top: calc(35% - 50px);
   }
   75% {
-    top: calc(45% - 75px);
+    top: calc(35% - 75px);
   }
   to {
-    top: calc(45% - 100px);
+    top: calc(35% - 100px);
     opacity: 0;
   }
 }

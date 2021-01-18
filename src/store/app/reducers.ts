@@ -4,8 +4,10 @@ import {
   APP_CHANGE_VIEW_PANEL_STORY,
   APP_CHANGE_MODAL,
   APP_CHANGE_STORY,
+  APP_CHANGE_SNACKBAR,
   updateHistory
 } from './actions';
+import {ReactNode} from "react";
 
 export interface AppReducerInterface {
   view: string,
@@ -14,11 +16,13 @@ export interface AppReducerInterface {
   panelData: any,
   modal: string,
   modalData: any,
+  snackbar: ReactNode | null,
   changeView(view: string),
   changePanel(panel: string, panelData?: any),
   changeViewPanelStory(view: string, panel: string, story?: string, panelData?: any),
   changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
   changeStory(story: string, panelData?: any),
+  changeSnackbar(snackbar: ReactNode | null),
   updateHistory(view: string, panel: string, story: string, history?: any)
 }
 
@@ -28,7 +32,8 @@ const defaultState = {
   story: 'game',
   panelData: null,
   modal: null,
-  modalData: null
+  modalData: null,
+  snackbar: null
 };
 
 // Обновляем историю переходов (Ставим начальную страницу)
@@ -42,14 +47,15 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view
     };
 
-  case APP_CHANGE_PANEL:
+    case APP_CHANGE_PANEL:
     updateHistory(state.view, action.payload.panel, state.story, action.payload.panelData);
 
     return {
       ...state,
       modal: null,
       panel: action.payload.panel,
-      panelData: action.payload.panelData
+      panelData: action.payload.panelData,
+      snackbar: null
     };
 
   case APP_CHANGE_STORY:
@@ -59,7 +65,8 @@ export const appReducer = (state = defaultState, action) => {
       ...state,
       story: action.payload.story,
       panel: 'main',
-      panelData: action.payload.panelData
+      panelData: action.payload.panelData,
+      snackbar: null
     };
 
   case APP_CHANGE_VIEW_PANEL_STORY:
@@ -68,7 +75,8 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,
-      panelData: action.payload.panelData
+      panelData: action.payload.panelData,
+      snackbar: null
     };
 
   case APP_CHANGE_MODAL:
@@ -87,6 +95,12 @@ export const appReducer = (state = defaultState, action) => {
       ...state,
       modal: action.payload.modal,
       modalData: action.payload.modalData ? action.payload.modalData : state.modalData // Если данные не меняются, то оставляем их
+    };
+
+  case APP_CHANGE_SNACKBAR:
+    return {
+      ...state,
+      snackbar: action.payload
     };
 
   default:

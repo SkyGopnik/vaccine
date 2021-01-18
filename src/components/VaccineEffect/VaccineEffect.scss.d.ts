@@ -6,7 +6,6 @@ interface CssExports {
   'icon2': string;
   'icon3': string;
   'icon4': string;
-  'icon5': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

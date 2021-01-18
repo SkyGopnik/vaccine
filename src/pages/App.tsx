@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import bridge, {AppearanceSchemeType, AppearanceType} from '@vkontakte/vk-bridge';
-import {Appearance, ConfigProvider, Epic, Root, Scheme} from '@vkontakte/vkui';
+import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
+import {ConfigProvider, Epic, Platform, AppRoot, Root, AdaptivityProvider} from '@vkontakte/vkui';
 
 import Rating from "src/views/Rating/RatingContainer";
 import Game from 'src/views/Game/GameContainer';
@@ -17,7 +17,7 @@ import unixTime from '../functions/unixtime';
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 
-import { config } from 'src/js/config';
+import {config} from 'src/js/config';
 
 import '../styles/all.scss';
 
@@ -130,22 +130,26 @@ export default class extends React.Component<IProps, IState> {
       <ConfigProvider
         scheme={scheme}
       >
-        <Root activeView={view}>
-          <Epic
-            id="main"
-            activeStory={story}
-            tabbar={
-              <TabbarLight />
-            }
-          >
-            <Rating id="rating" />
-            <Game id="game" />
-            <Profile id="profile" />
-          </Epic>
-          <Onboard id="onboard" />
-          <Loading id="loading" />
-          <Error id="error" />
-        </Root>
+        <AdaptivityProvider>
+          <AppRoot>
+            <Root activeView={view}>
+              <Epic
+                id="main"
+                activeStory={story}
+                tabbar={
+                  <TabbarLight />
+                }
+              >
+                <Rating id="rating" />
+                <Game id="game" />
+                <Profile id="profile" />
+              </Epic>
+              <Onboard id="onboard" />
+              <Loading id="loading" />
+              <Error id="error" />
+            </Root>
+          </AppRoot>
+        </AdaptivityProvider>
       </ConfigProvider>
     );
   }

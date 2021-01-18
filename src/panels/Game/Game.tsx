@@ -26,17 +26,19 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  effects: Array<number>
+  effects: Array<number>,
+  progress: number
 }
 
-let effectTimeout;
+let clampInterval;
 
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
     this.state = {
-      effects: []
+      effects: [],
+      progress: 0
     };
   }
 
@@ -53,21 +55,40 @@ export default class extends React.Component<IProps, IState> {
 
     const lastChild = effects.length === 0 ? 1 : effects[effects.length - 1] + 1;
 
-    effects.push(lastChild <= 5 ? lastChild : 1);
+    effects.push(lastChild <= 4 ? lastChild : 1);
 
     this.setState({
       effects: effects.length < 100 ? effects : [1]
     });
   }
 
+  changeProgress() {
+    const { progress } = this.state;
+    const value = progress + 2;
+
+    this.setState({
+      progress: value <= 100 ? value : 0
+    });
+  }
+
+  iconClick() {
+    const { user, syncUser, sendWsMessage } = this.props;
+
+    syncUser(lo.merge(user, {
+      data: {
+        balance: user.data.balance + user.data.click
+      }
+    }));
+
+    sendWsMessage({ type: 'ClickUser' });
+
+    this.renderEffect();
+    this.changeProgress();
+  }
+
   render() {
-    const {
-      id,
-      user,
-      sendWsMessage,
-      syncUser
-    } = this.props;
-    const { effects } = this.state;
+    const { id, user } = this.props;
+    const { effects, progress } = this.state;
 
     return (
       <Panel id={id}>
@@ -112,18 +133,9 @@ export default class extends React.Component<IProps, IState> {
           ))}
           <MainIcon
             className={style.icon}
-            onClick={() => {
-              syncUser(lo.merge(user, {
-                data: {
-                  balance: user.data.balance + user.data.click
-                }
-              }));
-              sendWsMessage({ type: 'ClickUser' });
-
-              this.renderEffect();
-            }}
+            onClick={() => this.iconClick()}
           />
-          <Progress className={style.progress} value={40} />
+          <Progress className={style.progress} value={progress} />
         </div>
       </Panel>
     );

@@ -1,23 +1,23 @@
 import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const GET_RATING_STARTED = 'GET_RATING_STARTED';
 export const GET_RATING_SUCCESS = 'GET_RATING_SUCCESS';
 export const GET_RATING_FAILURE = 'GET_RATING_FAILURE';
 
-export const getRating = (needLoading = true) => {
-  return dispatch => {
-    if (needLoading) {
-      dispatch(getRatingStarted());
-    }
-
-    axios.get('/rating/').then((res) => {
-      dispatch(getRatingSuccess(res.data));
-    })
-    .catch((err) => {
-      dispatch(getRatingFailure(err.message));
-    });
+export const getRating = createAsyncThunk('getRating', async (arg, thunkAPI) => {
+  if (arg === undefined) {
+    thunkAPI.dispatch(getRatingStarted());
   }
-};
+
+  try {
+    const { data } = await axios.get('/rating/');
+
+    thunkAPI.dispatch(getRatingSuccess(data));
+  } catch (e) {
+    thunkAPI.dispatch(getRatingFailure(e));
+  }
+});
 
 const getRatingSuccess = (data) => ({
   type: GET_RATING_SUCCESS,

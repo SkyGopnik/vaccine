@@ -1,8 +1,11 @@
+import {ReactNode} from "react";
+
 export const APP_CHANGE_VIEW = 'APP_CHANGE_VIEW';
 export const APP_CHANGE_PANEL = 'APP_CHANGE_PANEL';
 export const APP_CHANGE_VIEW_PANEL_STORY = 'APP_CHANGE_VIEW_PANEL_STORY';
 export const APP_CHANGE_MODAL = 'APP_CHANGE_MODAL';
 export const APP_CHANGE_STORY = 'APP_CHANGE_STORY';
+export const APP_CHANGE_SNACKBAR = 'APP_CHANGE_SNACKBAR';
 
 export const changeView = (view: string) => {
   return {
@@ -58,4 +61,9 @@ export const changeModal = (modal: null | string, modalData?: Object, isPopstate
 
 export const updateHistory = (view: string, panel: string, story: string = null, data?: any) => {
   window.history.pushState({ view, panel, story, data: data ? JSON.stringify(data) : null, modal: null, modalData: null }, `${view}/${panel}/${story}/null`);
-}
+};
+
+export const changeSnackbar = (snackbar: ReactNode | null) => ({
+  type: APP_CHANGE_SNACKBAR,
+  payload: snackbar
+});
