@@ -72,13 +72,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   iconClick() {
-    const { user, syncUser, sendWsMessage } = this.props;
-
-    syncUser(lo.merge(user, {
-      data: {
-        balance: user.data.balance + user.data.click
-      }
-    }));
+    const { sendWsMessage } = this.props;
 
     sendWsMessage({ type: 'ClickUser' });
 

@@ -10,7 +10,7 @@ import {
   updateHistory
 } from '../store/app/actions';
 import { syncUser } from '../store/user/actions';
-import { connectWs } from "../store/webSocket/actions";
+import { connectWs, sendWsMessage } from "../store/webSocket/actions";
 import App from './App';
 
 const AppContainer = (props) => <App {...props} />;
@@ -37,6 +37,7 @@ const mapDispatchToProps = {
   changeStory,
   updateHistory,
   connectWs,
+  sendWsMessage,
   syncUser
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
-import {ConfigProvider, Epic, Platform, AppRoot, Root, AdaptivityProvider} from '@vkontakte/vkui';
+import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Root} from '@vkontakte/vkui';
 
 import Rating from "src/views/Rating/RatingContainer";
 import Game from 'src/views/Game/GameContainer';
@@ -11,8 +11,10 @@ import Loading from "src/views/Loading";
 import Error from "src/views/Error";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
+import Modals from "src/components/Modals/ModalsContainer";
 
 import unixTime from '../functions/unixtime';
+import queryGet from '../functions/query_get';
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
@@ -55,13 +57,13 @@ export default class extends React.Component<IProps, IState> {
       syncUser
     } = this.props;
 
-    changeView('loading');
+    // changeView('loading');
 
     try {
-      const user = await axios.get('/user');
-      syncUser(user.data);
+      const { data } = await axios.get('/user');
 
-      connectWs(config.wsUrl);
+      syncUser(data);
+      await connectWs(config.wsUrl);
     } catch (e) {
       changeView('error');
     }
@@ -129,10 +131,15 @@ export default class extends React.Component<IProps, IState> {
     return (
       <ConfigProvider
         scheme={scheme}
+        // platform={queryGet('reglis_platform') === 'web' ? Platform.VKCOM : undefined}
+        transitionMotionEnabled={false}
       >
         <AdaptivityProvider>
           <AppRoot>
-            <Root activeView={view}>
+            <Root
+              activeView={view}
+              modal={<Modals />}
+            >
               <Epic
                 id="main"
                 activeStory={story}

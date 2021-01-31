@@ -27,7 +27,7 @@ export interface AppReducerInterface {
 }
 
 const defaultState = {
-  view: 'main',
+  view: 'loading',
   panel: 'main',
   story: 'game',
   panelData: null,
@@ -37,11 +37,12 @@ const defaultState = {
 };
 
 // Обновляем историю переходов (Ставим начальную страницу)
-updateHistory(defaultState.view, defaultState.panel, defaultState.story);
+updateHistory('main', defaultState.panel, defaultState.story);
 
 export const appReducer = (state = defaultState, action) => {
   switch (action.type) {
   case APP_CHANGE_VIEW:
+    console.log(action.payload.view + ' ' + new Date().getMinutes() + ':' + new Date().getSeconds());
     return {
       ...state,
       view: action.payload.view
@@ -75,8 +76,7 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,
-      panelData: action.payload.panelData,
-      snackbar: null
+      panelData: action.payload.panelData
     };
 
   case APP_CHANGE_MODAL:

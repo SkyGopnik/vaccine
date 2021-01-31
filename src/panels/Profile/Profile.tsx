@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react';
 import axios from 'axios';
-import bridge from '@vkontakte/vk-bridge';
 
 import platformApi from "src/js/platformApi";
 
@@ -11,24 +10,24 @@ import {
   PanelHeader,
   Div,
   Avatar,
-  Text,
   Button,
-  // Card,
   Subhead,
-  SimpleCell, Snackbar,
+  SimpleCell,
+  Snackbar,
   HorizontalScroll
 } from '@vkontakte/vkui';
 
 import {
-  Icon16Cancel,
   Icon16Done,
   Icon28BugOutline,
   Icon28MessageOutline,
-  Icon28Users3Outline
+  Icon28Users3Outline,
+  Icon24ErrorCircleOutline
 } from "@vkontakte/icons";
 
 import balanceFormat from "src/functions/balanceFormat";
 import getDate from "src/functions/getDate";
+import declNum from "src/functions/decl_num";
 
 import Card from 'src/components/Card/Card';
 
@@ -88,13 +87,13 @@ export default class extends React.Component<IProps, IState> {
         layout="vertical"
         onClose={() => changeSnackbar(null)}
         before={
-          <Avatar size={24} style={{background: '#fff'}}>
-            {type === 'success' ? (
-              <Icon16Done fill="#6A9EE5" width={14} height={14}/>
-            ) : (
-              <Icon16Cancel fill="#6A9EE5" width={14} height={14}/>
-            )}
-          </Avatar>
+          type === 'success' ? (
+            <Avatar size={24} style={{background: '#fff'}}>
+              <Icon16Done fill="#6A9EE5" width={14} height={14} />
+            </Avatar>
+          ) : (
+            <Icon24ErrorCircleOutline fill="#fff" />
+          )
         }
       >
         {text}
@@ -131,15 +130,13 @@ export default class extends React.Component<IProps, IState> {
                   onClick={() => platformApi.shareRef(user.id, (res) => {
                     if (res['post_id']) {
                       this.snackbar('Вы успешно поделились реферальной ссылкой', 'success');
-                    } else {
-                      this.snackbar('Произошла ошибка, попробуйте позже', 'error');
                     }
                   })}
                 >
                   Пригласить
                 </Button>
               ),
-              info: '3 друга в игре'
+              info: stat.saveFriends && stat.saveFriends !== 0 ? `${stat.saveFriends} ${declNum(stat.saveFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
             }}
           />
           <Card
@@ -154,44 +151,44 @@ export default class extends React.Component<IProps, IState> {
               </Button>
             </>}
           />
-          <Card
-            icon={<img src={Img3} alt="" />}
-            title="События"
-            description={<span><span style={{ fontWeight: 500 }}>Ника Гаркуша</span> получила вакцину от вас</span>}
-            subDescription="3 часа назад"
-            actions={
-              <Button
-                mode="outline"
-                size="m"
-              >
-                Посмотреть все
-              </Button>
-            }
-          />
-          <Card
-            icon={<img src={Img4} alt="" />}
-            title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}
-          >
-            <HorizontalScroll showArrows  getScrollToLeft={i => i - 120} getScrollToRight={i => i + 120}>
-              <div style={{ display: 'flex' }}>
-                <div className={style.achievement}>
-                  1
-                </div>
-                <div className={style.achievement}>
-                  2
-                </div>
-                <div className={style.achievement}>
-                  3
-                </div>
-                <div className={style.achievement}>
-                  4
-                </div>
-                <div className={style.achievement}>
-                  5
-                </div>
-              </div>
-            </HorizontalScroll>
-          </Card>
+          {/*<Card*/}
+          {/*  icon={<img src={Img3} alt="" />}*/}
+          {/*  title="События"*/}
+          {/*  description={<span><span style={{ fontWeight: 500 }}>Ника Гаркуша</span> получила вакцину от вас</span>}*/}
+          {/*  subDescription="3 часа назад"*/}
+          {/*  actions={*/}
+          {/*    <Button*/}
+          {/*      mode="outline"*/}
+          {/*      size="m"*/}
+          {/*    >*/}
+          {/*      Посмотреть все*/}
+          {/*    </Button>*/}
+          {/*  }*/}
+          {/*/>*/}
+          {/*<Card*/}
+          {/*  icon={<img src={Img4} alt="" />}*/}
+          {/*  title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}*/}
+          {/*>*/}
+          {/*  <HorizontalScroll showArrows  getScrollToLeft={i => i - 120} getScrollToRight={i => i + 120}>*/}
+          {/*    <div style={{ display: 'flex' }}>*/}
+          {/*      <div className={style.achievement}>*/}
+          {/*        1*/}
+          {/*      </div>*/}
+          {/*      <div className={style.achievement}>*/}
+          {/*        2*/}
+          {/*      </div>*/}
+          {/*      <div className={style.achievement}>*/}
+          {/*        3*/}
+          {/*      </div>*/}
+          {/*      <div className={style.achievement}>*/}
+          {/*        4*/}
+          {/*      </div>*/}
+          {/*      <div className={style.achievement}>*/}
+          {/*        5*/}
+          {/*      </div>*/}
+          {/*    </div>*/}
+          {/*  </HorizontalScroll>*/}
+          {/*</Card>*/}
           <Card
             icon={<img src={Img5} alt="" />}
             title="Статистика"
@@ -202,7 +199,7 @@ export default class extends React.Component<IProps, IState> {
               <div>· Спасено друзей: {stat.saveFriends || 0}</div>
               <div>· Получено вакцины от друзей: {stat.transfer || 0}</div>
               <div>· Произведено улучшений: {stat.improvements || 0}</div>
-              <div>· Достижений: {stat.achievements || 0}</div>
+              {/*<div>· Достижений: {stat.achievements || 0}</div>*/}
             </Subhead>
           </Card>
           <Card noPadding>
@@ -211,7 +208,7 @@ export default class extends React.Component<IProps, IState> {
               description="Подпишитесь на нас"
               onClick={() => platformApi.subscribeGroup((res) => {
                 if (res.result) {
-                  this.snackbar('Спасибо за подписку!', 'error');
+                  this.snackbar('Спасибо за подписку!', 'success');
                 }
               })}
               expandable
@@ -222,6 +219,7 @@ export default class extends React.Component<IProps, IState> {
               before={<Icon28MessageOutline />}
               description="Общайтесь с другими игроками"
               href={config.chatUrl}
+              target="_blank"
               expandable
             >
               Наша беседа
@@ -230,6 +228,7 @@ export default class extends React.Component<IProps, IState> {
               before={<Icon28BugOutline />}
               description="Поделитесь идеей или ошибкой"
               href={config.messageGroupUrl}
+              target="_blank"
               expandable
             >
               Написать разработчикам

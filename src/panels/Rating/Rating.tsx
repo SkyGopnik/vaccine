@@ -9,18 +9,22 @@ import {
   SimpleCell,
   Avatar,
   IconButton,
-  Spinner
+  Spinner,
+  FormItem,
+  FormStatus
 } from '@vkontakte/vkui';
 
 import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
 import {RatingReducerIterface} from "src/store/rating/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 import style from './Rating.scss';
 
 interface IProps extends RatingReducerIterface {
   id: string,
   snackbar: ReactNode | null,
+  user: UserInterface | null,
   changeModal(modal: string | null, modalData?: Object)
 }
 
@@ -38,6 +42,7 @@ export default class extends React.Component<IProps> {
   render() {
     const {
       id,
+      user,
       list,
       snackbar,
       changeModal
@@ -56,6 +61,13 @@ export default class extends React.Component<IProps> {
             Больницы
           </TabsItem>
         </Tabs>
+        {!list.loading && (user.data.balance !== (list.user && list.user.balance)) && (
+          <FormItem>
+            <FormStatus header="Данные отличаются" mode="error">
+              Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить
+            </FormStatus>
+          </FormItem>
+        )}
         <Div>
           <Card
             className={style.card}

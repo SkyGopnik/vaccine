@@ -10,6 +10,7 @@ const RatingContainer = (props) => <Rating {...props} />;
 const mapStateToProps = (state) => {
   const props = {
     list: state.rating.list,
+    user: state.user.data,
     snackbar: state.app.snackbar
   };
 

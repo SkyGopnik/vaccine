@@ -130,7 +130,8 @@ export default class extends React.Component<IProps, IState> {
     // Синхронизируем другого пользователя если он в игре
     sendWsMessage({
       type: 'TransferMoney',
-      toUserId: modalData.userId
+      toUserId: modalData.userId,
+      sum: numValue
     });
 
     // Закрываем модалку
@@ -139,7 +140,7 @@ export default class extends React.Component<IProps, IState> {
     // Показываем уведомление
     changeSnackbar(
       <Snackbar
-        className={style.snackbar}
+        className={`${style.snackbar} success-snack`}
         layout="vertical"
         onClose={() => changeSnackbar(null)}
         before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
@@ -176,14 +177,14 @@ export default class extends React.Component<IProps, IState> {
           btnType === 'transfer' ? (
             <Button
               before={!loading && <Icon28MoneySendOutline width={24} height={24} />}
-              size="m"
+              size="l"
               disabled={loading || isset(error) ? (error !== '') : true}
               onClick={() => this.transferMoney()}
             >
               {!loading ? 'Передать' : <Spinner style={{ color: '#fff' }} size="small" />}
             </Button>
           ) : (
-            <Button size="m" onClick={() => window.history.back()}>
+            <Button size="l" onClick={() => window.history.back()}>
               Закрыть
             </Button>
           )
@@ -197,7 +198,7 @@ export default class extends React.Component<IProps, IState> {
           <Input
             value={value}
             type="text"
-            placeholder="21354562478,31"
+            placeholder={user.data.balance.toFixed(2).replace('.', ',')}
             disabled={user.data.balance === 0 || loading}
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
           />

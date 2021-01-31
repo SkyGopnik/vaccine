@@ -1,5 +1,6 @@
-import {changeView} from "src/store/app/actions";
+import {changeModal, changeView} from "src/store/app/actions";
 import {syncUser} from "src/store/user/actions";
+import {createAsyncThunk} from "@reduxjs/toolkit";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -8,48 +9,66 @@ export const CONNECT_WS_FAILURE = 'CONNECT_WS_FAILURE';
 
 let socket;
 
-export const connectWs = (socketUrl: string) => {
-  return dispatch => {
-    dispatch(connectWsStarted());
+export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunkAPI) => {
+  thunkAPI.dispatch(connectWsStarted());
 
-    socket = new WebSocket(socketUrl);
-    console.log("Attempting Connection WS...");
+  socket = new WebSocket(arg);
+  console.log("Attempting Connection WS...");
 
-    dispatch(changeView('loading'));
+  thunkAPI.dispatch(changeView('loading'));
 
-    socket.onmessage = (msg) => {
-      const { type, data } = JSON.parse(msg.data);
-      // console.log(msg.data);
+  socket.onmessage = (msg) => {
+    console.log('onmessage');
 
-      if (type === 'SyncUser') {
-        dispatch(syncUser(data));
+    const { type, subType, data } = JSON.parse(msg.data);
+    console.log(msg.data);
+
+    if (type === 'SyncUser') {
+      thunkAPI.dispatch(syncUser(data));
+
+      if (subType === 'TransferMoney') {
+        const { transfer } = JSON.parse(msg.data);
+
+        thunkAPI.dispatch(changeModal('transferGet', transfer));
       }
 
-      dispatch(connectWsMessage(msg.data));
-    };
+      if (subType === 'RefSystem') {
+        const { ref } = JSON.parse(msg.data);
 
-    socket.onopen = () => {
-      console.log("Successfully connected WS");
+        thunkAPI.dispatch(changeModal('newFriend', ref));
+      }
+    }
 
-      dispatch(changeView('main'));
+    thunkAPI.dispatch(connectWsMessage(msg.data));
+  };
 
-      dispatch(connectWsSuccess());
+  socket.onopen = () => {
+    console.log('onopen');
 
-      socket.send(JSON.stringify({
-        type: 'AuthUser',
-        user: document.location.href
-      }));
-    };
+    console.log("Successfully connected WS");
 
-    socket.onclose = event => {
-      console.log("Socket Closed Connection: ", event);
+    // Задержка чтобы не ломать VKUI
+    setTimeout(() => thunkAPI.dispatch(changeView('main')), 500);
 
-      dispatch(changeView('error'));
+    thunkAPI.dispatch(connectWsSuccess());
 
-      dispatch(connectWsFailure(event));
-    };
-  }
-};
+    socket.send(JSON.stringify({
+      type: 'AuthUser',
+      user: document.location.href
+    }));
+  };
+
+  socket.onclose = event => {
+    console.log('onclose');
+
+    console.log("Socket Closed Connection: ", event);
+
+    // Задержка чтобы не ломать VKUI
+    setTimeout(() => thunkAPI.dispatch(changeView('error')), 500);
+
+    thunkAPI.dispatch(connectWsFailure(event));
+  };
+});
 
 export const sendWsMessage = (data: object) => {
   if (socket.readyState) {

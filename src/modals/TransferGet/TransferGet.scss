@@ -1,0 +1,42 @@
+.modal {
+  .avatar {
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    :global {
+      .Caption {
+        margin-top: 16px;
+
+        color: #818C99;
+      }
+    }
+  }
+
+  .info {
+    display: flex;
+    align-items: center;
+
+    background: #EBEDF0;
+    border: 0.5px solid rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    border-radius: 10px;
+
+    img {
+      width: 38px;
+      height: 48px;
+    }
+
+    .content {
+      margin-left: 14px;
+
+      :global {
+        .Text {
+          color: #6D7885;
+        }
+      }
+    }
+  }
+}

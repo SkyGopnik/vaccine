@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   GET_RATING_STARTED,
   GET_RATING_SUCCESS,

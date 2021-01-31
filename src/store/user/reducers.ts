@@ -17,8 +17,8 @@ export interface UserDataInterface {
   balance: number
   passive: number
   click: number
-  additional: object
-  position?: number,
+  additional: any
+  position?: number
   user?: UserInterface
 }
 

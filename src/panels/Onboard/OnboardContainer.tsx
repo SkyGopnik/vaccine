@@ -7,6 +7,7 @@ import {
   changeViewPanelStory,
   changeModal
 } from 'src/store/app/actions';
+import { syncUser } from "src/store/user/actions";
 import Onboard from './Onboard';
 
 const OnboardContainer = (props) => <Onboard {...props} />;
@@ -15,7 +16,8 @@ const mapStateToProps = (state) => {
   const props = {
     view: state.app.view,
     panel: state.app.panel,
-    modal: state.app.modal
+    modal: state.app.modal,
+    user: state.user.data
   };
 
   return props;
@@ -25,7 +27,8 @@ const mapDispatchToProps = {
   changeView,
   changePanel,
   changeViewPanelStory,
-  changeModal
+  changeModal,
+  syncUser
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnboardContainer);

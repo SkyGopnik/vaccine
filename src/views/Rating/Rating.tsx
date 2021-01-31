@@ -1,16 +1,18 @@
 import React from 'react';
+import {ModalRoot} from "@vkontakte/vkui";
 
 // Панели
 import RatingPanel from '../../panels/Rating/RatingContainer';
 
 // Модалки
 import TransferMoney from "src/modals/TransferMoney/TransferMoneyContainer";
+import NewFriend from "src/modals/NewFriend/NewFriendContainer";
+import TransferGet from "src/modals/TransferGet/TransferGetContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
 
 import {AppReducerInterface} from "src/store/app/reducers";
-import {ModalRoot} from "@vkontakte/vkui";
 
 interface IProps extends AppReducerInterface {
   id: string
@@ -32,11 +34,6 @@ export default class extends React.Component<IProps> {
       <ViewLight
         id={id}
         activePanel={panel}
-        modal={
-          <ModalRoot activeModal={modal} onClose={() => window.history.back()}>
-            <TransferMoney id="transferMoney" />
-          </ModalRoot>
-        }
         panelList={[
           {
             id: 'main',

@@ -13,7 +13,7 @@ interface IProps {
   actions?: ReactNode,
   actionsInfo?: {
     action: ReactNode,
-    info: string
+    info: string | number
   },
   noPadding?: boolean
 }

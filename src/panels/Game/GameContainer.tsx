@@ -9,7 +9,8 @@ const GameContainer = (props) => <Game {...props} />;
 
 const mapStateToProps = (state) => {
   const props = {
-    user: state.user.data
+    user: state.user.data,
+    panel: state.app.panel
   };
 
   return props;

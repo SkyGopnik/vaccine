@@ -107,6 +107,7 @@ export default class extends React.Component<IProps, IState> {
 
           changeSnackbar(
             <Snackbar
+              className="success-snack"
               layout="vertical"
               onClose={() => changeSnackbar(null)}
               before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
@@ -204,7 +205,7 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Panel id={id}>
-        <PanelHeader left={<HistoryBackBtn />}>
+        <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Улучшения
         </PanelHeader>
         <FixedLayout className={style.subHeader} vertical="top">
@@ -236,7 +237,9 @@ export default class extends React.Component<IProps, IState> {
               key={index}
               mode="shadow"
             >
-              <img className={style.icon} src={item.icon} alt=""/>
+              <div className={style.icon}>
+                <img src={item.icon} alt=""/>
+              </div>
               <div className={style.content}>
                 <div className={style.header}>
                   <Headline weight="medium">{item.name}</Headline>

@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from 'axios';
+import lo from "lodash";
 import {
   Panel,
   Gallery,
@@ -10,6 +12,7 @@ import {
 import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
 
 import {AppReducerInterface} from "src/store/app/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 import Img1 from 'src/img/No-virus.png';
 import Img2 from 'src/img/MainIcon.png';
@@ -18,7 +21,9 @@ import Img3 from 'src/img/Friends.png';
 import style from './Onboard.scss';
 
 interface IProps extends AppReducerInterface {
-  id: string
+  id: string,
+  user: UserInterface | null,
+  syncUser(data: UserInterface)
 }
 
 interface IState {
@@ -32,10 +37,39 @@ export default class extends React.Component<IProps, IState> {
     this.state = {
       slideIndex: 0
     };
+
+    this.finish = this.finish.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('onBoard bug');
+  }
+
+  finish() {
+    const {
+      user,
+      syncUser,
+      changeView
+    } = this.props;
+
+    syncUser(lo.merge(user, {
+      data: {
+        additional: {
+          ...user.data.additional,
+          onboard: true
+        }
+      }
+    }));
+
+    axios.put('/user/onboard', {
+      type: true
+    });
+
+    changeView('main');
   }
 
   render() {
-    const { id, changeView } = this.props;
+    const { id } = this.props;
     const { slideIndex } = this.state;
 
     return (
@@ -99,7 +133,7 @@ export default class extends React.Component<IProps, IState> {
             <Div>
               <Button
                 size="l"
-                onClick={() => changeView('main')}
+                onClick={this.finish}
                 stretched
               >
                 Поехали!

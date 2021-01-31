@@ -21,6 +21,7 @@ import rootReducer from '../store/reducers';
 // Стили VKUI
 import '@vkontakte/vkui/dist/vkui.css';
 import '@vkontakte/vkui/dist/unstable.css'
+import platformApi from "src/js/platformApi";
 
 // Главный объект стора
 const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -36,14 +37,13 @@ if (document.location.href) {
 axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
-if (queryGet('reglis_platform') === 'vk') {
-  console.log('dawawdadw');
+if (platformApi.currentType() === 'vk') {
   // Change scheme
   bridge.send(
     'VKWebAppSetViewSettings',
     {
       'status_bar_style': 'dark',
-      'action_bar_color': '#ffffff'
+      'action_bar_color': '#F8FCFE'
     }
   );
 

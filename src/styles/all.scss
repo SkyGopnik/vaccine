@@ -35,6 +35,14 @@
     }
   }
 
+  @media screen and (max-width: 450px) {
+    .ModalCard--android, .ModalCard--ios {
+      .ModalCard__in {
+        max-width: none;
+      }
+    }
+  }
+
   .success-snack {
     .Snackbar__in {
       .Snackbar__body {
@@ -52,7 +60,7 @@
   .error-snack {
     .Snackbar__in {
       .Snackbar__body {
-        background: #000000;
+        background: #E56A6A;
 
         .Snackbar__content {
           .Text {

@@ -49,6 +49,10 @@ export const changeViewPanelStory = (view: string, panel: string, story: string 
 };
 
 export const changeModal = (modal: null | string, modalData?: Object, isPopstate?: boolean) => {
+  // Блокировка и разблокировка скрола при открытии модалки
+  const body = document.getElementsByTagName('body')[0];
+  body.style.overflowY = modal ? 'hidden' : 'scroll';
+
   return {
     type: APP_CHANGE_MODAL,
     payload: {

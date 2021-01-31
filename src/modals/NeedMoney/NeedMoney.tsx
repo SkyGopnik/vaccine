@@ -24,7 +24,7 @@ export default (props: IProps) => {
         <div>Посмотрите рекламу и получите вакцину бесплатно!</div>
       </>}
       actions={
-        <Button size="m">
+        <Button size="l">
           Посмотреть
         </Button>
       }
