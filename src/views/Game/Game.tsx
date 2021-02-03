@@ -1,17 +1,10 @@
 import React from 'react';
 import lo from 'lodash';
 import axios from "axios";
-import { ModalRoot } from "@vkontakte/vkui";
 
 // Панели
 import GamePanel from '../../panels/Game/GameContainer';
 import ImprovementsPanel from "../../panels/Improvements/ImprovementsContainer";
-
-// Модалки
-import NeedMoney from "src/modals/NeedMoney/NeedMoneyContainer";
-import NewFriend from "src/modals/NewFriend/NewFriendContainer";
-import RefMoney from "src/modals/RefMoney/RefMoneyContainer";
-import TransferGet from "src/modals/TransferGet/TransferGetContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -29,71 +22,44 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   syncUser(data: UserInterface)
 }
 
+interface IState {
+  refUsed: boolean
+}
+
 let timer;
 
-export default class extends React.Component<IProps> {
+export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      refUsed: false
+    };
   }
 
   async componentDidMount() {
     const {
       user,
       sendWsMessage,
-      syncUser,
-      changeModal,
       changeView
     } = this.props;
-
-    const ref = hashGet('ref');
 
     if (user.data.additional && !user.data.additional.onboard) {
       changeView('onboard');
     }
 
-    if (ref) {
-      try {
-        const { data } = await axios.get(`/user/ref?refId=${ref}`);
-
-        const refUser = lo.find(data, {
-          userId: ref
-        });
-
-        const currentUser = lo.find(data, {
-          userId: user.id
-        });
-
-        // Обновляем баланс пользователю который привёл реферала
-        sendWsMessage({
-          type: 'RefSystem',
-          refId: ref,
-          sum: refUser.click * 500
-        });
-
-        // Модалка с тем что ты получил денег за то что зашёл по рефералке
-        changeModal('refMoney', {
-          data: refUser,
-          sum: currentUser.click * 1000
-        });
-
-        // Обновляем себе
-        sendWsMessage({
-          type: 'SyncUser'
-        });
-
-        window.location.hash = '';
-      } catch (e) {
-        console.log(e);
-
-        window.location.hash = '';
-      }
-    }
-
     timer = setInterval(() => {
-      const { user, panel } = this.props;
+      const { user, panel, syncUser } = this.props;
+      const { refUsed } = this.state;
 
-      if (user && user.data.passive !== 0 && panel === 'main') {
+      if (panel === 'main' && user && user.data.passive !== 0) {
         sendWsMessage({ type: 'ClickPassive' });
+
+        syncUser(lo.merge(user, {
+          data: {
+            balance: user.data.balance + user.data.passive
+          }
+        }));
       }
     }, 1000);
   }

@@ -6,6 +6,7 @@ import NewFriend from "src/modals/NewFriend/NewFriendContainer";
 import RefMoney from "src/modals/RefMoney/RefMoneyContainer";
 import TransferGet from "src/modals/TransferGet/TransferGetContainer";
 import TransferMoney from "src/modals/TransferMoney/TransferMoneyContainer";
+import TransferUser from "src/modals/TransferUser/TransferUserContainer";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 
@@ -21,6 +22,7 @@ export default (props: IProps) => {
       <RefMoney id="refMoney" />
       <TransferGet id="transferGet" />
       <TransferMoney id="transferMoney" />
+      <TransferUser id="transferUser" />
     </ModalRoot>
   );
 };

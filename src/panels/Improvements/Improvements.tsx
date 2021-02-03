@@ -81,6 +81,12 @@ export default class extends React.Component<IProps, IState> {
     const { type } = this.state;
 
     if (user) {
+      console.log(user.data.balance);
+      console.log(price);
+      console.log(this.getBalanceBribeLimit());
+
+      console.log(this.getBalanceBribeLimit() + user.data.balance - price)
+
       if (user.data.balance - price >= 0) {
         const { syncUser } = this.props;
 
@@ -129,7 +135,7 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         }
-      } else if (this.getBalanceBribeLimit() + user.data.balance - price > 0) {
+      } else if (this.getBalanceBribeLimit() + user.data.balance - price >= 0) {
         // Если доступен просмотр рекламы
         const { changeModal } = this.props;
 
@@ -257,7 +263,7 @@ export default class extends React.Component<IProps, IState> {
                     size="m"
                     // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                     // item.price * lo.filter - стоимость с множителем
-                    disabled={buttons[index] || loading || firstLoading || user && ((this.getBalanceBribeLimit() + user.data.balance) - this.calculatePrice(item.price, this.itemCount(item.name)) < 0)}
+                    disabled={buttons[index] || loading || firstLoading || user && ((this.getBalanceBribeLimit() + user.data.balance - this.calculatePrice(item.price, this.itemCount(item.name))) < 0)}
                     onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                   >
                     {!firstLoading && !buttons[index] ? (

@@ -6,7 +6,7 @@ export const GET_RATING_SUCCESS = 'GET_RATING_SUCCESS';
 export const GET_RATING_FAILURE = 'GET_RATING_FAILURE';
 
 export const getRating = createAsyncThunk('getRating', async (arg, thunkAPI) => {
-  if (arg === undefined) {
+  if (typeof arg === "boolean") {
     thunkAPI.dispatch(getRatingStarted());
   }
 

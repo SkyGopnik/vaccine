@@ -1,6 +1,9 @@
 import {changeModal, changeView} from "src/store/app/actions";
 import {syncUser} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
+import lo from "lodash";
+import hashGet from "src/functions/hash_get";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -17,7 +20,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
   thunkAPI.dispatch(changeView('loading'));
 
-  socket.onmessage = (msg) => {
+  socket.onmessage = async (msg) => {
     console.log('onmessage');
 
     const { type, subType, data } = JSON.parse(msg.data);
@@ -39,6 +42,57 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
       }
     }
 
+    // if (type === 'AuthSuccess') {
+    //   const ref = hashGet('ref');
+    //
+    //   if (ref) {
+    //     thunkAPI.dispatch(sendWsMessage({
+    //       type: 'SaveRef',
+    //       refId: ref
+    //     }));
+    //
+    //     window.location.hash = '';
+    //   }
+    // }
+
+    // if (type === 'RefUser') {
+    //   const { refId, currentId } = JSON.parse(msg.data);
+    //
+    //   if (refId) {
+    //     try {
+    //       const { data } = await axios.get(`/user/ref?refId=${refId}`);
+    //
+    //       const refUser = lo.find(data, {
+    //         userId: refId
+    //       });
+    //
+    //       const currentUser = lo.find(data, {
+    //         userId: currentId
+    //       });
+    //
+    //       // Обновляем баланс пользователю который привёл реферала
+    //       thunkAPI.dispatch(sendWsMessage({
+    //         type: 'RefSystem',
+    //         refId: refId,
+    //         sum: refUser.click * 500
+    //       }));
+    //
+    //       // Модалка с тем что ты получил денег за то что зашёл по рефералке
+    //       thunkAPI.dispatch(changeModal('refMoney', {
+    //         data: refUser,
+    //         sum: currentUser.click * 1000
+    //       }));
+    //
+    //       // Обновляем себе
+    //       thunkAPI.dispatch(sendWsMessage({
+    //         type: 'SyncUser'
+    //       }));
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   }
+    // }
+
     thunkAPI.dispatch(connectWsMessage(msg.data));
   };
 
@@ -47,15 +101,16 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
     console.log("Successfully connected WS");
 
-    // Задержка чтобы не ломать VKUI
-    setTimeout(() => thunkAPI.dispatch(changeView('main')), 500);
-
-    thunkAPI.dispatch(connectWsSuccess());
-
     socket.send(JSON.stringify({
       type: 'AuthUser',
       user: document.location.href
     }));
+
+    thunkAPI.dispatch(changeView('main'));
+
+    thunkAPI.dispatch(connectWsSuccess());
+
+    setInterval(() => thunkAPI.dispatch(sendWsMessage({ type: 'ping' })), 5000);
   };
 
   socket.onclose = event => {

@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react';
+import bridge from '@vkontakte/vk-bridge';
 import axios from 'axios';
 
 import platformApi from "src/js/platformApi";
@@ -31,7 +32,7 @@ import declNum from "src/functions/decl_num";
 
 import Card from 'src/components/Card/Card';
 
-import {UserInterface} from "src/store/user/reducers";
+import {UserDataInterface, UserInterface} from "src/store/user/reducers";
 
 import {config} from "src/js/config";
 
@@ -47,10 +48,12 @@ interface IProps {
   id: string,
   user: UserInterface | null,
   snackbar: ReactNode | null,
-  changeSnackbar(snackbar: ReactNode | null)
+  changeSnackbar(snackbar: ReactNode | null),
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
 }
 
 interface IState {
+  position?: number,
   stat: {
     startAt?: Date,
     record?: number,
@@ -71,10 +74,14 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get('/user/profile');
+    const stat = await axios.get('/user/profile');
+    const rating = await axios.get('/rating');
+
+    console.log(stat.data);
 
     this.setState({
-      stat: data.stat
+      stat: stat.data,
+      position: rating.data.user.position.toFixed(0)
     });
   }
 
@@ -102,9 +109,15 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, user, snackbar } = this.props;
-    const { stat } = this.state;
+    const {
+      id,
+      user,
+      snackbar,
+      changeModal
+    } = this.props;
+    const { position, stat } = this.state;
 
+    const { balance } = user.data || {};
     const { photo, firstName, lastName } = user.info || {};
 
     return (
@@ -115,38 +128,64 @@ export default class extends React.Component<IProps, IState> {
         <Div className={style.avatar}>
           <Avatar src={photo} size={72} />
           <Title level="3" weight="medium">{firstName} {lastName}</Title>
-          <Caption level="1" weight="regular">1 274 место в рейтинге</Caption>
+          {position && <Caption level="1" weight="regular">{position.toLocaleString()} место в рейтинге</Caption>}
         </Div>
         <Div>
-          <Card
-            icon={<img src={Img1} alt="" />}
-            title="Спасение друзей"
-            description="За каждое приглашение друга в игру вы получите вакцину на свой счёт"
-            actionsInfo={{
-              action: (
-                <Button
-                  mode="outline"
-                  size="m"
-                  onClick={() => platformApi.shareRef(user.id, (res) => {
-                    if (res['post_id']) {
-                      this.snackbar('Вы успешно поделились реферальной ссылкой', 'success');
-                    }
-                  })}
-                >
-                  Пригласить
-                </Button>
-              ),
-              info: stat.saveFriends && stat.saveFriends !== 0 ? `${stat.saveFriends} ${declNum(stat.saveFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
-            }}
-          />
+          {/*{balance > 100 && (*/}
+          {/*  <Card*/}
+          {/*    icon={<img src={Img1} alt="" />}*/}
+          {/*    title="Спасение друзей"*/}
+          {/*    description="За каждое приглашение друга в игру вы получите вакцину на свой счёт"*/}
+          {/*    actionsInfo={{*/}
+          {/*      action: (*/}
+          {/*        <Button*/}
+          {/*          mode="outline"*/}
+          {/*          size="m"*/}
+          {/*          onClick={() => platformApi.shareRef(user.id, (res) => {*/}
+          {/*            if (res['post_id']) {*/}
+          {/*              this.snackbar('Вы успешно поделились реферальной ссылкой', 'success');*/}
+          {/*            }*/}
+          {/*          })}*/}
+          {/*        >*/}
+          {/*          Пригласить*/}
+          {/*        </Button>*/}
+          {/*      ),*/}
+          {/*      info: stat.saveFriends && stat.saveFriends !== 0 ? `${stat.saveFriends} ${declNum(stat.saveFriends, ['друг', 'друга', 'друзей'])} в игре` : ''*/}
+          {/*    }}*/}
+          {/*  />*/}
+          {/*)}*/}
           <Card
             icon={<img src={Img2} alt="" />}
             title="Передача вакцины"
             actions={<>
-              <Button size="m" stretched>
+              <Button
+                size="m"
+                onClick={async () => {
+                  const { users } = await bridge.send("VKWebAppGetFriends");
+                  const { data } = await axios.get(`/user/check?userId=${users[0].id}`);
+                  const user = users[0];
+
+                  if (data) {
+                    changeModal('transferMoney', {
+                      userId: String(user.id),
+                      firstName: user.first_name,
+                      lastName: user.last_name,
+                      photo: user.photo_200,
+                      sex: user.sex
+                    });
+                  } else {
+                    this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё на заходил в игру`, 'error');
+                  }
+                }}
+                stretched
+              >
                 Другу
               </Button>
-              <Button size="m" stretched>
+              <Button
+                size="m"
+                onClick={() => changeModal('transferUser')}
+                stretched
+              >
                 Не другу
               </Button>
             </>}

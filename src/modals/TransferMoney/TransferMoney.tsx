@@ -11,16 +11,24 @@ import {
 
 import {Icon16Done, Icon28MoneySendOutline} from "@vkontakte/icons";
 
-import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 import isset from "src/functions/isset";
 
 import style from './TransferMoney.scss';
 
 interface IProps {
-  id: string,
-  modalData: UserDataInterface,
+  modalData: {
+    userId: string,
+    firstName: string,
+    lastName: string,
+    photo: string,
+    sex: 0 | 1 | 2
+  },
   user: UserInterface,
+  view: string,
+  panel: string,
+  story: string,
   syncUser(data: UserInterface),
   getRating(needLoading?: boolean),
   changeSnackbar(snackbar: ReactNode | null),
@@ -89,7 +97,14 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
+  paddingNeed() {
+    const { panel, story } = this.props;
+
+    return story === 'rating' && panel === 'main';
+  }
+
   async transferMoney() {
+    const { panel, story } = this.props;
     const { value } = this.state;
     const {
       user,
@@ -100,7 +115,7 @@ export default class extends React.Component<IProps, IState> {
       sendWsMessage
     } = this.props;
 
-    const { firstName, lastName, photo } = modalData.user.info;
+    const { firstName, lastName, photo } = modalData;
     const toName = `${firstName} ${lastName}`;
     const numValue = +Number(value.replace(',', '.')).toFixed(2);
 
@@ -117,8 +132,10 @@ export default class extends React.Component<IProps, IState> {
       toUserId: modalData.userId
     });
 
-    // Обновляем рейтинг
-    await getRating(false);
+    if (story === 'rating' && panel === 'main') {
+      // Обновляем рейтинг
+      await getRating(false);
+    }
 
     // Уменьшаем баланс пользователю
     syncUser(lo.merge(user, {
@@ -140,7 +157,7 @@ export default class extends React.Component<IProps, IState> {
     // Показываем уведомление
     changeSnackbar(
       <Snackbar
-        className={`${style.snackbar} success-snack`}
+        className={`${this.paddingNeed() ? style.snackbar : ''} success-snack`}
         layout="vertical"
         onClose={() => changeSnackbar(null)}
         before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
@@ -161,7 +178,7 @@ export default class extends React.Component<IProps, IState> {
       btnType
     } = this.state;
 
-    const { firstName, lastName, sex } = modalData.user.info;
+    const { firstName, lastName, sex } = modalData;
     const toName = `${firstName} ${lastName}`;
 
     return (

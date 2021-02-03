@@ -30,8 +30,6 @@ interface IState {
   progress: number
 }
 
-let clampInterval;
-
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -64,7 +62,20 @@ export default class extends React.Component<IProps, IState> {
 
   changeProgress() {
     const { progress } = this.state;
+    const { user, syncUser } = this.props;
     const value = progress + 2;
+
+    if (value === 102) {
+      for (let i = 0; i < 4; i++) {
+        this.renderEffect();
+      }
+
+      syncUser(lo.merge(user, {
+        data: {
+          balance: user.data.balance + user.data.click * 10
+        }
+      }));
+    }
 
     this.setState({
       progress: value <= 100 ? value : 0
@@ -72,7 +83,13 @@ export default class extends React.Component<IProps, IState> {
   }
 
   iconClick() {
-    const { sendWsMessage } = this.props;
+    const { user, syncUser, sendWsMessage } = this.props;
+
+    syncUser(lo.merge(user, {
+      data: {
+        balance: user.data.balance + user.data.click
+      }
+    }));
 
     sendWsMessage({ type: 'ClickUser' });
 

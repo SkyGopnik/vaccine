@@ -99,16 +99,18 @@ export default class extends React.Component<IProps, IState> {
 
   menu = (e) => {
     const { changeViewPanelStory, changeModal } = this.props;
+
+    console.log('backBug');
     // Если история переходов существует
     if (e.state) {
       // Отменяем стандартное событие
       e.preventDefault();
 
-      console.log(e.state);
-
       const { view, panel, story, modal, modalData } = e.state;
 
-      changeModal(null, null, true);
+      changeModal(modal, modalData ? JSON.parse(modalData) : null, true);
+
+      console.log('backChangeModal', modal);
 
       if (historyDelay < unixTime()) {
         // Обновляем блокировку
@@ -143,9 +145,7 @@ export default class extends React.Component<IProps, IState> {
               <Epic
                 id="main"
                 activeStory={story}
-                tabbar={
-                  <TabbarLight />
-                }
+                tabbar={<TabbarLight />}
               >
                 <Rating id="rating" />
                 <Game id="game" />

@@ -62,6 +62,8 @@ export const appReducer = (state = defaultState, action) => {
   case APP_CHANGE_STORY:
     updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
 
+    window.scroll({ top: 0, behavior: state.story === action.payload.story ? 'smooth' : 'auto' });
+
     return {
       ...state,
       story: action.payload.story,
@@ -80,6 +82,7 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_MODAL:
+    console.log('payload.isPopstate' + !action.payload.isPopstate);
     if (!action.payload.isPopstate) {
       window.history.pushState({
         view: state.view,

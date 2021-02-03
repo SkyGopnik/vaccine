@@ -13,7 +13,10 @@ const TransferMoneyContainer = (props) => <TransferMoney {...props} />;
 const mapStateToProps = (state) => {
   const props = {
     modalData: state.app.modalData,
-    user: state.user.data
+    user: state.user.data,
+    view: state.app.view,
+    panel: state.app.panel,
+    story: state.app.story
   };
 
   return props;

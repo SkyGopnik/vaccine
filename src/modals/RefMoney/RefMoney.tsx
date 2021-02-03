@@ -42,7 +42,10 @@ export default class extends React.Component<IProps> {
         className={style.modal}
         header={`Подарок от ${this.declBySex(sex, ['доктора', 'подруги', 'друга'])}!`}
         actions={
-          <Button size="l" onClick={() => window.history.back()}>
+          <Button size="l" onClick={() => {
+            console.log('click');
+            window.history.back();
+          }}>
             Начать игру
           </Button>
         }
