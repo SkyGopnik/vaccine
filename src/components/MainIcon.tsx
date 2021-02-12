@@ -14,7 +14,7 @@ export default (props: IProps) => {
   return (
     <span
       className={className}
-      onClick={() => onClick && onClick()}
+      onClick={(e) => onClick && onClick(e)}
       onMouseDown={() => onMouseDown && onMouseDown()}
       onMouseUp={() => onMouseUp && onMouseUp()}
     >

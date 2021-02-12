@@ -27,7 +27,12 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 
 interface IState {
   effects: Array<number>,
-  progress: number
+  progress: number,
+  antiClick: {
+    count: number,
+    x: number,
+    y: number
+  }
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -36,7 +41,12 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       effects: [],
-      progress: 0
+      progress: 0,
+      antiClick: {
+        count: 0,
+        x: 0,
+        y: 0
+      }
     };
   }
 
@@ -82,19 +92,37 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  iconClick() {
-    const { user, syncUser, sendWsMessage } = this.props;
+  iconClick(e) {
+    const icon = e.target.getBoundingClientRect();
+    const {
+      user,
+      syncUser,
+      sendWsMessage
+    } = this.props;
+    const { antiClick } = this.state;
 
-    syncUser(lo.merge(user, {
-      data: {
-        balance: user.data.balance + user.data.click
+    var x = e.clientX - icon.left;
+    var y = e.clientY - icon.top;
+
+    this.setState({
+      antiClick: {
+        count: (antiClick.x === x && antiClick.y == y) ? (antiClick.count + 1) : 0,
+        x, y
       }
-    }));
+    });
 
-    sendWsMessage({ type: 'ClickUser' });
+    if (antiClick.count < 25) {
+      syncUser(lo.merge(user, {
+        data: {
+          balance: user.data.balance + user.data.click
+        }
+      }));
 
-    this.renderEffect();
-    this.changeProgress();
+      sendWsMessage({type: 'ClickUser'});
+
+      this.renderEffect();
+      this.changeProgress();
+    }
   }
 
   render() {
@@ -144,7 +172,7 @@ export default class extends React.Component<IProps, IState> {
           ))}
           <MainIcon
             className={style.icon}
-            onClick={() => this.iconClick()}
+            onClick={(e) => this.iconClick(e)}
           />
           <Progress className={style.progress} value={progress} />
         </div>
