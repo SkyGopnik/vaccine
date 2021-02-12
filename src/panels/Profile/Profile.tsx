@@ -174,7 +174,7 @@ export default class extends React.Component<IProps, IState> {
                       sex: user.sex
                     });
                   } else {
-                    this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё на заходил в игру`, 'error');
+                    this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё не заходил в игру`, 'error');
                   }
                 }}
                 stretched
