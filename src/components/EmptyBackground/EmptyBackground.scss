@@ -35,6 +35,8 @@
     img {
       position: absolute;
 
+      user-select: none;
+
       &:nth-child(1) {
         top: calc(var(--safe-area-inset-top) + 50px);
       }

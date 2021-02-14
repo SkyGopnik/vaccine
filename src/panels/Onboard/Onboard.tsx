@@ -1,6 +1,4 @@
 import React from 'react';
-import axios from 'axios';
-import lo from "lodash";
 import {
   Panel,
   Gallery,
@@ -12,7 +10,6 @@ import {
 import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
 
 import {AppReducerInterface} from "src/store/app/reducers";
-import {UserInterface} from "src/store/user/reducers";
 
 import Img1 from 'src/img/No-virus.png';
 import Img2 from 'src/img/MainIcon.png';
@@ -22,8 +19,7 @@ import style from './Onboard.scss';
 
 interface IProps extends AppReducerInterface {
   id: string,
-  user: UserInterface | null,
-  syncUser(data: UserInterface)
+  changeAdditional(data: object)
 }
 
 interface IState {
@@ -45,24 +41,14 @@ export default class extends React.Component<IProps, IState> {
     console.log('onBoard bug');
   }
 
-  finish() {
+  async finish() {
     const {
-      user,
-      syncUser,
-      changeView
+      changeView,
+      changeAdditional
     } = this.props;
 
-    syncUser(lo.merge(user, {
-      data: {
-        additional: {
-          ...user.data.additional,
-          onboard: true
-        }
-      }
-    }));
-
-    axios.put('/user/onboard', {
-      type: true
+    await changeAdditional({
+      onboard: true
     });
 
     changeView('main');

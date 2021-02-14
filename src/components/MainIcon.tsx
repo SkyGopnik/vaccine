@@ -15,8 +15,8 @@ export default (props: IProps) => {
     <span
       className={className}
       onClick={(e) => onClick && onClick(e)}
-      onMouseDown={() => onMouseDown && onMouseDown()}
-      onMouseUp={() => onMouseUp && onMouseUp()}
+      onMouseDown={(e) => onMouseDown && onMouseDown(e)}
+      onMouseUp={(e) => onMouseUp && onMouseUp(e)}
     >
       <svg width={type === 'small' ? "14" : "183"} height={type === 'small' ? "16" : "231"} viewBox="0 0 183 231" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M177.038 182.993L121.846 104.163C120.281 101.928 119.442 99.265 119.442 96.5363V21.5037L106.439 12.2078H71.9512L63.5571 21.5037V96.5363C63.5571 99.265 62.7175 101.928 61.1524 104.163L5.9619 182.993C-8.19542 203.213 6.27005 231 30.9541 231H152.046C176.73 231 191.195 203.213 177.038 182.993V182.993Z" fill="#D3EFFB"/>

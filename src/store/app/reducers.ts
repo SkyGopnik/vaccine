@@ -75,6 +75,7 @@ export const appReducer = (state = defaultState, action) => {
   case APP_CHANGE_VIEW_PANEL_STORY:
     return {
       ...state,
+      modal: null,
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,

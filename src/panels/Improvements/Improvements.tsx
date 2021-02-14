@@ -49,6 +49,10 @@ interface IState {
   firstLoading: boolean
 }
 
+const localization = {
+  "Balance is negative": "Не хватает вакцины"
+};
+
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -123,6 +127,10 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         } catch (e) {
+          this.setState({
+            loading: false
+          });
+
           this.changeButtonType(index, false);
 
           changeSnackbar(
@@ -131,7 +139,7 @@ export default class extends React.Component<IProps, IState> {
               onClose={() => changeSnackbar(null)}
               before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
             >
-              {e.response.data.message}
+              {localization[e.response.data.message] ? localization[e.response.data.message] : e.response.data.message}
             </Snackbar>
           );
         }

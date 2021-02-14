@@ -24,7 +24,8 @@ interface IProps extends RatingReducerIterface {
   id: string,
   snackbar: ReactNode | null,
   user: UserInterface | null,
-  changeModal(modal: string | null, modalData?: Object)
+  changeModal(modal: string | null, modalData?: Object),
+  sendWsMessage(data: object)
 }
 
 interface IState {
@@ -47,12 +48,16 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async onRefresh() {
-    const { getRating } = this.props;
+    const { getRating, sendWsMessage } = this.props;
 
     this.setState({ ptr: true });
 
     setTimeout(async () => {
       await getRating();
+
+      sendWsMessage({
+         type: 'SyncUser'
+      });
 
       this.setState({ ptr: false })
     }, 1000);

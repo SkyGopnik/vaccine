@@ -14,8 +14,7 @@ import {
   Button,
   Subhead,
   SimpleCell,
-  Snackbar,
-  HorizontalScroll
+  Snackbar
 } from '@vkontakte/vkui';
 
 import {
@@ -28,11 +27,11 @@ import {
 
 import balanceFormat from "src/functions/balanceFormat";
 import getDate from "src/functions/getDate";
-import declNum from "src/functions/decl_num";
 
 import Card from 'src/components/Card/Card';
+import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
 
-import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 import {config} from "src/js/config";
 
@@ -49,12 +48,13 @@ interface IProps {
   user: UserInterface | null,
   snackbar: ReactNode | null,
   changeSnackbar(snackbar: ReactNode | null),
-  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
+  changeAdditional(data: object)
 }
 
 interface IState {
-  position?: number,
   stat: {
+    ratingPosition?: number,
     startAt?: Date,
     record?: number,
     saveFriends?: number,
@@ -75,13 +75,11 @@ export default class extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     const stat = await axios.get('/user/profile');
-    const rating = await axios.get('/rating');
 
     console.log(stat.data);
 
     this.setState({
-      stat: stat.data,
-      position: rating.data.user.position.toFixed(0)
+      stat: stat.data
     });
   }
 
@@ -113,11 +111,12 @@ export default class extends React.Component<IProps, IState> {
       id,
       user,
       snackbar,
-      changeModal
+      changeModal,
+      changeAdditional
     } = this.props;
-    const { position, stat } = this.state;
+    const { stat } = this.state;
 
-    const { balance } = user.data || {};
+    const { subGroup } = user.data.additional || {};
     const { photo, firstName, lastName } = user.info || {};
 
     return (
@@ -128,7 +127,11 @@ export default class extends React.Component<IProps, IState> {
         <Div className={style.avatar}>
           <Avatar src={photo} size={72} />
           <Title level="3" weight="medium">{firstName} {lastName}</Title>
-          {position && <Caption level="1" weight="regular">{position.toLocaleString()} место в рейтинге</Caption>}
+          {stat.ratingPosition ? (
+            <Caption level="1" weight="regular">{stat.ratingPosition.toLocaleString()} место в рейтинге</Caption>
+          ) : (
+            <Caption level="1" weight="regular">Пинаем програмиста</Caption>
+          )}
         </Div>
         <Div>
           {/*{balance > 100 && (*/}
@@ -242,18 +245,9 @@ export default class extends React.Component<IProps, IState> {
             </Subhead>
           </Card>
           <Card noPadding>
-            <SimpleCell
-              before={<Icon28Users3Outline />}
-              description="Подпишитесь на нас"
-              onClick={() => platformApi.subscribeGroup((res) => {
-                if (res.result) {
-                  this.snackbar('Спасибо за подписку!', 'success');
-                }
-              })}
-              expandable
-            >
-              Сообщество SkyReglis
-            </SimpleCell>
+            {!subGroup && (
+              <SubscribeGroup />
+            )}
             <SimpleCell
               before={<Icon28MessageOutline />}
               description="Общайтесь с другими игроками"

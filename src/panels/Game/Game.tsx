@@ -82,7 +82,7 @@ export default class extends React.Component<IProps, IState> {
 
       syncUser(lo.merge(user, {
         data: {
-          balance: user.data.balance + user.data.click * 10
+          balance: user.data.balance + user.data.click * 100
         }
       }));
     }
@@ -172,7 +172,7 @@ export default class extends React.Component<IProps, IState> {
           ))}
           <MainIcon
             className={style.icon}
-            onClick={(e) => this.iconClick(e)}
+            onMouseUp={(e) => this.iconClick(e)}
           />
           <Progress className={style.progress} value={progress} />
         </div>

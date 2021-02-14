@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import {changeAdditional} from "src/store/user/actions";
 import {changeSnackbar, changeModal} from "src/store/app/actions";
 
 import Profile from './Profile';
@@ -18,7 +19,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   changeSnackbar,
-  changeModal
+  changeModal,
+  changeAdditional
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileContainer);

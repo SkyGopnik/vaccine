@@ -14,11 +14,13 @@ import {Icon16Done, Icon28MoneySendOutline} from "@vkontakte/icons";
 import {UserInterface} from "src/store/user/reducers";
 
 import isset from "src/functions/isset";
+import declNum from "src/functions/decl_num";
 
 import style from './TransferMoney.scss';
 
 interface IProps {
   modalData: {
+    type?: 'user' | 'friend',
     userId: string,
     firstName: string,
     lastName: string,
@@ -152,7 +154,7 @@ export default class extends React.Component<IProps, IState> {
     });
 
     // Закрываем модалку
-    window.history.back();
+    window.history.go(modalData.type === 'user' ? -2 : -1);
 
     // Показываем уведомление
     changeSnackbar(
@@ -164,7 +166,7 @@ export default class extends React.Component<IProps, IState> {
         after={<Avatar src={photo} size={32} />}
       >
         <div>{toName} получил</div>
-        <Text weight="medium">{numValue.toLocaleString()} вакцины</Text>
+        <Text weight="medium">{numValue.toLocaleString()} {declNum(numValue.toLocaleString(), ['вакцину', 'вакцины', 'вакцины'])}</Text>
       </Snackbar>
     );
   }
