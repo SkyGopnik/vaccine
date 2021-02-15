@@ -25,11 +25,12 @@ import {
   Icon24ErrorCircleOutline
 } from "@vkontakte/icons";
 
-import balanceFormat from "src/functions/balanceFormat";
-import getDate from "src/functions/getDate";
-
 import Card from 'src/components/Card/Card';
 import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
+
+import balanceFormat from "src/functions/balanceFormat";
+import getDate from "src/functions/getDate";
+import declBySex from "src/functions/declBySex";
 
 import {UserInterface} from "src/store/user/reducers";
 
@@ -161,29 +162,31 @@ export default class extends React.Component<IProps, IState> {
             icon={<img src={Img2} alt="" />}
             title="Передача вакцины"
             actions={<>
-              <Button
-                size="m"
-                onClick={async () => {
-                  const { users } = await bridge.send("VKWebAppGetFriends");
-                  const { data } = await axios.get(`/user/check?userId=${users[0].id}`);
-                  const user = users[0];
+              {platformApi.checkSupport() && (
+                <Button
+                  size="m"
+                  onClick={async () => {
+                    const { users } = await bridge.send("VKWebAppGetFriends");
+                    const { data } = await axios.get(`/user/check?userId=${users[0].id}`);
+                    const user = users[0];
 
-                  if (data) {
-                    changeModal('transferMoney', {
-                      userId: String(user.id),
-                      firstName: user.first_name,
-                      lastName: user.last_name,
-                      photo: user.photo_200,
-                      sex: user.sex
-                    });
-                  } else {
-                    this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё не заходил в игру`, 'error');
-                  }
-                }}
-                stretched
-              >
-                Другу
-              </Button>
+                    if (data) {
+                      changeModal('transferMoney', {
+                        userId: String(user.id),
+                        firstName: user.first_name,
+                        lastName: user.last_name,
+                        photo: user.photo_200,
+                        sex: user.sex
+                      });
+                    } else {
+                      this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё не ${declBySex(user.sex, ['заходил (a)', 'заходила', 'заходил'])} в игру`, 'error');
+                    }
+                  }}
+                  stretched
+                >
+                  Другу
+                </Button>
+              )}
               <Button
                 size="m"
                 onClick={() => changeModal('transferUser')}

@@ -10,7 +10,11 @@ import TransferUser from "src/modals/TransferUser/TransferUserContainer";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 
-interface IProps extends AppReducerInterface{}
+interface IProps extends AppReducerInterface {
+  modalData: {
+    backType?: 'double' | 'normal'
+  }
+}
 
 export default (props: IProps) => {
   const { modal } = props;

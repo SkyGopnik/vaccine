@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Root} from '@vkontakte/vkui';
+import { isMobile } from "react-device-detect";
 
 import Rating from "src/views/Rating/RatingContainer";
 import Game from 'src/views/Game/GameContainer';
@@ -22,6 +23,7 @@ import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
+import WrongOrientation from "src/views/WrongOrientation";
 
 let historyDelay = Number(new Date().getTime() / 1000);
 
@@ -34,7 +36,8 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  scheme: AppearanceSchemeType
+  scheme: AppearanceSchemeType,
+  isHorizontal: boolean
 }
 
 let isExit;
@@ -44,7 +47,8 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      scheme: 'bright_light'
+      scheme: 'bright_light',
+      isHorizontal: false
     };
 
     this.menu = this.menu.bind(this);
@@ -54,10 +58,9 @@ export default class extends React.Component<IProps, IState> {
     const {
       changeView,
       connectWs,
-      syncUser
+      syncUser,
+      view
     } = this.props;
-
-    // changeView('loading');
 
     try {
       const { data } = await axios.get('/user');
@@ -67,10 +70,16 @@ export default class extends React.Component<IProps, IState> {
     } catch (e) {
       changeView('error');
     }
-    // getUser();
-    // setTimeout(() => {
-    //   changeView('onboard');
-    // }, 5000);
+
+    if (window.matchMedia("(orientation: landscape)").matches && isMobile) {
+      console.log(view);
+      console.log('Экран уже в горизонтальном режиме');
+      changeView('wrongOrientation');
+
+      this.setState({
+        isHorizontal: true
+      });
+    }
 
     // Навешиваем обработчик кнопку вперёд/назад
     window.addEventListener('popstate', (e) => {
@@ -95,30 +104,46 @@ export default class extends React.Component<IProps, IState> {
 
     document.documentElement.style.setProperty('--background_content', '#F8FCFE');
     document.documentElement.style.setProperty('--header_background', '#F8FCFE');
+
+    window.addEventListener("orientationchange", (e) => {
+      const { isHorizontal } = this.state;
+
+      if (!isHorizontal) {
+        // Поворот в горизонтальный режим
+        console.log('Поворот в горизонтальный режим');
+        changeView('wrongOrientation');
+      } else {
+        // Возврат в вертикальный
+        console.log('Возврат в вертикальный');
+        changeView('main');
+      }
+
+      this.setState({
+        isHorizontal: !isHorizontal
+      });
+    }, false);
   }
 
   menu = (e) => {
-    const { changeViewPanelStory, changeModal } = this.props;
+    const {
+      view,
+      changeModal,
+      updateHistory,
+      changeViewPanelStory
+    } = this.props;
 
-    console.log('backBug');
     // Если история переходов существует
     if (e.state) {
-      // Отменяем стандартное событие
-      e.preventDefault();
+      const {view, panel, story, modal, modalData} = e.state;
+      const currentView = this.props.view;
 
-      const { view, panel, story, modal, modalData } = e.state;
+      if (currentView !== 'error') {
+        // Отменяем стандартное событие
+        e.preventDefault();
 
-      changeModal(modal, modalData ? JSON.parse(modalData) : null, true);
-
-      console.log('backChangeModal', modal);
-
-      if (historyDelay < unixTime()) {
-        // Обновляем блокировку
-        historyDelay = unixTime() + 1;
+        changeModal(modal, modalData ? JSON.parse(modalData) : null, true);
 
         // Устанавливаем новые значения для View и Panel
-        changeViewPanelStory(view, panel, story);
-      } else {
         changeViewPanelStory(view, panel, story);
       }
     } else {
@@ -154,6 +179,7 @@ export default class extends React.Component<IProps, IState> {
               <Onboard id="onboard" />
               <Loading id="loading" />
               <Error id="error" />
+              <WrongOrientation id="wrongOrientation" />
             </Root>
           </AppRoot>
         </AdaptivityProvider>

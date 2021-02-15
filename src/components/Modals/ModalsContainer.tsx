@@ -10,7 +10,8 @@ const mapStateToProps = (state) => {
     view: state.app.view,
     panel: state.app.panel,
     modal: state.app.modal,
-    story: state.app.story
+    story: state.app.story,
+    modalData: state.app.modalData
   };
 
   return props;

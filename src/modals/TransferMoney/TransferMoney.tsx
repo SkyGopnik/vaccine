@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react';
 import axios from 'axios';
 import lo from 'lodash';
+import Decimal from 'decimal';
 import {
   ModalCard,
   Button,
@@ -17,10 +18,11 @@ import isset from "src/functions/isset";
 import declNum from "src/functions/decl_num";
 
 import style from './TransferMoney.scss';
+import declBySex from "src/functions/declBySex";
 
 interface IProps {
   modalData: {
-    type?: 'user' | 'friend',
+    backType?: 'double' | 'normal',
     userId: string,
     firstName: string,
     lastName: string,
@@ -70,27 +72,32 @@ export default class extends React.Component<IProps, IState> {
 
   handleInputChange(value: string) {
     const { user } = this.props;
+    const numValue = Decimal(value).toNumber();
 
-    let error;
+    let error = '';
 
-    if (value.length !== 0) {
-      if (/^\d+\,?\d*$/.test(value)) {
-        const numValue = Number(value.replace(',', '.'));
-
-        if (numValue !== 0) {
-          if (numValue <= user.data.balance) {
-            error = '';
-          } else {
-            error = 'Недостаточно вакцины';
-          }
-        } else {
-          error = 'Серьёзно, ноль?';
-        }
-      } else {
-        error = 'Неправильный формат';
-      }
-    } else {
+    if (value.length === 0) {
       error = 'А что переводим?';
+    }
+
+    if (!/^\d+\.?\d*$/.test(value)) {
+      error = 'Неправильный формат';
+    }
+
+    if (numValue === 0) {
+      error = 'Серьёзно, ноль?';
+    }
+
+    if (numValue > Decimal(user.data.balance).toNumber()) {
+      error = 'Недостаточно вакцины';
+    }
+
+    if (numValue) {
+      const [whole, fractional] = numValue.toString().split('.');
+
+      if (fractional.length > 4) {
+        error = 'Кол-во знаков после запятой должно быть меньше или равно 4';
+      }
     }
 
     this.setState({
@@ -117,9 +124,16 @@ export default class extends React.Component<IProps, IState> {
       sendWsMessage
     } = this.props;
 
-    const { firstName, lastName, photo } = modalData;
+    const {
+      firstName,
+      lastName,
+      photo,
+      sex
+    } = modalData;
     const toName = `${firstName} ${lastName}`;
-    const numValue = +Number(value.replace(',', '.')).toFixed(2);
+    const numValue = Decimal(value).toNumber();
+
+    console.log(numValue);
 
     // Обнуляем форму и включаем загрузку
     this.setState({
@@ -129,10 +143,17 @@ export default class extends React.Component<IProps, IState> {
     });
 
     // Передаем деньги
-    await axios.post('/user/transfer/money', {
-      sum: numValue,
-      toUserId: modalData.userId
-    });
+    try {
+      await axios.post('/user/transfer/money', {
+        type: modalData.backType && modalData.backType === 'double' ? 'user' : 'friend',
+        sum: numValue,
+        toUserId: modalData.userId
+      });
+    } catch (e) {
+      this.setState({
+        loading: false
+      });
+    }
 
     if (story === 'rating' && panel === 'main') {
       // Обновляем рейтинг
@@ -154,7 +175,7 @@ export default class extends React.Component<IProps, IState> {
     });
 
     // Закрываем модалку
-    window.history.go(modalData.type === 'user' ? -2 : -1);
+    window.history.go(modalData.backType === 'double' ? -2 : -1);
 
     // Показываем уведомление
     changeSnackbar(
@@ -165,8 +186,8 @@ export default class extends React.Component<IProps, IState> {
         before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         after={<Avatar src={photo} size={32} />}
       >
-        <div>{toName} получил</div>
-        <Text weight="medium">{numValue.toLocaleString()} {declNum(numValue.toLocaleString(), ['вакцину', 'вакцины', 'вакцины'])}</Text>
+        <div>{toName} {declBySex(sex, ['получил (a)', 'получила', 'получил'])}</div>
+        <Text weight="medium">{numValue} вакцины</Text>
       </Snackbar>
     );
   }
@@ -188,9 +209,9 @@ export default class extends React.Component<IProps, IState> {
         className={style.modal}
         header="Передача вакцины"
         subheader={<>
-          <div><span style={{ fontWeight: 500 }}>{toName}</span> получит вакцину, когда я {this.declBySex(sex, ['его/её', 'её', 'его'])} увижу. В городе полно заражённых и банк закрыт.</div>
+          <div><span style={{ fontWeight: 500 }}>{toName}</span> получит вакцину, когда я {declBySex(sex, ['его/её', 'её', 'его'])} увижу. В городе полно заражённых и банк закрыт.</div>
           <br/>
-          <div>У меня {user.data.balance !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{user.data.balance.toLocaleString()}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
+          <div>У меня {Decimal(user.data.balance).toNumber() !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{Decimal(user.data.balance).toNumber()}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
         </>}
         actions={
           btnType === 'transfer' ? (
@@ -217,8 +238,8 @@ export default class extends React.Component<IProps, IState> {
           <Input
             value={value}
             type="text"
-            placeholder={user.data.balance.toFixed(2).replace('.', ',')}
-            disabled={user.data.balance === 0 || loading}
+            placeholder={Decimal(user.data.balance).toNumber()}
+            disabled={Decimal(user.data.balance).toNumber() === 0 || loading}
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
           />
         </FormItem>

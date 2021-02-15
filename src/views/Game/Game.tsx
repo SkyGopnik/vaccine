@@ -23,7 +23,8 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  refUsed: boolean
+  refUsed: boolean,
+  horizontal: boolean
 }
 
 let timer;
@@ -33,20 +34,15 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      refUsed: false
+      refUsed: false,
+      horizontal: false
     };
   }
 
   async componentDidMount() {
-    const {
-      user,
-      sendWsMessage,
-      changeView
-    } = this.props;
+    const { sendWsMessage } = this.props;
 
-    if (user.data.additional && !user.data.additional.onboard) {
-      changeView('onboard');
-    }
+    this.showOnboard();
 
     timer = setInterval(() => {
       const { user, panel, syncUser } = this.props;
@@ -66,6 +62,14 @@ export default class extends React.Component<IProps, IState> {
 
   componentWillUnmount() {
     clearInterval(timer);
+  }
+
+  showOnboard() {
+    const { user, changeView } = this.props;
+
+    if (user.data.additional && !user.data.additional.onboard) {
+      changeView('onboard');
+    }
   }
 
   render() {

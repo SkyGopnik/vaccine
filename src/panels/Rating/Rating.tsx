@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react';
+import Decimal from 'decimal';
 import {
   Panel,
   PanelHeader,
@@ -87,7 +88,7 @@ export default class extends React.Component<IProps, IState> {
           {/*    Больницы*/}
           {/*  </TabsItem>*/}
           {/*</Tabs>*/}
-          {!list.loading && (user.data.balance !== (list.user && list.user.balance)) && (
+          {!list.loading && (Decimal(user.data.balance).toNumber() !== (list.user && Decimal(list.user.balance).toNumber())) && (
             <FormItem>
               <FormStatus header="Данные отличаются" mode="error">
                 Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить

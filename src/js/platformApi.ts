@@ -43,4 +43,15 @@ export default class platformApi {
       }).then((res) => cb(res)).catch((err) => cb(err));
     }
   }
+
+  public static checkSupport() {
+    if (
+      type === 'vk'
+      || type === 'vk_game'
+    ) {
+      return queryGet('vk_platform') !== 'mobile_web';
+    }
+
+    return false;
+  }
 }

@@ -1,4 +1,5 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
+import Decimal from 'decimal';
 import lo from 'lodash';
 import {
   Panel,
@@ -10,8 +11,6 @@ import {
 import MainIcon from "src/components/MainIcon";
 import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
 import VaccineEffect from "src/components/VaccineEffect/VaccineEffect";
-
-import getRandomInt from 'src/functions/get_random_int'
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
@@ -48,14 +47,6 @@ export default class extends React.Component<IProps, IState> {
         y: 0
       }
     };
-  }
-
-  balanceFormat(balance: number) {
-    if (balance.toString().split('.').length === 2) {
-      return balance.toLocaleString();
-    }
-
-    return `${balance.toLocaleString()},0`;
   }
 
   renderEffect() {
@@ -112,9 +103,14 @@ export default class extends React.Component<IProps, IState> {
     });
 
     if (antiClick.count < 25) {
+      console.log('--------');
+      console.log(user.data.balance);
+      console.log(user.data.click);
+      console.log((+user.data.balance + user.data.click).toFixed(4));
+
       syncUser(lo.merge(user, {
         data: {
-          balance: user.data.balance + user.data.click
+          balance: Decimal(user.data.balance).add(user.data.click).toNumber()
         }
       }));
 
@@ -132,7 +128,7 @@ export default class extends React.Component<IProps, IState> {
     return (
       <Panel id={id}>
         <EmptyBackground />
-        {user && (
+        {user && user.data && (
           <div className={style.info}>
             {/*64px top*/}
             <div className={style.balance}>
@@ -147,7 +143,7 @@ export default class extends React.Component<IProps, IState> {
                 level="1"
                 weight="bold"
               >
-                {this.balanceFormat(user.data.balance)}
+                {Decimal(user.data.balance).toNumber().toFixed(4)}
               </Title>
             </div>
             <div className={style.stat}>

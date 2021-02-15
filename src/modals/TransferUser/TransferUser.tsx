@@ -58,7 +58,7 @@ export default class extends React.Component<IProps, IState> {
     if (data) {
       if (user.id !== String(data.id)) {
         changeModal('transferMoney', {
-          type: 'user',
+          backType: 'double',
           userId: String(data.id),
           firstName: data.first_name,
           lastName: data.last_name,

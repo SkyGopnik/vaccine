@@ -48,7 +48,7 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view
     };
 
-    case APP_CHANGE_PANEL:
+  case APP_CHANGE_PANEL:
     updateHistory(state.view, action.payload.panel, state.story, action.payload.panelData);
 
     return {
@@ -60,7 +60,9 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_STORY:
-    updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
+    if (state.story !== action.payload.story) {
+      updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
+    }
 
     window.scroll({ top: 0, behavior: state.story === action.payload.story ? 'smooth' : 'auto' });
 

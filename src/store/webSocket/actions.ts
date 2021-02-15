@@ -1,9 +1,6 @@
 import {changeModal, changeView} from "src/store/app/actions";
 import {syncUser} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import axios from "axios";
-import lo from "lodash";
-import hashGet from "src/functions/hash_get";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -13,116 +10,122 @@ export const CONNECT_WS_FAILURE = 'CONNECT_WS_FAILURE';
 let socket;
 
 export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunkAPI) => {
-  thunkAPI.dispatch(connectWsStarted());
+  return new Promise((resolve, reject) => {
+    thunkAPI.dispatch(connectWsStarted());
 
-  socket = new WebSocket(arg);
-  console.log("Attempting Connection WS...");
+    socket = new WebSocket(arg);
+    console.log("Attempting Connection WS...");
 
-  thunkAPI.dispatch(changeView('loading'));
+    thunkAPI.dispatch(changeView('loading'));
 
-  socket.onmessage = async (msg) => {
-    console.log('onmessage');
+    socket.onmessage = async (msg) => {
+      console.log('onmessage');
 
-    const { type, subType, data } = JSON.parse(msg.data);
-    console.log(msg.data);
+      const {type, subType, data} = JSON.parse(msg.data);
+      console.log(msg.data);
 
-    if (type === 'SyncUser') {
-      thunkAPI.dispatch(syncUser(data));
+      if (type === 'SyncUser') {
+        thunkAPI.dispatch(syncUser(data));
 
-      if (subType === 'TransferMoney') {
-        const { transfer } = JSON.parse(msg.data);
+        if (subType === 'TransferMoney') {
+          const {transfer} = JSON.parse(msg.data);
 
-        thunkAPI.dispatch(changeModal('transferGet', transfer));
+          thunkAPI.dispatch(changeModal('transferGet', transfer));
+        }
+
+        if (subType === 'RefSystem') {
+          const {ref} = JSON.parse(msg.data);
+
+          thunkAPI.dispatch(changeModal('newFriend', ref));
+        }
       }
 
-      if (subType === 'RefSystem') {
-        const { ref } = JSON.parse(msg.data);
+      // if (type === 'AuthSuccess') {
+      //   const ref = hashGet('ref');
+      //
+      //   if (ref) {
+      //     thunkAPI.dispatch(sendWsMessage({
+      //       type: 'SaveRef',
+      //       refId: ref
+      //     }));
+      //
+      //     window.location.hash = '';
+      //   }
+      // }
 
-        thunkAPI.dispatch(changeModal('newFriend', ref));
-      }
-    }
+      // if (type === 'RefUser') {
+      //   const { refId, currentId } = JSON.parse(msg.data);
+      //
+      //   if (refId) {
+      //     try {
+      //       const { data } = await axios.get(`/user/ref?refId=${refId}`);
+      //
+      //       const refUser = lo.find(data, {
+      //         userId: refId
+      //       });
+      //
+      //       const currentUser = lo.find(data, {
+      //         userId: currentId
+      //       });
+      //
+      //       // Обновляем баланс пользователю который привёл реферала
+      //       thunkAPI.dispatch(sendWsMessage({
+      //         type: 'RefSystem',
+      //         refId: refId,
+      //         sum: refUser.click * 500
+      //       }));
+      //
+      //       // Модалка с тем что ты получил денег за то что зашёл по рефералке
+      //       thunkAPI.dispatch(changeModal('refMoney', {
+      //         data: refUser,
+      //         sum: currentUser.click * 1000
+      //       }));
+      //
+      //       // Обновляем себе
+      //       thunkAPI.dispatch(sendWsMessage({
+      //         type: 'SyncUser'
+      //       }));
+      //     } catch (e) {
+      //       console.log(e);
+      //     }
+      //   }
+      // }
 
-    // if (type === 'AuthSuccess') {
-    //   const ref = hashGet('ref');
-    //
-    //   if (ref) {
-    //     thunkAPI.dispatch(sendWsMessage({
-    //       type: 'SaveRef',
-    //       refId: ref
-    //     }));
-    //
-    //     window.location.hash = '';
-    //   }
-    // }
+      thunkAPI.dispatch(connectWsMessage(msg.data));
+    };
 
-    // if (type === 'RefUser') {
-    //   const { refId, currentId } = JSON.parse(msg.data);
-    //
-    //   if (refId) {
-    //     try {
-    //       const { data } = await axios.get(`/user/ref?refId=${refId}`);
-    //
-    //       const refUser = lo.find(data, {
-    //         userId: refId
-    //       });
-    //
-    //       const currentUser = lo.find(data, {
-    //         userId: currentId
-    //       });
-    //
-    //       // Обновляем баланс пользователю который привёл реферала
-    //       thunkAPI.dispatch(sendWsMessage({
-    //         type: 'RefSystem',
-    //         refId: refId,
-    //         sum: refUser.click * 500
-    //       }));
-    //
-    //       // Модалка с тем что ты получил денег за то что зашёл по рефералке
-    //       thunkAPI.dispatch(changeModal('refMoney', {
-    //         data: refUser,
-    //         sum: currentUser.click * 1000
-    //       }));
-    //
-    //       // Обновляем себе
-    //       thunkAPI.dispatch(sendWsMessage({
-    //         type: 'SyncUser'
-    //       }));
-    //     } catch (e) {
-    //       console.log(e);
-    //     }
-    //   }
-    // }
+    socket.onopen = () => {
+      resolve(socket);
 
-    thunkAPI.dispatch(connectWsMessage(msg.data));
-  };
+      console.log('onopen');
 
-  socket.onopen = () => {
-    console.log('onopen');
+      console.log("Successfully connected WS");
 
-    console.log("Successfully connected WS");
+      socket.send(JSON.stringify({
+        type: 'AuthUser',
+        user: document.location.href
+      }));
 
-    socket.send(JSON.stringify({
-      type: 'AuthUser',
-      user: document.location.href
-    }));
+      thunkAPI.dispatch(changeView('main'));
 
-    thunkAPI.dispatch(changeView('main'));
+      thunkAPI.dispatch(connectWsSuccess());
 
-    thunkAPI.dispatch(connectWsSuccess());
+      setInterval(() => thunkAPI.dispatch(sendWsMessage({ type: 'ping' })), 5000);
+    };
 
-    setInterval(() => thunkAPI.dispatch(sendWsMessage({ type: 'ping' })), 5000);
-  };
+    socket.onclose = event => {
+      reject(event);
 
-  socket.onclose = event => {
-    console.log('onclose');
+      console.log('onclose');
 
-    console.log("Socket Closed Connection: ", event);
+      console.log("Socket Closed Connection: ", event);
 
-    // Задержка чтобы не ломать VKUI
-    setTimeout(() => thunkAPI.dispatch(changeView('error')), 500);
+      thunkAPI.dispatch(changeModal(null));
+      thunkAPI.dispatch(changeView('error'));
 
-    thunkAPI.dispatch(connectWsFailure(event));
-  };
+      thunkAPI.dispatch(connectWsFailure(event));
+    };
+  });
 });
 
 export const sendWsMessage = (data: object) => {
