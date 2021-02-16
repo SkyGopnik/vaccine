@@ -1,6 +1,7 @@
 import lo from 'lodash';
 
 import {
+  CHANGE_PROGRESS,
   SYNC_USER
 } from './actions';
 
@@ -32,13 +33,21 @@ export interface UserInterface {
 }
 
 const defaultState = {
-  data: null
+  data: null,
+  clickProgress: 0
 };
 
 export const userReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
+  case CHANGE_PROGRESS:
+    return  {
+      ...state,
+      clickProgress: payload
+    };
+
   case SYNC_USER:
     return {
+      ...state,
       data: {
         ...payload
       }

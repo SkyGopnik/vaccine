@@ -1,5 +1,5 @@
 import {changeModal, changeView} from "src/store/app/actions";
-import {syncUser} from "src/store/user/actions";
+import {changeProgress, syncUser} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
@@ -120,6 +120,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
       console.log("Socket Closed Connection: ", event);
 
+      thunkAPI.dispatch(changeProgress(0));
       thunkAPI.dispatch(changeModal(null));
       thunkAPI.dispatch(changeView('error'));
 

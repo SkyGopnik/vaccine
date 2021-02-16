@@ -21,12 +21,13 @@ import style from './Game.scss';
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
   user: UserInterface | null,
-  syncUser(data: UserInterface)
+  clickProgress: number,
+  syncUser(data: UserInterface),
+  changeProgress(progress: number)
 }
 
 interface IState {
   effects: Array<number>,
-  progress: number,
   antiClick: {
     count: number,
     x: number,
@@ -40,7 +41,6 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       effects: [],
-      progress: 0,
       antiClick: {
         count: 0,
         x: 0,
@@ -62,11 +62,15 @@ export default class extends React.Component<IProps, IState> {
   }
 
   changeProgress() {
-    const { progress } = this.state;
-    const { user, syncUser } = this.props;
-    const value = progress + 2;
+    const {
+      user,
+      syncUser,
+      clickProgress,
+      changeProgress
+    } = this.props;
+    const value = clickProgress + 2;
 
-    if (value === 102) {
+    if (value === 100) {
       for (let i = 0; i < 4; i++) {
         this.renderEffect();
       }
@@ -78,9 +82,7 @@ export default class extends React.Component<IProps, IState> {
       }));
     }
 
-    this.setState({
-      progress: value <= 100 ? value : 0
-    });
+    changeProgress(value < 100 ? value : 0);
   }
 
   iconClick(e) {
@@ -103,10 +105,10 @@ export default class extends React.Component<IProps, IState> {
     });
 
     if (antiClick.count < 25) {
-      console.log('--------');
-      console.log(user.data.balance);
-      console.log(user.data.click);
-      console.log((+user.data.balance + user.data.click).toFixed(4));
+      // console.log('--------');
+      // console.log(user.data.balance);
+      // console.log(user.data.click);
+      // console.log((+user.data.balance + user.data.click).toFixed(4));
 
       syncUser(lo.merge(user, {
         data: {
@@ -122,8 +124,8 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, user } = this.props;
-    const { effects, progress } = this.state;
+    const { id, user, clickProgress } = this.props;
+    const { effects } = this.state;
 
     return (
       <Panel id={id}>
@@ -170,7 +172,7 @@ export default class extends React.Component<IProps, IState> {
             className={style.icon}
             onMouseUp={(e) => this.iconClick(e)}
           />
-          <Progress className={style.progress} value={progress} />
+          <Progress className={style.progress} value={clickProgress} />
         </div>
       </Panel>
     );
