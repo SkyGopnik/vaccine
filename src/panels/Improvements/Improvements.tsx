@@ -1,6 +1,7 @@
-import React, {ReactElement, ReactNode} from 'react';
+import React, {ReactNode} from 'react';
 import axios from 'axios';
 import lo from 'lodash';
+import Decimal from 'decimal';
 import {
   Panel,
   PanelHeader,
@@ -25,7 +26,7 @@ import MainIcon from "src/components/MainIcon";
 
 import { improvements } from "src/js/data";
 
-import {UserInterface} from "src/store/user/reducers";
+import { UserInterface } from "src/store/user/reducers";
 
 import style from './Improvements.scss';
 
@@ -40,9 +41,14 @@ interface IProps {
 }
 
 interface IState {
-  history: Array<{
-    name: string
-  }>,
+  stat: {
+    vaccine?: {
+      [key: string]: number
+    },
+    scientists?: {
+      [key: string]: number
+    }
+  },
   type: 'vaccine' | 'scientists' | 'pharmacy',
   buttons: Array<boolean>,
   loading: boolean,
@@ -58,7 +64,7 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      history: [],
+      stat: {},
       type: 'vaccine',
       buttons: [],
       loading: false,
@@ -74,7 +80,7 @@ export default class extends React.Component<IProps, IState> {
     improvements[type].forEach(() => buttons.push(false));
 
     this.setState({
-      history: data,
+      stat: data,
       firstLoading: false,
       buttons
     });
@@ -85,13 +91,13 @@ export default class extends React.Component<IProps, IState> {
     const { type } = this.state;
 
     if (user) {
-      console.log(user.data.balance);
-      console.log(price);
-      console.log(this.getBalanceBribeLimit());
+      // console.log(user.data.balance);
+      // console.log(price);
+      // console.log(this.getBalanceBribeLimit());
+      //
+      // console.log(this.getBalanceBribeLimit() + user.data.balance - price)
 
-      console.log(this.getBalanceBribeLimit() + user.data.balance - price)
-
-      if (user.data.balance - price >= 0) {
+      if (Decimal(user.data.balance).sub(price).toNumber() >= 0) {
         const { syncUser } = this.props;
 
         this.setState({
@@ -101,17 +107,19 @@ export default class extends React.Component<IProps, IState> {
         try {
           this.changeButtonType(index, true);
 
-          const {data} = await axios.post('/improvement/buy', {
+          const { data } = await axios.post('/improvement/buy', {
             type,
             index
           });
 
           this.setState({
-            history: data.data.history,
+            stat: lo.pick(data.stat, ['vaccine', 'scientists']),
             loading: false
           });
 
           this.changeButtonType(index, false);
+
+          console.log(lo.pick(data.stat, ['vaccine', 'scientists']));
 
           syncUser(data);
 
@@ -123,7 +131,7 @@ export default class extends React.Component<IProps, IState> {
               before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
             >
               <div>Вы успешно купили улучшение.</div>
-              <Text weight="medium">Осталось {(user.data.balance - price).toLocaleString()} вакцины</Text>
+              <Text weight="medium">Осталось {Decimal(user.data.balance).sub(price).toNumber()} вакцины</Text>
             </Snackbar>
           );
         } catch (e) {
@@ -143,12 +151,12 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         }
-      } else if (this.getBalanceBribeLimit() + user.data.balance - price >= 0) {
+      } else if (Decimal(user.data.balance).add(this.getBalanceBribeLimit()).sub(price).toNumber() >= 0) {
         // Если доступен просмотр рекламы
         const { changeModal } = this.props;
 
         changeModal('needMoney', {
-          need: price - user.data.balance // Сумма которой не хватает
+          need: price - Decimal(user.data.balance).toNumber() // Сумма которой не хватает
         });
 
         console.log('watch ads ' + (price - user.data.balance));
@@ -156,13 +164,12 @@ export default class extends React.Component<IProps, IState> {
     }
   }
 
+  // Изменение типа кнопки
   changeButtonType(index: number, type: boolean) {
     const { buttons } = this.state;
     const newButtons = [...buttons];
 
     newButtons[index] = type;
-
-    // console.log(newButtons);
 
     this.setState({
       buttons: newButtons
@@ -180,9 +187,9 @@ export default class extends React.Component<IProps, IState> {
 
   // Подсчёт купленых улучшений
   itemCount(name: string) {
-    const { history, type } = this.state;
+    const { stat, type } = this.state;
 
-    return lo.filter(history, (historyItem) => historyItem.name === `${type}.${name}`).length;
+    return (stat[type] && stat[type][name]) ? stat[type][name] : 0;
   }
 
   changeType(name: 'vaccine' | 'scientists' | 'pharmacy') {
@@ -210,7 +217,7 @@ export default class extends React.Component<IProps, IState> {
   render() {
     const { id, user, snackbar } = this.props;
     const {
-      history,
+      stat,
       type,
       buttons,
       loading,
@@ -271,17 +278,17 @@ export default class extends React.Component<IProps, IState> {
                     size="m"
                     // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                     // item.price * lo.filter - стоимость с множителем
-                    disabled={buttons[index] || loading || firstLoading || user && ((this.getBalanceBribeLimit() + user.data.balance - this.calculatePrice(item.price, this.itemCount(item.name))) < 0)}
+                    disabled={buttons[index] || loading || firstLoading || user && ((this.getBalanceBribeLimit() + Decimal(user.data.balance).toNumber() - this.calculatePrice(item.price, this.itemCount(item.name))) < 0)}
                     onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                   >
                     {!firstLoading && !buttons[index] ? (
                       <>
-                        <div>{this.calculatePrice(item.price, this.itemCount(item.name))}</div>
+                        <div>{this.calculatePrice(item.price, this.itemCount(item.name)).toLocaleString()}</div>
                         <div><MainIcon className={style.btnIcon} /></div>
                       </>
                     ) : <Spinner size="small" />}
                   </Button>
-                  {history.length !== 0 && this.itemCount(item.name) !== 0 && (
+                  {stat[type] && this.itemCount(item.name) !== 0 && (
                     <Caption className={style.buyInfo} level="1" weight="regular">{this.itemCount(item.name)} куплено</Caption>
                   )}
                 </div>

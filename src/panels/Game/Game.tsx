@@ -77,7 +77,7 @@ export default class extends React.Component<IProps, IState> {
 
       syncUser(lo.merge(user, {
         data: {
-          balance: user.data.balance + user.data.click * 100
+          balance: user.data.balance + user.data.click * 5
         }
       }));
     }
@@ -153,13 +153,13 @@ export default class extends React.Component<IProps, IState> {
                 level="1"
                 weight="semibold"
               >
-                + {user.data.passive}/сек
+                + {user.data.passive.toFixed(4)}/сек
               </Caption>
               <Caption
                 level="1"
                 weight="semibold"
               >
-                + {user.data.click}/клик
+                + {user.data.click.toFixed(4)}/клик
               </Caption>
             </div>
           </div>
