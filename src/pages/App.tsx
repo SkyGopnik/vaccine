@@ -141,6 +141,8 @@ export default class extends React.Component<IProps, IState> {
         // Отменяем стандартное событие
         e.preventDefault();
 
+        console.log('------------------'+modal);
+
         changeModal(modal, modalData ? JSON.parse(modalData) : null, true);
 
         // Устанавливаем новые значения для View и Panel

@@ -1,4 +1,5 @@
 import React from 'react';
+import Decimal from 'decimal';
 import {
   Button,
   Tabbar,
@@ -82,7 +83,7 @@ export default class extends React.Component<IProps, IState> {
               target="_blank"
               href={`https://vk.com/skgopnik`}
               before={<Avatar size={48} src={ratingUser.user.info.photo} />}
-              after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position.toFixed(0)} месте и уже накопил ${ratingUser.balance.toLocaleString()} ${declNum(ratingUser.balance.toLocaleString(), ['вакцину', 'вакцины', 'вакцины'])}!`)} />}
+              after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${ratingUser.balance.toLocaleString()} ${declNum(Math.round(Decimal(ratingUser.balance).toNumber()), ['вакцину', 'вакцины', 'вакцины'])}!`)} />}
               description={ratingUser.balance.toLocaleString()}
               multiline
               disabled

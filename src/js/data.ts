@@ -94,7 +94,7 @@ export const improvements: {
     {
       name: "Первый шаг",
       desc: "Вирус ещё слишком силён и мы не понимаем, что делать дальше",
-      price: 1,
+      price: 0.001,
       count: 0.0001,
       icon: "https://i.imgur.com/7XIQtoD.png",
       pref: "сек"
@@ -102,7 +102,7 @@ export const improvements: {
     {
       name: "Лаборатория",
       desc: "Пока что, она в гараже, но возможно дальше будет лучше",
-      price: 5,
+      price: 0.1,
       count: 0.001,
       icon: "https://i.imgur.com/XEkVIV3.png",
       pref: "сек"
@@ -110,7 +110,7 @@ export const improvements: {
     {
       name: "Новая возможность",
       desc: "Достигнув определённого прогресса, мы можем немного ускориться, но расслабляться нельзя",
-      price: 50,
+      price: 5,
       count: 0.1,
       icon: "https://i.imgur.com/vKS37S0.png",
       pref: "сек"
@@ -118,7 +118,7 @@ export const improvements: {
     {
       name: "Сажаем на карантин",
       desc: "В течение 14 дней, люди находятся дома, это позволяет нам замедлить распространение вируса",
-      price: 1000,
+      price: 500,
       count: 0.5,
       icon: "https://i.imgur.com/mcMp1Qe.png",
       pref: "сек"
@@ -126,7 +126,7 @@ export const improvements: {
     {
       name: "Дезинфицируем предметы",
       desc: "Узнав, что вирус может передаваться через предметы, мы начинаем протирать их спиртом",
-      price: 5000,
+      price: 1000,
       count: 1,
       icon: "https://i.imgur.com/4Py5uwW.png",
       pref: "сек"
@@ -134,7 +134,7 @@ export const improvements: {
     {
       name: "Строим больницы",
       desc: "Да, они низкого качества, но это лучше, чем ничего",
-      price: 10000,
+      price: 1000,
       count: 3,
       icon: "https://i.imgur.com/Axhan74.png",
       pref: "сек"
@@ -142,7 +142,7 @@ export const improvements: {
     {
       name: "Волшебная пилюля",
       desc: "Один из наших врачей смешал мамин супчик и бадягу, получилась довольно вкусная и полезная пилюля",
-      price: 25000,
+      price: 5000,
       count: 5,
       icon: "https://i.imgur.com/4wxUvps.png",
       pref: "сек"
@@ -150,7 +150,7 @@ export const improvements: {
     {
       name: "Закрытие города",
       desc: "Это решение было сложным, но если оно поможет остановить вирус, мы готовы",
-      price: 100000,
+      price: 50000,
       count: 15,
       icon: "https://i.imgur.com/qPBerOw.png",
       pref: "сек"

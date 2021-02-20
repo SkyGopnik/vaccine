@@ -10,14 +10,12 @@ import TransferUser from "src/modals/TransferUser/TransferUserContainer";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 
-interface IProps extends AppReducerInterface {
-  modalData: {
-    backType?: 'double' | 'normal'
-  }
-}
+interface IProps extends AppReducerInterface {}
 
 export default (props: IProps) => {
   const { modal } = props;
+
+  console.log('-----render '+modal)
 
   return (
     <ModalRoot activeModal={modal} onClose={() => window.history.back()}>

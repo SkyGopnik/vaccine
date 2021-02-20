@@ -97,6 +97,8 @@ export const appReducer = (state = defaultState, action) => {
       }, `${state.view}/${state.panel}/${state.story}/${action.payload.modal}`);
     }
 
+    console.log('APP_CHANGE_MODAL'+action.payload.modal)
+
     return {
       ...state,
       modal: action.payload.modal,
