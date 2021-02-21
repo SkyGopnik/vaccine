@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import axios from 'axios';
 import lo from 'lodash';
-import Decimal from 'decimal';
+import Decimal from 'decimal.js';
 import {
   Panel,
   PanelHeader,
@@ -99,7 +99,7 @@ export default class extends React.Component<IProps, IState> {
       //
       // console.log(this.getBalanceBribeLimit() + user.data.balance - price)
 
-      if (Decimal(user.data.balance).sub(price).toNumber() >= 0) {
+      if (new Decimal(user.data.balance).minus(price).toNumber() >= 0) {
         const { syncUser } = this.props;
 
         this.setState({
@@ -133,7 +133,7 @@ export default class extends React.Component<IProps, IState> {
               before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
             >
               <div>Вы успешно купили улучшение.</div>
-              <Text weight="medium">Осталось {Decimal(user.data.balance).sub(price).toNumber().toFixed(4)} вакцины</Text>
+              <Text weight="medium">Осталось {new Decimal(user.data.balance).minus(price).toNumber().toFixed(4)} вакцины</Text>
             </Snackbar>
           );
         } catch (e) {
@@ -153,12 +153,14 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         }
-      } else if (Decimal(user.data.balance).add(this.getBalanceBribeLimit()).sub(price).toNumber() >= 0) {
+      } else if (new Decimal(user.data.balance).add(this.getBalanceBribeLimit()).minus(price).toNumber() >= 0) {
         // Если доступен просмотр рекламы
         const { changeModal } = this.props;
 
+        console.log(price - new Decimal(user.data.balance).toNumber());
+
         changeModal('needMoney', {
-          need: price - Decimal(user.data.balance).toNumber() // Сумма которой не хватает
+          need: price - new Decimal(user.data.balance).toNumber() // Сумма которой не хватает
         });
 
         console.log('watch ads ' + (price - user.data.balance));
@@ -214,6 +216,10 @@ export default class extends React.Component<IProps, IState> {
     const multiplier = 5;
 
     return user.data[type === 'vaccine' ? 'click' : 'passive'] * multiplier;
+  }
+
+  checkAdsWatch(balance: number, price: number, name: string) {
+    return (this.getBalanceBribeLimit() + new Decimal(balance).toNumber() - this.calculatePrice(price, this.itemCount(name))) < 0;
   }
 
   render() {
@@ -276,11 +282,12 @@ export default class extends React.Component<IProps, IState> {
                 </Text>
                 <div className={style.button}>
                   <Button
+                    className={(!this.checkAdsWatch(user.data.balance, item.price, item.name) && new Decimal(user.data.balance).toNumber() < this.calculatePrice(item.price, this.itemCount(item.name))) ? style.watchAds : '123'}
                     mode="outline"
                     size="m"
                     // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                     // item.price * lo.filter - стоимость с множителем
-                    disabled={buttons[index] || loading || firstLoading || user && ((this.getBalanceBribeLimit() + Decimal(user.data.balance).toNumber() - this.calculatePrice(item.price, this.itemCount(item.name))) < 0)}
+                    disabled={buttons[index] || loading || firstLoading || user && this.checkAdsWatch(user.data.balance, item.price, item.name)}
                     onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                   >
                     {!firstLoading && !buttons[index] ? (

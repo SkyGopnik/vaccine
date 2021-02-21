@@ -11,6 +11,7 @@ interface CssExports {
   'icon': string;
   'list': string;
   'subHeader': string;
+  'watchAds': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

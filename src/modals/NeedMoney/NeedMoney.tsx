@@ -1,4 +1,5 @@
 import React from 'react';
+import Decimal from 'decimal.js';
 import {
   ModalCard,
   Button
@@ -19,7 +20,7 @@ export default (props: IProps) => {
   return (
     <ModalCard
       icon={<img src={img} alt="" />}
-      header={`Не хватает ${props.modalData && Math.ceil(props.modalData.need)} ${declNum(Math.round(props.modalData.need), ['вакцины', 'вакцины', 'вакцин'])}!`}
+      header={`Не хватает ${props.modalData && (props.modalData.need > 1 ? Math.round(props.modalData.need) : props.modalData.need)} ${declNum(Math.round(props.modalData.need), ['вакцины', 'вакцины', 'вакцин'])}!`}
       subheader={<>
         <div>Вам не хватает вакцины для покупки.</div>
         <div>Посмотрите рекламу и получите вакцину бесплатно!</div>
