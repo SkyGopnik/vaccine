@@ -16,6 +16,8 @@ import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
+import balanceFormat from "src/functions/balanceFormat";
+
 import style from './Game.scss';
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
@@ -145,7 +147,7 @@ export default class extends React.Component<IProps, IState> {
                 level="1"
                 weight="bold"
               >
-                {Decimal(user.data.balance).toNumber().toFixed(4)}
+                {balanceFormat(user.data.balance)}
               </Title>
             </div>
             <div className={style.stat}>
@@ -153,13 +155,13 @@ export default class extends React.Component<IProps, IState> {
                 level="1"
                 weight="semibold"
               >
-                + {user.data.passive.toFixed(4)}/сек
+                + {balanceFormat(user.data.passive)}/сек
               </Caption>
               <Caption
                 level="1"
                 weight="semibold"
               >
-                + {user.data.click.toFixed(4)}/клик
+                + {balanceFormat(user.data.click)}/клик
               </Caption>
             </div>
           </div>

@@ -15,10 +15,10 @@ import {Icon16Done, Icon28MoneySendOutline} from "@vkontakte/icons";
 import {UserInterface} from "src/store/user/reducers";
 
 import isset from "src/functions/isset";
-import declNum from "src/functions/decl_num";
+import declBySex from "src/functions/declBySex";
+import balanceFormat from "src/functions/balanceFormat";
 
 import style from './TransferMoney.scss';
-import declBySex from "src/functions/declBySex";
 
 interface IProps {
   modalData: {
@@ -203,7 +203,7 @@ export default class extends React.Component<IProps, IState> {
         subheader={<>
           <div><span style={{ fontWeight: 500 }}>{toName}</span> получит вакцину, когда я {declBySex(sex, ['его/её', 'её', 'его'])} увижу. В городе полно заражённых и банк закрыт.</div>
           <br/>
-          <div>У меня {Decimal(user.data.balance).toNumber() !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{Decimal(user.data.balance).toNumber()}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
+          <div>У меня {Decimal(user.data.balance).toNumber() !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{balanceFormat(user.data.balance)}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
         </>}
         actions={
           btnType === 'transfer' ? (
@@ -230,7 +230,7 @@ export default class extends React.Component<IProps, IState> {
           <Input
             value={value}
             type="text"
-            placeholder={Decimal(user.data.balance).toNumber()}
+            placeholder={balanceFormat(user.data.balance, false)}
             disabled={Decimal(user.data.balance).toNumber() === 0 || loading}
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
           />

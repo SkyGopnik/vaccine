@@ -28,6 +28,8 @@ import { improvements } from "src/js/data";
 
 import { UserInterface } from "src/store/user/reducers";
 
+import { locale } from "src/functions/balanceFormat";
+
 import style from './Improvements.scss';
 
 interface IProps {
@@ -283,7 +285,7 @@ export default class extends React.Component<IProps, IState> {
                   >
                     {!firstLoading && !buttons[index] ? (
                       <>
-                        <div>{this.calculatePrice(item.price, this.itemCount(item.name)).toLocaleString()}</div>
+                        <div>{locale(this.calculatePrice(item.price, this.itemCount(item.name)))}</div>
                         <div><MainIcon className={style.btnIcon} /></div>
                       </>
                     ) : <Spinner size="small" />}

@@ -103,7 +103,7 @@ export default class extends React.Component<IProps, IState> {
                 onClick={() => this.setState({ slideIndex: 2 })}
                 stretched
               >
-                Ок, дальше
+                Ок, дальше!
               </Button>
             </Div>
           </div>

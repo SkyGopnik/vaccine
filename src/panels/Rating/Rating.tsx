@@ -19,6 +19,8 @@ import {Icon28MoneySendOutline} from "@vkontakte/icons";
 import {RatingReducerIterface} from "src/store/rating/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
+import balanceFormat from "src/functions/balanceFormat";
+
 import style from './Rating.scss';
 
 interface IProps extends RatingReducerIterface {
@@ -113,7 +115,7 @@ export default class extends React.Component<IProps, IState> {
                         onClick={() => changeModal('transferMoney', item.user.info)}
                       />
                     )}
-                    description={item.balance.toLocaleString()}
+                    description={balanceFormat(item.balance)}
                     multiline
                     disabled
                   >
