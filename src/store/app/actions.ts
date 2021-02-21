@@ -36,14 +36,15 @@ export const changeStory = (story: string, panelData: Object = null) => {
   };
 };
 
-export const changeViewPanelStory = (view: string, panel: string, story: string = null, panelData: Object = null) => {
+export const changeViewPanelStory = (view: string, panel: string, story: string = null, panelData: Object = null, isPopstate?: boolean) => {
   return {
     type: APP_CHANGE_VIEW_PANEL_STORY,
     payload: {
       view,
       panel,
       story,
-      panelData
+      panelData,
+      isPopstate
     }
   };
 };

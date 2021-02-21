@@ -19,10 +19,10 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
     thunkAPI.dispatch(changeView('loading'));
 
     socket.onmessage = async (msg) => {
-      console.log('onmessage');
+      // console.log('onmessage');
 
       const {type, subType, data} = JSON.parse(msg.data);
-      console.log(msg.data);
+      // console.log(msg.data);
 
       if (type === 'SyncUser') {
         thunkAPI.dispatch(syncUser(data));

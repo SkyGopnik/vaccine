@@ -19,7 +19,7 @@ export interface AppReducerInterface {
   snackbar: ReactNode | null,
   changeView(view: string),
   changePanel(panel: string, panelData?: any),
-  changeViewPanelStory(view: string, panel: string, story?: string, panelData?: any),
+  changeViewPanelStory(view: string, panel: string, story?: string, panelData?: any, isPopstate?: boolean),
   changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
   changeStory(story: string, panelData?: any),
   changeSnackbar(snackbar: ReactNode | null),
@@ -75,9 +75,12 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_VIEW_PANEL_STORY:
+      console.log(!action.payload.isPopstate);
+    console.log('APP_CHANGE_VIEW_PANEL_STORY')
+
     return {
       ...state,
-      modal: null,
+      modal: !action.payload.isPopstate ? null : state.modal,
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,
@@ -85,7 +88,6 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_MODAL:
-    console.log('payload.isPopstate' + !action.payload.isPopstate);
     if (!action.payload.isPopstate) {
       window.history.pushState({
         view: state.view,

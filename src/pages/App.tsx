@@ -146,10 +146,10 @@ export default class extends React.Component<IProps, IState> {
         changeModal(modal, modalData ? JSON.parse(modalData) : null, true);
 
         // Устанавливаем новые значения для View и Panel
-        changeViewPanelStory(view, panel, story);
+        changeViewPanelStory(view, panel, story, null, true);
       }
     } else {
-      changeViewPanelStory('main', 'main', 'game');
+      changeViewPanelStory('main', 'main', 'game', null, true);
     }
   }
 
