@@ -80,7 +80,7 @@ export default class extends React.Component<IProps, IState> {
 
       syncUser(lo.merge(user, {
         data: {
-          balance: user.data.balance + user.data.click * 5
+          balance: new Decimal(user.data.balance).add(user.data.click * 5)
         }
       }));
     }

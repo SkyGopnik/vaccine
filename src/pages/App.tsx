@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import bridge from '@vkontakte/vk-bridge';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Root} from '@vkontakte/vkui';
 import { isMobile } from "react-device-detect";
@@ -10,6 +11,7 @@ import Profile from "src/views/Profile/ProfileContainer";
 import Onboard from "src/views/Onboard";
 import Loading from "src/views/Loading";
 import Error from "src/views/Error";
+import WrongOrientation from "src/views/WrongOrientation";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
 import Modals from "src/components/Modals/ModalsContainer";
@@ -23,7 +25,6 @@ import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
-import WrongOrientation from "src/views/WrongOrientation";
 
 let historyDelay = Number(new Date().getTime() / 1000);
 
@@ -38,6 +39,16 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 interface IState {
   scheme: AppearanceSchemeType,
   isHorizontal: boolean
+}
+
+interface Scheme {
+  status: 'light' | 'dark',
+  color: string
+}
+
+interface SchemeArray {
+  bright_light: Scheme,
+  space_gray: Scheme
 }
 
 let isExit;
