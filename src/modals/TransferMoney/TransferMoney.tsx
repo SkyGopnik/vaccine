@@ -66,26 +66,18 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  declBySex(sex: 0 | 1 | 2, array: Array<string>) {
-    return array[sex];
-  }
-
   handleInputChange(value: string) {
     const { user } = this.props;
     const numValue = Decimal(value).toNumber();
 
     let error = '';
 
-    if (value.length === 0) {
-      error = 'А что переводим?';
-    }
-
     if (!/^\d+\.?\d*$/.test(value)) {
       error = 'Неправильный формат';
     }
 
     if (numValue === 0) {
-      error = 'Серьёзно, ноль?';
+      error = 'А что переводим?';
     }
 
     if (numValue > Decimal(user.data.balance).toNumber()) {
