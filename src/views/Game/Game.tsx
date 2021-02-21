@@ -1,6 +1,6 @@
 import React from 'react';
 import lo from 'lodash';
-import Decimal from 'decimal';
+import Decimal from 'decimal.js';
 import axios from "axios";
 
 // Панели
@@ -54,7 +54,7 @@ export default class extends React.Component<IProps, IState> {
 
         syncUser(lo.merge(user, {
           data: {
-            balance: Decimal(user.data.balance).add(user.data.passive).toNumber()
+            balance: new Decimal(user.data.balance).add(user.data.passive)
           }
         }));
       }

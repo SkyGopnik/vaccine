@@ -1,5 +1,6 @@
 import React from 'react';
-import Decimal from 'decimal';
+// import Decimal from 'decimal';
+import Decimal from 'decimal.js';
 import lo from 'lodash';
 import {
   Panel,
@@ -16,7 +17,7 @@ import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
-import balanceFormat from "src/functions/balanceFormat";
+import balanceFormat, { locale } from "src/functions/balanceFormat";
 
 import style from './Game.scss';
 
@@ -108,13 +109,12 @@ export default class extends React.Component<IProps, IState> {
 
     if (antiClick.count < 25) {
       // console.log('--------');
-      // console.log(user.data.balance);
-      // console.log(user.data.click);
       // console.log((+user.data.balance + user.data.click).toFixed(4));
+      // console.log(Decimal(user.data.balance).add(Decimal(user.data.click).toNumber()).toNumber());
 
       syncUser(lo.merge(user, {
         data: {
-          balance: Decimal(user.data.balance).add(user.data.click).toNumber()
+          balance: new Decimal(user.data.balance).add(user.data.click)
         }
       }));
 

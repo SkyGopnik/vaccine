@@ -1,16 +1,19 @@
-import Decimal from 'decimal';
+import Decimal from 'decimal.js';
 
 export default function (balance: number, localeNeed: boolean = true) {
   if (!localeNeed) {
-    return Decimal(balance).toNumber().toFixed(4);
+    return new Decimal(balance).toNumber().toFixed(4);
   }
 
-  return Decimal(balance).toNumber().toLocaleString('ru', {
+  // console.log(balance);
+  // console.log(Decimal(balance).toNumber())
+
+  return new Decimal(balance).toNumber().toLocaleString('ru', {
     minimumFractionDigits: 4,
     maximumFractionDigits: 4
   }).replace(',', '.');
 };
 
 export function locale (balance: number) {
-  return balance.toLocaleString('ru').replace(',', '.');
+  return new Decimal(balance).toNumber().toLocaleString('ru').replace(',', '.');
 }
