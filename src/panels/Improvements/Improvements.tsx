@@ -131,7 +131,7 @@ export default class extends React.Component<IProps, IState> {
               before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
             >
               <div>Вы успешно купили улучшение.</div>
-              <Text weight="medium">Осталось {Decimal(user.data.balance).sub(price).toNumber()} вакцины</Text>
+              <Text weight="medium">Осталось {Decimal(user.data.balance).sub(price).toNumber().toFixed(4)} вакцины</Text>
             </Snackbar>
           );
         } catch (e) {

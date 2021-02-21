@@ -95,7 +95,7 @@ export default class extends React.Component<IProps, IState> {
     if (numValue) {
       const [whole, fractional] = numValue.toString().split('.');
 
-      if (fractional.length > 4) {
+      if (fractional && fractional.length > 4) {
         error = 'Кол-во знаков после запятой должно быть меньше или равно 4';
       }
     }
