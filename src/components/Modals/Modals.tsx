@@ -15,8 +15,6 @@ interface IProps extends AppReducerInterface {}
 export default (props: IProps) => {
   const { modal } = props;
 
-  console.log('-----render '+modal)
-
   return (
     <ModalRoot activeModal={modal} onClose={() => window.history.back()}>
       <NeedMoney id="needMoney" />

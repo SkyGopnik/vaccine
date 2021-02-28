@@ -93,7 +93,7 @@ export const improvements: {
   "scientists": [
     {
       name: "Первый шаг",
-      desc: "Вирус ещё слишком силён и мы не понимаем, что делать дальше",
+      desc: "Вирус ещё слишком силён, и мы не понимаем, что делать дальше",
       price: 0.001,
       count: 0.0001,
       icon: "https://i.imgur.com/7XIQtoD.png",
@@ -134,7 +134,7 @@ export const improvements: {
     {
       name: "Строим больницы",
       desc: "Да, они низкого качества, но это лучше, чем ничего",
-      price: 1000,
+      price: 3000,
       count: 3,
       icon: "https://i.imgur.com/Axhan74.png",
       pref: "сек"

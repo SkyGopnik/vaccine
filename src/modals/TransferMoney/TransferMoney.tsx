@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import axios from 'axios';
 import lo from 'lodash';
-import Decimal from 'decimal';
+import Decimal from 'decimal.js';
 import {
   ModalCard,
   Button,
@@ -17,6 +17,8 @@ import {UserInterface} from "src/store/user/reducers";
 import isset from "src/functions/isset";
 import declBySex from "src/functions/declBySex";
 import balanceFormat from "src/functions/balanceFormat";
+
+import Utility from "src/utility";
 
 import style from './TransferMoney.scss';
 
@@ -68,28 +70,37 @@ export default class extends React.Component<IProps, IState> {
 
   handleInputChange(value: string) {
     const { user } = this.props;
-    const numValue = Decimal(value).toNumber();
+
+    const sendError = (error: string) => {
+      throw error;
+    };
 
     let error = '';
 
-    if (!/^\d+\.?\d*$/.test(value)) {
-      error = 'Неправильный формат';
-    }
-
-    if (numValue === 0) {
-      error = 'А что переводим?';
-    }
-
-    if (numValue > Decimal(user.data.balance).toNumber()) {
-      error = 'Недостаточно вакцины';
-    }
-
-    if (numValue) {
-      const [whole, fractional] = numValue.toString().split('.');
-
-      if (fractional && fractional.length > 4) {
-        error = 'Кол-во знаков после запятой должно быть меньше или равно 4';
+    try {
+      if (!/^\d+\.?\d*$/.test(value)) {
+        sendError('Неправильный формат');
       }
+
+      const numValue = new Decimal(value).toNumber();
+
+      if (numValue === 0) {
+        sendError('А что переводим?');
+      }
+
+      if (numValue > new Decimal(user.data.balance).toNumber()) {
+        sendError('Недостаточно вакцины');
+      }
+
+      if (numValue) {
+        const [whole, fractional] = Utility.noExponents(numValue).split('.');
+
+        if (fractional && fractional.length > 4) {
+          sendError('Кол-во знаков после запятой должно быть меньше или равно 4');
+        }
+      }
+    } catch (e) {
+      error = e;
     }
 
     this.setState({
@@ -123,7 +134,7 @@ export default class extends React.Component<IProps, IState> {
       sex
     } = modalData;
     const toName = `${firstName} ${lastName}`;
-    const numValue = Decimal(value).toNumber();
+    const numValue = new Decimal(value).toNumber();
 
     console.log(numValue);
 
@@ -203,7 +214,7 @@ export default class extends React.Component<IProps, IState> {
         subheader={<>
           <div><span style={{ fontWeight: 500 }}>{toName}</span> получит вакцину, когда я {declBySex(sex, ['его/её', 'её', 'его'])} увижу. В городе полно заражённых и банк закрыт.</div>
           <br/>
-          <div>У меня {Decimal(user.data.balance).toNumber() !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{balanceFormat(user.data.balance)}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
+          <div>У меня {new Decimal(user.data.balance).toNumber() !== 0 ? <span>есть <span style={{ fontWeight: 500 }}>{balanceFormat(user.data.balance)}</span></span> : <span style={{ fontWeight: 500 }}>нет</span>} вакцины</div>
         </>}
         actions={
           btnType === 'transfer' ? (
@@ -231,7 +242,7 @@ export default class extends React.Component<IProps, IState> {
             value={value}
             type="text"
             placeholder={balanceFormat(user.data.balance, false)}
-            disabled={Decimal(user.data.balance).toNumber() === 0 || loading}
+            disabled={new Decimal(user.data.balance).toNumber() === 0 || loading}
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
           />
         </FormItem>

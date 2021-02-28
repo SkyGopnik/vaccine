@@ -75,8 +75,24 @@
     }
   }
 
-  @media screen and (max-height: 600px) {
+  @media screen and (max-height: 650px) {
     top: 30px;
+
+    .icon {
+      svg {
+        width: 203px;
+        height: 203px;
+      }
+    }
+  }
+
+  @media screen and (max-height: 550px) {
+    .icon {
+      svg {
+        width: 180px;
+        height: 180px;
+      }
+    }
   }
 }
 

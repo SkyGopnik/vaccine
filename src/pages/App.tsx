@@ -153,8 +153,17 @@ export default class extends React.Component<IProps, IState> {
         e.preventDefault();
 
         console.log('------------------'+modal);
+        console.log(modalData);
 
-        changeModal(modal, modalData ? JSON.parse(modalData) : null, true);
+        /*
+          В общем, в чём прикол этого бреда, когда мы возвращаемся назад,
+          в прошлой модалке у нас может использоваться информация из modalData
+          изменять modalData сразу нельзя, т.к. тогда на модалке которая закрывается
+          будет undefined
+          TODO: Как вариант сохранять modalData во внутреннее состояние модалки, чтобы избавить её от зависимости и предотварить баги
+         */
+        changeModal(null, undefined, true);
+        setTimeout(() => changeModal(modal, modalData ? JSON.parse(modalData) : null, true), 400);
 
         // Устанавливаем новые значения для View и Panel
         changeViewPanelStory(view, panel, story, null, true);

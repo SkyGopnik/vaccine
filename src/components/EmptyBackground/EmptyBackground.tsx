@@ -16,7 +16,7 @@ export default () => {
       <div className={style.images}>
         <img className={style.left} src={Img5} alt="" />
         <img className={style.left} src={Img1} alt="" />
-        <img className={style.right}  src={Img3} alt="" />
+        <img className={style.right} src={Img3} alt="" />
         <img className={style.left} src={Img2} alt="" />
         <img className={style.right} src={Img4} alt="" />
         <img className={style.right} src={Img6} alt="" />
