@@ -5,8 +5,9 @@ import {
   Button
 } from "@vkontakte/vkui";
 
-import img from 'src/img/NoMoney.png';
 import declNum from "src/functions/decl_num";
+
+import Nomoney from "src/components/Icons/Nomoney";
 
 interface IProps {
   id: string,
@@ -19,7 +20,7 @@ interface IProps {
 export default (props: IProps) => {
   return (
     <ModalCard
-      icon={<img src={img} alt="" />}
+      icon={<Nomoney />}
       header={`Не хватает ${props.modalData && (props.modalData.need > 1 ? Math.round(props.modalData.need) : props.modalData.need.toFixed(4))} ${declNum(Math.round(props.modalData.need), ['вакцины', 'вакцины', 'вакцин'])}!`}
       subheader={<>
         <div>Вам не хватает вакцины для покупки.</div>

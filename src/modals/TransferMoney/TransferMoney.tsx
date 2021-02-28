@@ -166,7 +166,7 @@ export default class extends React.Component<IProps, IState> {
     // Уменьшаем баланс пользователю
     syncUser(lo.merge(user, {
       data: {
-        balance: user.data.balance - numValue
+        balance: new Decimal(user.data.balance).minus(numValue)
       }
     }));
 
