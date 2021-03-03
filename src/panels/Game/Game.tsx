@@ -1,5 +1,5 @@
 import React from 'react';
-
+import bridge from '@vkontakte/vk-bridge';
 import Decimal from 'decimal.js';
 import lo from 'lodash';
 import {
@@ -46,25 +46,27 @@ interface IState {
   }
 }
 
+const antiClick = {
+  cheatCount: 0,
+  click: {
+    count: 0,
+    x: 0,
+    y: 0,
+  },
+  interval: {
+    time: 0,
+    last: 0,
+    count: 0
+  }
+};
+
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
     this.state = {
       effects: [],
-      antiClick: {
-        cheatCount: 0,
-        click: {
-          count: 0,
-          x: 0,
-          y: 0,
-        },
-        interval: {
-          time: 0,
-          last: 0,
-          count: 0
-        }
-      }
+      antiClick
     };
   }
 
@@ -114,8 +116,8 @@ export default class extends React.Component<IProps, IState> {
     const { antiClick } = this.state;
     const { cheatCount, click, interval } = antiClick;
 
-    const x = e.clientX - icon.left;
-    const y = e.clientY - icon.top;
+    const x = Math.round(e.clientX - icon.left);
+    const y = Math.round(e.clientY - icon.top);
 
     const time = new Date().getTime(); // Текущее время
     const curInterval = time - interval.time; // Текущий интервал
@@ -133,19 +135,18 @@ export default class extends React.Component<IProps, IState> {
           time
         },
         click: {
-          count: (click.x === x && click.y == y) ? (click.count + 1) : 0,
+          count: (((x >= click.x - 5) && (x <= click.x + 5)) && ((y >= click.y - 5) && (y <= click.y + 5))) ? (click.count + 1) : 0,
           x, y
         }
       }
     });
 
-    console.log('----');
-    console.log('last interval - ' + interval.last);
-    console.log('interval - ' + curInterval);
-    console.log('user try user clicker - ' + interval.count);
-    console.log('user cheat - ' + cheatCount);
+    // console.log('----');
+    // console.log('x - ', click.x, ' y - ', click.y, ' real X - ', x, ' real Y - ', y);
+    // console.log(click.count);
+    // console.log('user cheat - ' + cheatCount);
 
-    if (cheatCount < 3) {
+    if (cheatCount < 3 && click.count < 50) {
       // console.log('--------');
       // console.log((+user.data.balance + user.data.click).toFixed(4));
       // console.log(Decimal(user.data.balance).add(Decimal(user.data.click).toNumber()).toNumber());
@@ -161,7 +162,12 @@ export default class extends React.Component<IProps, IState> {
       this.renderEffect();
       this.changeProgress();
     } else {
-      console.log('detect cheat');
+      // @ts-ignore
+      bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' });
+
+      this.setState({
+        antiClick
+      });
     }
   }
 
