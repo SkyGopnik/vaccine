@@ -107,7 +107,7 @@ export default class extends React.Component<IProps, IState> {
         {/*{(story === 'game' && panel === 'improvements') && user && (*/}
         {/*  <Headline className={style.balance} weight="medium"><div>У вас {user.data.balance}</div> <MainIcon /></Headline>*/}
         {/*)}*/}
-        <Div className={style.items}>
+        <div className={style.items}>
           {tabbarItems.map((item) => (
             <TabbarItemLight
               key={item.name}
@@ -117,7 +117,7 @@ export default class extends React.Component<IProps, IState> {
               changeStory={(e) => changeStory(e.currentTarget.dataset.story)}
             />
           ))}
-        </Div>
+        </div>
       </Tabbar>
     );
   }

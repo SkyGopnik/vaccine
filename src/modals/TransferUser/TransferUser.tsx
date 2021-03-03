@@ -44,6 +44,10 @@ export default class extends React.Component<IProps, IState> {
       error = 'А кому переводим?';
     }
 
+    if (!/^\S*$/.test(value)) {
+      error = 'И что ты делаешь?';
+    }
+
     this.setState({
       value,
       error

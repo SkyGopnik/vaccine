@@ -1,5 +1,5 @@
 import React from 'react';
-// import Decimal from 'decimal';
+
 import Decimal from 'decimal.js';
 import lo from 'lodash';
 import {
@@ -17,7 +17,7 @@ import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
-import balanceFormat, { locale } from "src/functions/balanceFormat";
+import balanceFormat from "src/functions/balanceFormat";
 
 import style from './Game.scss';
 
@@ -32,9 +32,17 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 interface IState {
   effects: Array<number>,
   antiClick: {
-    count: number,
-    x: number,
-    y: number
+    cheatCount: number,
+    click: {
+      count: number,
+      x: number,
+      y: number,
+    },
+    interval: {
+      time: number,
+      last: number,
+      count: number
+    }
   }
 }
 
@@ -45,9 +53,17 @@ export default class extends React.Component<IProps, IState> {
     this.state = {
       effects: [],
       antiClick: {
-        count: 0,
-        x: 0,
-        y: 0
+        cheatCount: 0,
+        click: {
+          count: 0,
+          x: 0,
+          y: 0,
+        },
+        interval: {
+          time: 0,
+          last: 0,
+          count: 0
+        }
       }
     };
   }
@@ -96,18 +112,40 @@ export default class extends React.Component<IProps, IState> {
       sendWsMessage
     } = this.props;
     const { antiClick } = this.state;
+    const { cheatCount, click, interval } = antiClick;
 
-    var x = e.clientX - icon.left;
-    var y = e.clientY - icon.top;
+    const x = e.clientX - icon.left;
+    const y = e.clientY - icon.top;
+
+    const time = new Date().getTime(); // Текущее время
+    const curInterval = time - interval.time; // Текущий интервал
+    const inaccuracy = 20; // Погрешность +- наше число
+
+    const checkIntervalSimilarity = curInterval >= (interval.last - inaccuracy) && curInterval <= (interval.last + inaccuracy);
+    const nextInterval = interval.count + 1;
 
     this.setState({
       antiClick: {
-        count: (antiClick.x === x && antiClick.y == y) ? (antiClick.count + 1) : 0,
-        x, y
+        cheatCount: nextInterval > 15 ? (cheatCount + 1) : cheatCount,
+        interval: {
+          count: checkIntervalSimilarity ? (nextInterval <= 15 ? nextInterval : 0) : 0,
+          last: curInterval,
+          time
+        },
+        click: {
+          count: (click.x === x && click.y == y) ? (click.count + 1) : 0,
+          x, y
+        }
       }
     });
 
-    if (antiClick.count < 25) {
+    console.log('----');
+    console.log('last interval - ' + interval.last);
+    console.log('interval - ' + curInterval);
+    console.log('user try user clicker - ' + interval.count);
+    console.log('user cheat - ' + cheatCount);
+
+    if (cheatCount < 3) {
       // console.log('--------');
       // console.log((+user.data.balance + user.data.click).toFixed(4));
       // console.log(Decimal(user.data.balance).add(Decimal(user.data.click).toNumber()).toNumber());
@@ -122,6 +160,8 @@ export default class extends React.Component<IProps, IState> {
 
       this.renderEffect();
       this.changeProgress();
+    } else {
+      console.log('detect cheat');
     }
   }
 

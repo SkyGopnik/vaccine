@@ -83,8 +83,6 @@ export default class extends React.Component<IProps, IState> {
     }
 
     if (window.matchMedia("(orientation: landscape)").matches && isMobile) {
-      console.log(view);
-      console.log('Экран уже в горизонтальном режиме');
       changeView('wrongOrientation');
 
       this.setState({
@@ -148,12 +146,9 @@ export default class extends React.Component<IProps, IState> {
       const {view, panel, story, modal, modalData} = e.state;
       const currentView = this.props.view;
 
-      if (currentView !== 'error') {
+      if (currentView === 'main') {
         // Отменяем стандартное событие
         e.preventDefault();
-
-        console.log('------------------'+modal);
-        console.log(modalData);
 
         /*
           В общем, в чём прикол этого бреда, когда мы возвращаемся назад,
