@@ -60,6 +60,8 @@ const antiClick = {
   }
 };
 
+let isAdsShown = false;
+
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -162,12 +164,24 @@ export default class extends React.Component<IProps, IState> {
       this.renderEffect();
       this.changeProgress();
     } else {
-      // @ts-ignore
-      bridge.send('VKWebAppShowNativeAds', { ad_format: 'reward' });
+      if (!isAdsShown) {
+        isAdsShown = true;
+        // @ts-ignore
+        bridge.send('VKWebAppShowNativeAds', {ad_format: 'reward'})
+          .then((res) => {
+            isAdsShown = false;
+          }).catch((err) => {
+            isAdsShown = false;
+          });
 
-      this.setState({
-        antiClick
-      });
+        setTimeout(() => {
+          isAdsShown = false;
+
+          this.setState({
+            antiClick
+          });
+        }, 3000);
+      }
     }
   }
 
