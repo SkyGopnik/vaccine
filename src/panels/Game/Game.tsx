@@ -46,7 +46,7 @@ interface IState {
   }
 }
 
-const antiClick = {
+const antiClickDefault = {
   cheatCount: 0,
   click: {
     count: 0,
@@ -68,7 +68,7 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       effects: [],
-      antiClick
+      antiClick: antiClickDefault
     };
   }
 
@@ -143,16 +143,13 @@ export default class extends React.Component<IProps, IState> {
       }
     });
 
-    // console.log('----');
-    // console.log('x - ', click.x, ' y - ', click.y, ' real X - ', x, ' real Y - ', y);
-    // console.log(click.count);
-    // console.log('user cheat - ' + cheatCount);
+    console.log('----');
+    console.log(curInterval);
+    console.log('x - ', click.x, ' y - ', click.y, ' real X - ', x, ' real Y - ', y);
+    console.log(click.count);
+    console.log('user cheat - ' + cheatCount);
 
-    if (cheatCount < 3 && click.count < 50) {
-      // console.log('--------');
-      // console.log((+user.data.balance + user.data.click).toFixed(4));
-      // console.log(Decimal(user.data.balance).add(Decimal(user.data.click).toNumber()).toNumber());
-
+    if (cheatCount <= 3 && click.count < 50) {
       syncUser(lo.merge(user, {
         data: {
           balance: new Decimal(user.data.balance).add(user.data.click)
@@ -178,7 +175,7 @@ export default class extends React.Component<IProps, IState> {
           isAdsShown = false;
 
           this.setState({
-            antiClick
+            antiClick: antiClickDefault
           });
         }, 3000);
       }

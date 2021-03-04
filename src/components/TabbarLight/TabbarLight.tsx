@@ -20,6 +20,7 @@ import {
 import TabbarItemLight from '../TabbarItemLight.jsx';
 
 import declNum from "src/functions/decl_num";
+import { locale } from "src/functions/balanceFormat";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {UserDataInterface, UserInterface} from "src/store/user/reducers";
@@ -84,7 +85,7 @@ export default class extends React.Component<IProps, IState> {
               href={`https://vk.com/skgopnik`}
               before={<Avatar size={48} src={ratingUser.user.info.photo} />}
               after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${ratingUser.balance.toLocaleString()} ${declNum(Math.round(Decimal(ratingUser.balance).toNumber()), ['вакцину', 'вакцины', 'вакцины'])}!`)} />}
-              description={ratingUser.balance.toLocaleString()}
+              description={locale(ratingUser.balance)}
               multiline
               disabled
             >

@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import bridge from '@vkontakte/vk-bridge';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Root} from '@vkontakte/vkui';
 import { isMobile } from "react-device-detect";
@@ -105,7 +104,8 @@ export default class extends React.Component<IProps, IState> {
       '--tabbar_active_icon',
       '--header_tint',
       '--button_primary_background',
-      '--action_sheet_action_foreground'
+      '--action_sheet_action_foreground',
+      '--button_outline_border'
     ];
     const color = '#6A9EE5';
 

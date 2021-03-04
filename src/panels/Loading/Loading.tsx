@@ -11,6 +11,10 @@ import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
 
 import { getRandomInt } from "@vkontakte/vkjs";
 
+import Bg from 'src/img/loading/bg.svg';
+import FireLeft from 'src/img/loading/fireLeft.svg';
+import FireRight from 'src/img/loading/fireRight.svg';
+
 import style from './Loading.scss';
 
 interface IProps {
@@ -67,7 +71,13 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Panel id={id}>
-        <EmptyBackground />
+        <div className={style.bg}>
+          <img src={Bg} alt="" />
+          <div className={style.fire}>
+            <img src={FireLeft} alt="" />
+            <img src={FireRight} alt="" />
+          </div>
+        </div>
         <div className={style.middle}>
           <Placeholder
             icon={<Spinner size="large" />}
@@ -78,15 +88,15 @@ export default class extends React.Component<IProps, IState> {
         </div>
         <div className={style.bottom}>
           <Div>
-            <Button
-              size="l"
-              stretched
-              onClick={() => this.setState({
-                activePhrase: getRandomInt(0, (phrases.length - 1))
-              })}
-            >
-              Пожмякать
-            </Button>
+            {/*<Button*/}
+            {/*  size="l"*/}
+            {/*  stretched*/}
+            {/*  onClick={() => this.setState({*/}
+            {/*    activePhrase: getRandomInt(0, (phrases.length - 1))*/}
+            {/*  })}*/}
+            {/*>*/}
+            {/*  Пожмякать*/}
+            {/*</Button>*/}
           </Div>
         </div>
       </Panel>

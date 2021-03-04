@@ -50,7 +50,8 @@ interface IProps {
   snackbar: ReactNode | null,
   changeSnackbar(snackbar: ReactNode | null),
   changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
-  changeAdditional(data: object)
+  changeAdditional(data: object),
+  changePanel(panel: string, panelData?: any)
 }
 
 interface IState {
@@ -113,7 +114,7 @@ export default class extends React.Component<IProps, IState> {
       user,
       snackbar,
       changeModal,
-      changeAdditional
+      changePanel
     } = this.props;
     const { stat } = this.state;
 
@@ -166,21 +167,22 @@ export default class extends React.Component<IProps, IState> {
                 <Button
                   size="m"
                   onClick={async () => {
-                    const { users } = await bridge.send("VKWebAppGetFriends");
-                    const { data } = await axios.get(`/user/check?userId=${users[0].id}`);
-                    const user = users[0];
-
-                    if (data) {
-                      changeModal('transferMoney', {
-                        userId: String(user.id),
-                        firstName: user.first_name,
-                        lastName: user.last_name,
-                        photo: user.photo_200,
-                        sex: user.sex
-                      });
-                    } else {
-                      this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё не ${declBySex(user.sex, ['заходил (a)', 'заходила', 'заходил'])} в игру`, 'error');
-                    }
+                    changePanel('friends');
+                    // const { users } = await bridge.send("VKWebAppGetFriends");
+                    // const { data } = await axios.get(`/user/check?userId=${users[0].id}`);
+                    // const user = users[0];
+                    //
+                    // if (data) {
+                    //   changeModal('transferMoney', {
+                    //     userId: String(user.id),
+                    //     firstName: user.first_name,
+                    //     lastName: user.last_name,
+                    //     photo: user.photo_200,
+                    //     sex: user.sex
+                    //   });
+                    // } else {
+                    //   this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё не ${declBySex(user.sex, ['заходил (a)', 'заходила', 'заходил'])} в игру`, 'error');
+                    // }
                   }}
                   stretched
                 >

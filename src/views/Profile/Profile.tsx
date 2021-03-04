@@ -1,15 +1,11 @@
 import React from 'react';
-import {ModalRoot} from "@vkontakte/vkui";
 
 // Панели
-import ProfilePanel from '../../panels/Profile/ProfileContainer';
+import ProfilePanel from "src/panels/Profile/ProfileContainer";
+import FriendsPanel from "src/panels/Friends/FriendsContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
-
-// Модалки
-import NewFriend from "src/modals/NewFriend/NewFriendContainer";
-import TransferGet from "src/modals/TransferGet/TransferGetContainer";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 
@@ -36,6 +32,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'main',
             component: ProfilePanel
+          },
+          {
+            id: 'friends',
+            component: FriendsPanel
           }
         ]}
       />

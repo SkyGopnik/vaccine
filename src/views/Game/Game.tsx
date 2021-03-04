@@ -4,8 +4,8 @@ import Decimal from 'decimal.js';
 import axios from "axios";
 
 // Панели
-import GamePanel from '../../panels/Game/GameContainer';
-import ImprovementsPanel from "../../panels/Improvements/ImprovementsContainer";
+import GamePanel from "src/panels/Game/GameContainer";
+import ImprovementsPanel from "src/panels/Improvements/ImprovementsContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
