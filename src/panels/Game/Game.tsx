@@ -229,7 +229,7 @@ export default class extends React.Component<IProps, IState> {
           ))}
           <MainIcon
             className={style.icon}
-            onMouseUp={(e) => this.iconClick(e)}
+            onClick={(e) => this.iconClick(e)}
           />
           <Progress className={style.progress} value={clickProgress} />
         </div>
