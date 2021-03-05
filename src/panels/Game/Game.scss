@@ -41,10 +41,12 @@
 
 .iconWithProgress {
   position: absolute;
-  //top: 10px;
+  top: calc(var(--safe-area-inset-top) + 50px);
 
   width: 100%;
   height: calc(100vh - calc(var(--safe-area-inset-top) + 64px));
+
+  //background-color: gainsboro;
 
   display: flex;
   flex-direction: column;
@@ -75,9 +77,16 @@
     }
   }
 
-  @media screen and (max-height: 650px) {
-    top: 30px;
+  @media screen and (min-height: 750px) {
+    .icon {
+      svg {
+        width: 300px;
+        height: 300px;
+      }
+    }
+  }
 
+  @media screen and (max-height: 650px) {
     .icon {
       svg {
         width: 203px;

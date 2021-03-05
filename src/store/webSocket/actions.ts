@@ -106,7 +106,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
         user: document.location.href
       }));
 
-      // thunkAPI.dispatch(changeView('main'));
+      thunkAPI.dispatch(changeView('main'));
 
       thunkAPI.dispatch(connectWsSuccess());
 

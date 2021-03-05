@@ -2,9 +2,10 @@
 // Please do not change this file!
 interface CssExports {
   'bg': string;
-  'bottom': string;
   'fire': string;
+  'img': string;
   'middle': string;
+  'top': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
