@@ -23,6 +23,8 @@ interface IState {
   dots: string
 }
 
+let timer;
+
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
@@ -33,13 +35,17 @@ export default class extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    setInterval(() => {
+    timer = setInterval(() => {
       const { dots } = this.state;
 
       this.setState({
         dots: dots.length < 3 ? (dots + '.') : ''
       });
     }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(timer);
   }
 
   render() {
