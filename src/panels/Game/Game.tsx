@@ -43,6 +43,10 @@ interface IState {
       last: number,
       count: number
     }
+  },
+  lastClick: {
+    time: number | null,
+    count: number
   }
 }
 
@@ -68,7 +72,11 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       effects: [],
-      antiClick: antiClickDefault
+      antiClick: antiClickDefault,
+      lastClick: {
+        time: null,
+        count: 0
+      }
     };
   }
 
@@ -109,47 +117,40 @@ export default class extends React.Component<IProps, IState> {
   }
 
   iconClick(e) {
-    const icon = e.target.getBoundingClientRect();
+    // const icon = e.target.getBoundingClientRect();
     const {
       user,
       syncUser,
       sendWsMessage
     } = this.props;
-    const { antiClick } = this.state;
-    const { cheatCount, click, interval } = antiClick;
+    const { lastClick } = this.state;
+    const { time, count } = lastClick;
+    // const { cheatCount, click, interval } = antiClick;
 
-    const x = Math.round(e.clientX - icon.left);
-    const y = Math.round(e.clientY - icon.top);
-
-    const time = new Date().getTime(); // Текущее время
-    const curInterval = time - interval.time; // Текущий интервал
-    const inaccuracy = 20; // Погрешность +- наше число
-
-    const checkIntervalSimilarity = curInterval >= (interval.last - inaccuracy) && curInterval <= (interval.last + inaccuracy);
-    const nextInterval = interval.count + 1;
+    // const x = Math.round(e.clientX - icon.left);
+    // const y = Math.round(e.clientY - icon.top);
+    //
+    // const time = new Date().getTime(); // Текущее время
+    // const curInterval = time - interval.time; // Текущий интервал
+    // const inaccuracy = 20; // Погрешность +- наше число
+    //
+    // const checkIntervalSimilarity = curInterval >= (interval.last - inaccuracy) && curInterval <= (interval.last + inaccuracy);
+    // const nextInterval = interval.count + 1;
 
     this.setState({
-      antiClick: {
-        cheatCount: nextInterval > 15 ? (cheatCount + 1) : cheatCount,
-        interval: {
-          count: checkIntervalSimilarity ? (nextInterval <= 15 ? nextInterval : 0) : 0,
-          last: curInterval,
-          time
-        },
-        click: {
-          count: (((x >= click.x - 5) && (x <= click.x + 5)) && ((y >= click.y - 5) && (y <= click.y + 5))) ? (click.count + 1) : 0,
-          x, y
-        }
+      lastClick: {
+        time: Math.round(new Date().getTime() / 1000),
+        count: Math.round(new Date().getTime()  / 1000) === time ? (count + 1) : 0
       }
     });
 
-    console.log('----');
-    console.log(curInterval);
-    console.log('x - ', click.x, ' y - ', click.y, ' real X - ', x, ' real Y - ', y);
-    console.log(click.count);
-    console.log('user cheat - ' + cheatCount);
+    // console.log('----');
+    // console.log(curInterval);
+    // console.log('x - ', click.x, ' y - ', click.y, ' real X - ', x, ' real Y - ', y);
+    // console.log(click.count);
+    // console.log('user cheat - ' + cheatCount);
 
-    if (cheatCount <= 3 && click.count < 50) {
+    if (count < 20) {
       syncUser(lo.merge(user, {
         data: {
           balance: new Decimal(user.data.balance).add(user.data.click)
@@ -160,31 +161,35 @@ export default class extends React.Component<IProps, IState> {
 
       this.renderEffect();
       this.changeProgress();
-    } else {
-      if (!isAdsShown) {
-        isAdsShown = true;
-        // @ts-ignore
-        bridge.send('VKWebAppShowNativeAds', {ad_format: 'reward'})
-          .then((res) => {
-            isAdsShown = false;
-          }).catch((err) => {
-            isAdsShown = false;
-          });
-
-        setTimeout(() => {
-          isAdsShown = false;
-
-          this.setState({
-            antiClick: antiClickDefault
-          });
-        }, 3000);
-      }
     }
+    // } else {
+    //   console.log('----');
+    //   console.log(cheatCount);
+    //   console.log(click.count);
+    //   if (!isAdsShown) {
+    //     isAdsShown = true;
+    //     // @ts-ignore
+    //     bridge.send('VKWebAppShowNativeAds', {ad_format: 'reward'})
+    //       .then((res) => {
+    //         isAdsShown = false;
+    //       }).catch((err) => {
+    //         isAdsShown = false;
+    //       });
+    //
+    //     setTimeout(() => {
+    //       isAdsShown = false;
+    //
+    //       this.setState({
+    //         antiClick: antiClickDefault
+    //       });
+    //     }, 3000);
+    //   }
+    // }
   }
 
   render() {
     const { id, user, clickProgress } = this.props;
-    const { effects } = this.state;
+    const { effects, lastClick } = this.state;
 
     return (
       <Panel id={id}>

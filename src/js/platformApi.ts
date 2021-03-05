@@ -54,4 +54,19 @@ export default class platformApi {
 
     return false;
   }
+
+  public static changeViewSettings(status: 'light' | 'dark', color?: string, cb?: Function) {
+    if (
+      type === 'vk'
+      || type === 'vk_game'
+    ) {
+      bridge.sendPromise(
+        'VKWebAppSetViewSettings',
+        {
+          'status_bar_style': status,
+          'action_bar_color': color
+        }
+      ).then((res) => cb(res)).catch((err) => cb(err));
+    }
+  }
 }

@@ -4,7 +4,8 @@ import {
   Title
 } from '@vkontakte/vkui';
 
-import { getRandomInt } from "@vkontakte/vkjs";
+import platformApi from 'src/js/platformApi';
+import queryGet from 'src/functions/query_get';
 
 import Bg from 'src/img/loading/bg.svg';
 import FireLeft from 'src/img/loading/fireLeft.svg';
@@ -35,6 +36,12 @@ export default class extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
+    const platform = queryGet('vk_platform');
+
+    if (platform === 'mobile_iphone' || platform === 'mobile_iphone_messenger') {
+      platformApi.changeViewSettings('light', '#19191a');
+    }
+
     timer = setInterval(() => {
       const { dots } = this.state;
 
@@ -45,6 +52,12 @@ export default class extends React.Component<IProps, IState> {
   }
 
   componentWillUnmount() {
+    const platform = queryGet('vk_platform');
+
+    if (platform === 'mobile_iphone' || platform === 'mobile_iphone_messenger') {
+      platformApi.changeViewSettings('dark', '#ffffff');
+    }
+
     clearInterval(timer);
   }
 

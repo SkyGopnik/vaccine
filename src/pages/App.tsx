@@ -17,6 +17,7 @@ import Modals from "src/components/Modals/ModalsContainer";
 
 import unixTime from '../functions/unixtime';
 import queryGet from '../functions/query_get';
+import platformApi from "src/js/platformApi";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
@@ -80,6 +81,8 @@ export default class extends React.Component<IProps, IState> {
     } catch (e) {
       changeView('error');
     }
+
+    platformApi.changeViewSettings('dark', '#ffffff');
 
     if (window.matchMedia("(orientation: landscape)").matches && isMobile) {
       changeView('wrongOrientation');
