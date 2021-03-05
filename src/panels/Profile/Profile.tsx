@@ -31,6 +31,7 @@ import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
 import balanceFormat from "src/functions/balanceFormat";
 import getDate from "src/functions/getDate";
 import declBySex from "src/functions/declBySex";
+import { locale } from "src/functions/balanceFormat";
 
 import {UserInterface} from "src/store/user/reducers";
 
@@ -242,9 +243,9 @@ export default class extends React.Component<IProps, IState> {
           >
             <Subhead weight="regular">
               <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
-              <div>· Разработано: {stat.record ? balanceFormat(stat.record) : 0}</div>
+              <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
               <div>· Спасено друзей: {stat.saveFriends || 0}</div>
-              <div>· Получено вакцины от друзей: {stat.transfer || 0}</div>
+              <div>· Получено вакцины от друзей: {stat.transfer && locale(stat.transfer) || 0}</div>
               <div>· Произведено улучшений: {stat.improvements || 0}</div>
               {/*<div>· Достижений: {stat.achievements || 0}</div>*/}
             </Subhead>
