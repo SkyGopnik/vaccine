@@ -51,10 +51,9 @@
 
     :global {
       .Title {
-        margin-top: 50px;
-        padding: 18px 28px;
+        padding: 10px 16px;
 
-        border-radius: 16px;
+        border-radius: 12px;
         background: #FFFFFF;
       }
     }
@@ -70,11 +69,11 @@
       position: absolute;
 
       &:nth-child(1) {
-        left: 40px;
+        left: 20px;
       }
 
       &:nth-child(2) {
-        left: calc(100vw - 200px);
+        left: calc(100vw - 150px);
       }
     }
   }
