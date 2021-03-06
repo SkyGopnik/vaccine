@@ -64,7 +64,11 @@ export const appReducer = (state = defaultState, action) => {
       updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
     }
 
-    window.scroll({ top: 0, behavior: state.story === action.payload.story ? 'smooth' : 'auto' });
+    try {
+      window.scroll({ top: 0, behavior: state.story === action.payload.story ? 'smooth' : 'auto' });
+    } catch (e) {
+      console.log(e);
+    }
 
     return {
       ...state,
