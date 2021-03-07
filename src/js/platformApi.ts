@@ -60,13 +60,13 @@ export default class platformApi {
       type === 'vk'
       || type === 'vk_game'
     ) {
-      bridge.sendPromise(
+      bridge.send(
         'VKWebAppSetViewSettings',
         {
           'status_bar_style': status,
           'action_bar_color': color
         }
-      ).then((res) => cb(res)).catch((err) => cb(err));
+      ).then((res) => cb && cb(res)).catch((err) => cb && cb(err));
     }
   }
 }

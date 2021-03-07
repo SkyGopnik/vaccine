@@ -134,7 +134,7 @@ export default class extends React.Component<IProps, IState> {
         <PanelHeader
           left={
             <PanelHeaderButton onClick={() => changePanel('settings')}>
-              <Icon28SettingsOutline width={24} height={24} />
+              <Icon28SettingsOutline />
             </PanelHeaderButton>
           }
           separator={false}
