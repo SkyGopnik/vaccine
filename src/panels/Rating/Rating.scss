@@ -21,7 +21,7 @@
 
       color: var(--header_tint);
 
-      @media screen and (max-width: 360px) {
+      @media screen and (max-width: 330px) {
         & {
           display: none;
         }
