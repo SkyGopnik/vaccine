@@ -33,6 +33,7 @@ import balanceFormat from "src/functions/balanceFormat";
 import getDate from "src/functions/getDate";
 import declBySex from "src/functions/declBySex";
 import { locale } from "src/functions/balanceFormat";
+import getNotifications from "src/functions/getNotifications";
 
 import {UserInterface} from "src/store/user/reducers";
 
@@ -65,7 +66,12 @@ interface IState {
     transfer?: number,
     improvements?: number,
     achievements?: number
-  }
+  },
+  notification: {
+    title: string,
+    text: ReactNode,
+    time: string
+  } | null
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -73,7 +79,8 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      stat: {}
+      stat: {},
+      notification: null
     };
   }
 
@@ -81,7 +88,8 @@ export default class extends React.Component<IProps, IState> {
     const { data } = await axios.get('/user/profile');
 
     this.setState({
-      stat: data.stat
+      stat: data.stat,
+      notification: data.notification ? getNotifications(data.notification, true) : null
     });
   }
 
@@ -116,7 +124,7 @@ export default class extends React.Component<IProps, IState> {
       changeModal,
       changePanel
     } = this.props;
-    const { stat } = this.state;
+    const { stat, notification } = this.state;
 
     const { subGroup } = user.data.additional || {};
     const { photo, firstName, lastName } = user.info || {};
@@ -188,21 +196,23 @@ export default class extends React.Component<IProps, IState> {
               </Button>
             </>}
           />
-          <Card
-            icon={<img src={Img3} alt="" />}
-            title="События"
-            description={<span><span style={{ fontWeight: 500 }}>Ника Гаркуша</span> получила вакцину от вас</span>}
-            subDescription="3 часа назад"
-            actions={
-              <Button
-                mode="outline"
-                size="m"
-                onClick={() => changePanel('notifications')}
-              >
-                Посмотреть все
-              </Button>
-            }
-          />
+          {notification && (
+            <Card
+              icon={<img src={Img3} alt="" />}
+              title="События"
+              description={<span><span style={{ fontWeight: 500 }}>{notification.title}</span> {notification.text}</span>}
+              subDescription={notification.time}
+              actions={
+                <Button
+                  mode="outline"
+                  size="m"
+                  onClick={() => changePanel('notifications')}
+                >
+                  Посмотреть все
+                </Button>
+              }
+            />
+          )}
           {/*<Card*/}
           {/*  icon={<img src={Img4} alt="" />}*/}
           {/*  title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}*/}

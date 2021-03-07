@@ -1,4 +1,5 @@
-import React from "react";
+import React, {ReactNode} from "react";
+import axios from "axios";
 import {
   Panel,
   PanelHeader,
@@ -6,73 +7,102 @@ import {
   Card,
   Div,
   Avatar,
-  Subhead,
   Text,
   Caption,
-  Headline
+  Headline, Spinner
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 
+import getNotifications from "src/functions/getNotifications";
+
 import style from "./Notifications.scss";
+
+interface Notification {
+  title: string,
+  text: ReactNode,
+  photo: string,
+  isNew: boolean,
+  time: string
+}
 
 interface IProps {
   id: string
 }
 
-export default class extends React.Component<IProps> {
+interface IState {
+  notifications: Array<Notification> | null
+}
+
+export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      notifications: null
+    };
+  }
+
+  async componentDidMount() {
+    const { data } = await axios.get('/user/notifications');
+
+   this.setState({
+     notifications: data.map((item) => getNotifications(item))
+   });
+  }
+
+  notification(item: Notification, index: number) {
+    return (
+      <Card
+        className={style.card}
+        key={index}
+        mode="shadow"
+      >
+        <Avatar src={item.photo} size={48} />
+        <div className={style.info}>
+          <Headline weight="regular">{item.title}</Headline>
+          <Text weight="regular">{item.text}</Text>
+          <Caption level="2" weight="regular">{item.time}</Caption>
+        </div>
+      </Card>
+    );
   }
 
   render() {
     const { id } = this.props;
+    const { notifications } = this.state;
 
     return (
       <Panel id={id}>
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           События
         </PanelHeader>
-        <Div className={style.block}>
-          <Header mode="secondary">Новые</Header>
-          <Card className={style.card} mode="shadow">
-            <Avatar src="https://sun1-90.userapi.com/s/v1/if2/BU2FtExpWyNrPig4yJPmzIaW5Wtd88yW2mb1coyxf1iALDjeYk2R5NbCIFPEkF0I8tRAHZtpK46aRAuF5E4Z8ok1.jpg?size=100x0&quality=96&crop=994,684,747,747&ava=1" size={48} />
-            <div className={style.info}>
-              <Headline weight="regular">Александр Тихонович</Headline>
-              <Text weight="regular">Передал тебе <span style={{ fontWeight: 500 }}>2917,37</span> вакцины</Text>
-              <Caption level="2" weight="regular">5 минут назад</Caption>
-            </div>
-          </Card>
-        </Div>
-        <Div className={style.block}>
-          <Header mode="secondary">Все события</Header>
-          <Card className={style.card} mode="shadow">
-            <Avatar src="https://sun1-90.userapi.com/s/v1/if2/BU2FtExpWyNrPig4yJPmzIaW5Wtd88yW2mb1coyxf1iALDjeYk2R5NbCIFPEkF0I8tRAHZtpK46aRAuF5E4Z8ok1.jpg?size=100x0&quality=96&crop=994,684,747,747&ava=1" size={48} />
-            <div className={style.info}>
-              <Headline weight="regular">Александр Тихонович</Headline>
-              <Text weight="regular">Передал тебе <span style={{ fontWeight: 500 }}>2917,37</span> вакцины</Text>
-              <Caption level="2" weight="regular">5 минут назад</Caption>
-            </div>
-          </Card>
-          <Card className={style.card} mode="shadow">
-            <Avatar src="https://sun1-90.userapi.com/s/v1/if2/BU2FtExpWyNrPig4yJPmzIaW5Wtd88yW2mb1coyxf1iALDjeYk2R5NbCIFPEkF0I8tRAHZtpK46aRAuF5E4Z8ok1.jpg?size=100x0&quality=96&crop=994,684,747,747&ava=1" size={48} />
-            <div className={style.info}>
-              <Headline weight="regular">Александр Тихонович</Headline>
-              <Text weight="regular">Передал тебе <span style={{ fontWeight: 500 }}>2917,37</span> вакцины</Text>
-              <Caption level="2" weight="regular">5 минут назад</Caption>
-            </div>
-          </Card>
-          <Card className={style.card} mode="shadow">
-            <Avatar src="https://sun1-90.userapi.com/s/v1/if2/BU2FtExpWyNrPig4yJPmzIaW5Wtd88yW2mb1coyxf1iALDjeYk2R5NbCIFPEkF0I8tRAHZtpK46aRAuF5E4Z8ok1.jpg?size=100x0&quality=96&crop=994,684,747,747&ava=1" size={48} />
-            <div className={style.info}>
-              <Headline weight="regular">Александр Тихонович</Headline>
-              <Text weight="regular">Передал тебе <span style={{ fontWeight: 500 }}>2917,37</span> вакцины</Text>
-              <Caption level="2" weight="regular">5 минут назад</Caption>
-            </div>
-          </Card>
-        </Div>
+        {notifications ? (
+          <>
+            {notifications.filter((item) => item.isNew).length !== 0 && (
+              <Div className={style.block}>
+                <Header mode="secondary">Новые</Header>
+                {notifications.filter((item) => item.isNew).map((item, index) => (
+                  this.notification(item, index)
+                ))}
+              </Div>
+            )}
+            {notifications.filter((item) => !item.isNew).length !== 0 && (
+              <Div className={style.block}>
+                <Header mode="secondary">Все события</Header>
+                {notifications.filter((item) => !item.isNew).map((item, index) => (
+                  this.notification(item, index)
+                ))}
+              </Div>
+            )}
+          </>
+        ) : (
+          <Div>
+            <Card className={style.card} mode="shadow">
+              <Spinner />
+            </Card>
+          </Div>
+        )}
       </Panel>
     );
   }
