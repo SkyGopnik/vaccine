@@ -20,6 +20,12 @@
       font-weight: bold;
 
       color: var(--header_tint);
+
+      @media screen and (max-width: 360px) {
+        & {
+          display: none;
+        }
+      }
     }
 
     :global {
@@ -27,6 +33,18 @@
         width: 100%;
 
         padding-right: 0;
+      }
+    }
+
+    @media screen and (max-width: 360px) {
+      .topNumber {
+        display: none;
+      }
+
+      :global {
+        .SimpleCell {
+          padding-left: 0;
+        }
       }
     }
 

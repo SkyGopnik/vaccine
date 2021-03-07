@@ -17,7 +17,7 @@ import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
-import balanceFormat from "src/functions/balanceFormat";
+import balanceFormat, { locale } from "src/functions/balanceFormat";
 
 import style from './Game.scss';
 
@@ -159,7 +159,10 @@ export default class extends React.Component<IProps, IState> {
 
       sendWsMessage({type: 'ClickUser'});
 
-      this.renderEffect();
+      if (!user.data.additional.easyAnimation) {
+        this.renderEffect();
+      }
+
       this.changeProgress();
     }
     // } else {

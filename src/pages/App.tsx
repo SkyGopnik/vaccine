@@ -108,7 +108,8 @@ export default class extends React.Component<IProps, IState> {
       '--header_tint',
       '--button_primary_background',
       '--action_sheet_action_foreground',
-      '--button_outline_border'
+      '--button_outline_border',
+      '--button_outline_foreground'
     ];
     const color = '#6A9EE5';
 

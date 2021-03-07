@@ -14,7 +14,7 @@ import {
   Button,
   Subhead,
   SimpleCell,
-  Snackbar
+  Snackbar, PanelHeaderButton
 } from '@vkontakte/vkui';
 
 import {
@@ -22,7 +22,8 @@ import {
   Icon28BugOutline,
   Icon28MessageOutline,
   Icon28Users3Outline,
-  Icon24ErrorCircleOutline
+  Icon24ErrorCircleOutline,
+  Icon28SettingsOutline
 } from "@vkontakte/icons";
 
 import Card from 'src/components/Card/Card';
@@ -77,12 +78,10 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const stat = await axios.get('/user/profile');
-
-    console.log(stat.data);
+    const { data } = await axios.get('/user/profile');
 
     this.setState({
-      stat: stat.data
+      stat: data.stat
     });
   }
 
@@ -124,7 +123,14 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Panel id={id}>
-        <PanelHeader separator={false}>
+        <PanelHeader
+          left={
+            <PanelHeaderButton onClick={() => changePanel('settings')}>
+              <Icon28SettingsOutline width={24} height={24} />
+            </PanelHeaderButton>
+          }
+          separator={false}
+        >
           Профиль
         </PanelHeader>
         <Div className={style.avatar}>
@@ -167,24 +173,7 @@ export default class extends React.Component<IProps, IState> {
               {platformApi.checkSupport() && (
                 <Button
                   size="m"
-                  onClick={async () => {
-                    changePanel('friends');
-                    // const { users } = await bridge.send("VKWebAppGetFriends");
-                    // const { data } = await axios.get(`/user/check?userId=${users[0].id}`);
-                    // const user = users[0];
-                    //
-                    // if (data) {
-                    //   changeModal('transferMoney', {
-                    //     userId: String(user.id),
-                    //     firstName: user.first_name,
-                    //     lastName: user.last_name,
-                    //     photo: user.photo_200,
-                    //     sex: user.sex
-                    //   });
-                    // } else {
-                    //   this.snackbar(`Похоже, ${user.first_name} ${user.last_name} ещё не ${declBySex(user.sex, ['заходил (a)', 'заходила', 'заходил'])} в игру`, 'error');
-                    // }
-                  }}
+                  onClick={() => changePanel('friends')}
                   stretched
                 >
                   Другу
@@ -199,20 +188,21 @@ export default class extends React.Component<IProps, IState> {
               </Button>
             </>}
           />
-          {/*<Card*/}
-          {/*  icon={<img src={Img3} alt="" />}*/}
-          {/*  title="События"*/}
-          {/*  description={<span><span style={{ fontWeight: 500 }}>Ника Гаркуша</span> получила вакцину от вас</span>}*/}
-          {/*  subDescription="3 часа назад"*/}
-          {/*  actions={*/}
-          {/*    <Button*/}
-          {/*      mode="outline"*/}
-          {/*      size="m"*/}
-          {/*    >*/}
-          {/*      Посмотреть все*/}
-          {/*    </Button>*/}
-          {/*  }*/}
-          {/*/>*/}
+          <Card
+            icon={<img src={Img3} alt="" />}
+            title="События"
+            description={<span><span style={{ fontWeight: 500 }}>Ника Гаркуша</span> получила вакцину от вас</span>}
+            subDescription="3 часа назад"
+            actions={
+              <Button
+                mode="outline"
+                size="m"
+                onClick={() => changePanel('notifications')}
+              >
+                Посмотреть все
+              </Button>
+            }
+          />
           {/*<Card*/}
           {/*  icon={<img src={Img4} alt="" />}*/}
           {/*  title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}*/}

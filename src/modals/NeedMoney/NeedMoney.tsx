@@ -21,7 +21,7 @@ export default (props: IProps) => {
   return (
     <ModalCard
       icon={<Nomoney />}
-      header={`Не хватает ${props.modalData && (props.modalData.need > 1 ? Math.round(props.modalData.need) : props.modalData.need.toFixed(4))} ${declNum(Math.round(props.modalData.need), ['вакцины', 'вакцины', 'вакцин'])}!`}
+      header={`Не хватает ${props.modalData && (props.modalData.need > 1 ? Math.round(props.modalData.need) : props.modalData.need.toFixed(4))} вакцины!`}
       subheader={<>
         <div>Вам не хватает вакцины для покупки.</div>
         <div>Посмотрите рекламу и получите вакцину бесплатно!</div>

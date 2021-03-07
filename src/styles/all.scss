@@ -37,6 +37,10 @@
     }
   }
 
+  .Switch {
+    cursor: pointer;
+  }
+
   @media screen and (max-width: 450px) {
     .ModalCard--android, .ModalCard--ios {
       .ModalCard__in {

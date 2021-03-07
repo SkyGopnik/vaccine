@@ -30,17 +30,14 @@ export const changeAdditional = createAsyncThunk('changeAdditional', (arg, thunk
   const user = state.user.data;
 
   if (typeof arg !== "undefined") {
-    axios.put('/user/additional', arg);
+    thunkAPI.dispatch(() => axios.put('/user/additional', arg));
 
-    return {
-      type: SYNC_USER,
-      payload: {
-        ...lo.merge(user, {
-          data: {
-            additional: lo.merge(user.data.additional, arg)
-          }
-        })
-      }
-    };
+    thunkAPI.dispatch(syncUser({
+      ...lo.merge(user, {
+        data: {
+          additional: lo.merge(user.data.additional, arg)
+        }
+      })
+    }));
   }
 });

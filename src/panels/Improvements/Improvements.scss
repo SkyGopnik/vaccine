@@ -42,11 +42,12 @@
 
       .header {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
 
         :global {
           .Caption {
             margin-left: 4px;
+            margin-bottom: 1px;
 
             white-space: nowrap;
 

@@ -3,6 +3,8 @@ import React from 'react';
 interface IProps {
   className?: string,
   type?: 'small',
+  width?: number,
+  height?: number,
   disabled?: boolean,
   onClick?: Function,
   onMouseDown?: Function,
@@ -13,6 +15,8 @@ export default (props: IProps) => {
   const {
     className,
     type,
+    width,
+    height,
     onClick,
     onMouseDown,
     onMouseUp,
@@ -26,7 +30,7 @@ export default (props: IProps) => {
       onMouseDown={(e) => !disabled && onMouseDown && onMouseDown(e)}
       onMouseUp={(e) => !disabled && onMouseUp && onMouseUp(e)}
     >
-      <svg width={type === 'small' ? "14" : "183"} height={type === 'small' ? "16" : "231"} viewBox="0 0 183 231" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg width={!width ? (type === 'small' ? "14" : "183") : width} height={!height ? (type === 'small' ? "16" : "231") : height} viewBox="0 0 183 231" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M177.038 182.993L121.846 104.163C120.281 101.928 119.442 99.265 119.442 96.5363V21.5037L106.439 12.2078H71.9512L63.5571 21.5037V96.5363C63.5571 99.265 62.7175 101.928 61.1524 104.163L5.9619 182.993C-8.19542 203.213 6.27005 231 30.9541 231H152.046C176.73 231 191.195 203.213 177.038 182.993V182.993Z" fill="#D3EFFB"/>
         <path d="M177.038 182.993L121.846 104.163C120.281 101.928 119.442 99.265 119.442 96.5363V30.2407V21.5037L107.464 12.2078H71.9517L63.5576 21.5037V30.2407H95.9906C102.327 30.2407 107.464 35.3772 107.464 41.714V96.5363C107.464 99.265 108.303 101.928 109.869 104.163L165.06 182.993C179.218 203.213 164.752 231 140.068 231H152.046C176.73 231 191.196 203.213 177.038 182.993Z" fill="#BED8FB"/>
         <path d="M129.757 21.5038H53.2429C51.7234 21.5038 50.4917 20.2721 50.4917 18.7521V2.7517C50.4917 1.23215 51.7234 0 53.2429 0H129.757C131.277 0 132.509 1.2317 132.509 2.7517V18.7525C132.509 20.2721 131.277 21.5038 129.757 21.5038V21.5038Z" fill="#9DC6FB"/>

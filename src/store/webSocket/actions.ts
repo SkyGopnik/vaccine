@@ -106,7 +106,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
         user: document.location.href
       }));
 
-      // thunkAPI.dispatch(changeView('main'));
+      thunkAPI.dispatch(changeView('main'));
 
       thunkAPI.dispatch(connectWsSuccess());
 
@@ -125,6 +125,10 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
       thunkAPI.dispatch(changeView('error'));
 
       thunkAPI.dispatch(connectWsFailure(event));
+    };
+
+    socket.onerror = error => {
+      console.log("Socket Error: ", error);
     };
   });
 });
