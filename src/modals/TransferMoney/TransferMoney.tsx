@@ -154,47 +154,47 @@ export default class extends React.Component<IProps, IState> {
         sum: numValue,
         toUserId: modalData.userId
       });
+
+      if (story === 'rating' && panel === 'main') {
+        // Обновляем рейтинг
+        await getRating(false);
+      }
+
+      // Уменьшаем баланс пользователю
+      syncUser(lo.merge(user, {
+        data: {
+          balance: new Decimal(user.data.balance).minus(numValue)
+        }
+      }));
+
+      // Синхронизируем другого пользователя если он в игре
+      sendWsMessage({
+        type: 'TransferMoney',
+        toUserId: modalData.userId,
+        sum: numValue
+      });
+
+      // Закрываем модалку
+      window.history.go(modalData.backType === 'double' ? -2 : -1);
+
+      // Показываем уведомление
+      changeSnackbar(
+        <Snackbar
+          className={`${this.paddingNeed() ? style.snackbar : ''} success-snack`}
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+          after={<Avatar src={photo} size={32} />}
+        >
+          <div>{toName} {declBySex(sex, ['получил (a)', 'получила', 'получил'])}</div>
+          <Text weight="medium">{numValue} вакцины</Text>
+        </Snackbar>
+      );
     } catch (e) {
       this.setState({
         loading: false
       });
     }
-
-    if (story === 'rating' && panel === 'main') {
-      // Обновляем рейтинг
-      await getRating(false);
-    }
-
-    // Уменьшаем баланс пользователю
-    syncUser(lo.merge(user, {
-      data: {
-        balance: new Decimal(user.data.balance).minus(numValue)
-      }
-    }));
-
-    // Синхронизируем другого пользователя если он в игре
-    sendWsMessage({
-      type: 'TransferMoney',
-      toUserId: modalData.userId,
-      sum: numValue
-    });
-
-    // Закрываем модалку
-    window.history.go(modalData.backType === 'double' ? -2 : -1);
-
-    // Показываем уведомление
-    changeSnackbar(
-      <Snackbar
-        className={`${this.paddingNeed() ? style.snackbar : ''} success-snack`}
-        layout="vertical"
-        onClose={() => changeSnackbar(null)}
-        before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
-        after={<Avatar src={photo} size={32} />}
-      >
-        <div>{toName} {declBySex(sex, ['получил (a)', 'получила', 'получил'])}</div>
-        <Text weight="medium">{numValue} вакцины</Text>
-      </Snackbar>
-    );
   }
 
   render() {
