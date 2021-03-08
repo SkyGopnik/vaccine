@@ -28,19 +28,28 @@ export interface AdditionalInterface {
 const getTime = (_time: Date): string => {
   const months = ['Янв' , 'Фев' , 'Мар' , 'Апр' , 'Май' , 'Июнь' , 'Июль' , 'Авг' , 'Сен' , 'Окт' , 'Нояб' , 'Дек'];
 
-  // Текущая дата в Unixtime
-  const now = (new Date().getTime() / 1000);
-  // Входящая дата в Unixtime
-  const time = (new Date(_time).getTime() / 1000);
+  // Промежуточные для форматирования и сравнивания цифр
+  const now = new Date();
+  const time = new Date(_time);
 
-  // Промежуточная для форматирования цифр
-  const t = new Date(_time);
+  // Текущая дата в Unixtime
+  const nowUnix = (now.getTime() / 1000);
+  // Входящая дата в Unixtime
+  const timeUnix = (time.getTime() / 1000);
 
   // Разница между временем в секундах
-  const difference = Math.round(now - time);
+  const difference = Math.round(nowUnix - timeUnix);
 
   const minutes = Math.round(difference / 60); // Разница в минутах
   const hours = Math.round(minutes / 60);
+
+  const formatNumber = (num: number) => {
+    if (num < 10) {
+      return '0' + num;
+    }
+
+    return num;
+  }
 
   // < 1 минуты
   if (difference < 60) {
@@ -58,17 +67,17 @@ const getTime = (_time: Date): string => {
   }
 
   // Сегодня
-  if (difference < 86400) {
-    return `сегодня в ${t.getHours()}:${t.getMinutes()}`;
+  if (time.getDay() === now.getDay()) {
+    return `сегодня в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
   }
 
   // Вчера
-  if (difference < 172800) {
-    return `вчера в ${t.getHours()}:${t.getMinutes()}`;
+  if ((time.getDay() + 1) === now.getDay()) {
+    return `вчера в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
   }
 
   // Для всех остальных случаев - 1 мар в 16:53
-  return `${t.getDay()} ${months[t.getMonth()].toLowerCase()} в ${t.getHours()}:${t.getMinutes()}`;
+  return `${time.getDay()} ${months[time.getMonth()].toLowerCase()} в ${formatNumber(time.getMinutes())}`;
 };
 
 export default function (notification: NotificationInterface, lowText?: boolean): {
