@@ -51,7 +51,7 @@ export const improvements: {
     },
     {
       name: "Перчатки",
-      desc: "Трогай все что угодно, только не забывай менять",
+      desc: "Трогай всё что угодно, только не забывай менять",
       price: 1000,
       count: 1.5,
       icon: "https://i.imgur.com/9qOdQLu.png",

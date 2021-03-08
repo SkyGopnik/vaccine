@@ -75,6 +75,7 @@ export const appReducer = (state = defaultState, action) => {
       story: action.payload.story,
       panel: 'main',
       panelData: action.payload.panelData,
+      modal: null,
       snackbar: null
     };
 

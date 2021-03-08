@@ -39,6 +39,9 @@ const getTime = (_time: Date): string => {
   // Разница между временем в секундах
   const difference = Math.round(now - time);
 
+  const minutes = Math.round(difference / 60); // Разница в минутах
+  const hours = Math.round(minutes / 60);
+
   // < 1 минуты
   if (difference < 60) {
     return `${difference} ${declNum(difference, ['секунду', 'секунды', 'секунд'])} назад`;
@@ -46,12 +49,12 @@ const getTime = (_time: Date): string => {
 
   // < 1 часа
   if (difference < 3600) {
-    return `${difference} ${declNum(difference, ['минуту', 'минуты', 'минут'])} назад`;
+    return `${minutes} ${declNum(minutes, ['минуту', 'минуты', 'минут'])} назад`;
   }
 
   // < 5 часов
   if (difference < 18000) {
-    return `${difference} ${declNum(difference, ['час', 'часа', 'часов'])} назад`;
+    return `${hours} ${declNum(hours, ['час', 'часа', 'часов'])} назад`;
   }
 
   // Сегодня
@@ -85,7 +88,10 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
+        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum, {
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4
+        })}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,

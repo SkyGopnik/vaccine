@@ -78,11 +78,15 @@ export default class extends React.Component<IProps, IState> {
     let error = '';
 
     try {
-      if (!/^\d+\.?\d*$/.test(value)) {
+      if (value.length === 0) {
+        sendError('А что переводим?');
+      }
+
+      if (!/^\d+(.|,)?\d*$/.test(value)) {
         sendError('Неправильный формат');
       }
 
-      const numValue = new Decimal(value).toNumber();
+      const numValue = new Decimal(String(value).replace(',', '.')).toNumber();
 
       if (numValue === 0) {
         sendError('А что переводим?');
@@ -134,9 +138,7 @@ export default class extends React.Component<IProps, IState> {
       sex
     } = modalData;
     const toName = `${firstName} ${lastName}`;
-    const numValue = new Decimal(value).toNumber();
-
-    console.log(numValue);
+    const numValue = new Decimal(String(value).replace(',', '.')).toNumber();
 
     // Обнуляем форму и включаем загрузку
     this.setState({

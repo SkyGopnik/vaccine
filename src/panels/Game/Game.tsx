@@ -150,7 +150,7 @@ export default class extends React.Component<IProps, IState> {
     // console.log(click.count);
     // console.log('user cheat - ' + cheatCount);
 
-    if (count < 20) {
+    if (count < 5) {
       syncUser(lo.merge(user, {
         data: {
           balance: new Decimal(user.data.balance).add(user.data.click)
@@ -192,7 +192,7 @@ export default class extends React.Component<IProps, IState> {
 
   render() {
     const { id, user, clickProgress } = this.props;
-    const { effects, lastClick } = this.state;
+    const { effects } = this.state;
 
     return (
       <Panel id={id}>

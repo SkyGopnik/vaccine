@@ -20,12 +20,6 @@
       font-weight: bold;
 
       color: var(--header_tint);
-
-      @media screen and (max-width: 330px) {
-        & {
-          display: none;
-        }
-      }
     }
 
     :global {
@@ -36,7 +30,7 @@
       }
     }
 
-    @media screen and (max-width: 360px) {
+    @media screen and (max-width: 330px) {
       .topNumber {
         display: none;
       }

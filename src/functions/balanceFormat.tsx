@@ -14,6 +14,6 @@ export default function (balance: number, localeNeed: boolean = true) {
   }).replace(',', '.');
 };
 
-export function locale (balance: number) {
-  return new Decimal(balance).toNumber().toLocaleString('ru').replace(',', '.');
+export function locale (balance: number, options?: object) {
+  return new Decimal(balance).toNumber().toLocaleString('ru', options).replace(',', '.');
 }
