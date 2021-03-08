@@ -11,7 +11,7 @@ import { UserInfoInterface } from "src/store/user/reducers";
 export interface NotificationInterface {
   id: number,
   type: 'getTransferMoney',
-  additional: AdditionalInterface["getTransferMoney"],
+  additional: AdditionalInterface["getTransferMoney"] | AdditionalInterface["sendTransferMoney"],
   isNew: boolean,
   createdAt: Date,
   updatedAt: Date,
@@ -20,6 +20,10 @@ export interface NotificationInterface {
 
 export interface AdditionalInterface {
   getTransferMoney: {
+    sum: number,
+    user: UserInfoInterface
+  },
+  sendTransferMoney: {
     sum: number,
     user: UserInfoInterface
   }
@@ -98,6 +102,25 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       title: `${firstName} ${lastName}`,
       text: (
         <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum, {
+          minimumFractionDigits: 4,
+          maximumFractionDigits: 4
+        })}</span> вакцины</span>
+      ),
+      photo,
+      isNew: notification.isNew,
+      time: getTime(notification.createdAt)
+    };
+  }
+
+  if (type === 'sendTransferMoney') {
+    const additional: AdditionalInterface["sendTransferMoney"] = notification.additional;
+    const { sum } = additional;
+    const { firstName, lastName, photo } = additional.user;
+
+    return {
+      title: `${firstName} ${lastName}`,
+      text: (
+        <span>{!lowText ? 'Получил' : 'получил'} <span style={{ fontWeight: 500 }}>{locale(sum, {
           minimumFractionDigits: 4,
           maximumFractionDigits: 4
         })}</span> вакцины</span>

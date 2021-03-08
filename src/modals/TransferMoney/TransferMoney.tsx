@@ -82,7 +82,7 @@ export default class extends React.Component<IProps, IState> {
         sendError('А что переводим?');
       }
 
-      if (!/^\d+(.|,)?\d*$/.test(value)) {
+      if (!/^\d+(\.|,)?\d*$/.test(value)) {
         sendError('Неправильный формат');
       }
 
