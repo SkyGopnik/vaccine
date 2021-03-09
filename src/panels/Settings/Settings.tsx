@@ -18,7 +18,8 @@ import style from "./Settings.scss";
 interface IProps {
   id: string,
   user: UserInterface | null,
-  changeAdditional(data: object)
+  changeAdditional(data: object),
+  changePanel(panel: string, panelData?: any)
 }
 
 export default class extends React.Component<IProps> {
