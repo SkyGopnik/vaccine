@@ -26,19 +26,36 @@
   }
 
   .info {
+    flex: 1;
+
     margin-left: 8px;
 
+    display: flex;
+    justify-content: space-between;
+
+    .content {
+      :global {
+        .Headline, .Text {
+          margin-bottom: 4px;
+        }
+
+        .Text {
+          color: #6D7885;
+        }
+
+        .Caption {
+          color: #818C99;
+        }
+      }
+    }
+
     :global {
-      .Headline, .Text {
-        margin-bottom: 4px;
-      }
+      .IconButton {
+        color: var(--accent);
 
-      .Text {
-        color: #6D7885;
-      }
-
-      .Caption {
-        color: #818C99;
+        .Icon {
+          padding-right: 0;
+        }
       }
     }
   }

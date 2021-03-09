@@ -9,25 +9,34 @@ import {
   Avatar,
   Text,
   Caption,
-  Headline, Spinner
+  Headline,
+  Spinner,
+  Button, IconButton
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 
 import getNotifications from "src/functions/getNotifications";
 
+import {UserInfoInterface} from "src/store/user/reducers";
+
 import style from "./Notifications.scss";
+import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
 interface Notification {
   title: string,
   text: ReactNode,
   photo: string,
   isNew: boolean,
-  time: string
+  isRepeat: boolean,
+  time: string,
+  user?: UserInfoInterface
 }
 
 interface IProps {
-  id: string
+  id: string,
+  snackbar: ReactNode | null,
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
 }
 
 interface IState {
@@ -52,6 +61,8 @@ export default class extends React.Component<IProps, IState> {
   }
 
   notification(item: Notification, index: number) {
+    const { changeModal } = this.props;
+
     return (
       <Card
         className={style.card}
@@ -60,16 +71,24 @@ export default class extends React.Component<IProps, IState> {
       >
         <Avatar src={item.photo} size={48} />
         <div className={style.info}>
-          <Headline weight="regular">{item.title}</Headline>
-          <Text weight="regular">{item.text}</Text>
-          <Caption level="2" weight="regular">{item.time}</Caption>
+          <div className={style.content}>
+            <Headline weight="regular">{item.title}</Headline>
+            <Text weight="regular">{item.text}</Text>
+            <Caption level="2" weight="regular">{item.time}</Caption>
+          </div>
+          {item.isRepeat && (
+            <IconButton
+              icon={<Icon28MoneySendOutline />}
+              onClick={() => changeModal('transferMoney', item.user)}
+            />
+          )}
         </div>
       </Card>
     );
   }
 
   render() {
-    const { id } = this.props;
+    const { id, snackbar } = this.props;
     const { notifications } = this.state;
 
     return (
@@ -103,6 +122,7 @@ export default class extends React.Component<IProps, IState> {
             </Card>
           </Div>
         )}
+        {snackbar}
       </Panel>
     );
   }

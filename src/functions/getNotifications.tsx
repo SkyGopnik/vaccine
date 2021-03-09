@@ -89,7 +89,9 @@ export default function (notification: NotificationInterface, lowText?: boolean)
   text: ReactNode,
   photo: string,
   isNew: boolean,
-  time: string
+  isRepeat?: boolean,
+  time: string,
+  user?: UserInfoInterface
 } {
   const { type } = notification;
 
@@ -108,7 +110,8 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       ),
       photo,
       isNew: notification.isNew,
-      time: getTime(notification.createdAt)
+      time: getTime(notification.createdAt),
+      user: additional.user
     };
   }
 
@@ -127,7 +130,9 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       ),
       photo,
       isNew: notification.isNew,
-      time: getTime(notification.createdAt)
+      isRepeat: true,
+      time: getTime(notification.createdAt),
+      user: additional.user
     };
   }
 };

@@ -6,11 +6,13 @@ import {
 } from './actions';
 
 export interface UserInfoInterface {
+  id?: number,
   firstName: string
   lastName: string
   photo: string
   sex: 0 | 1 | 2
-  city?: string | null
+  city?: string | null,
+  userId?: string
 }
 
 export interface UserDataInterface {

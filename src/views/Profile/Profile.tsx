@@ -4,7 +4,7 @@ import React from 'react';
 import ProfilePanel from "src/panels/Profile/ProfileContainer";
 import FriendsPanel from "src/panels/Friends/FriendsContainer";
 import SettingsPanel from "src/panels/Settings/SettingsContainer";
-import NotificationsPanel from "src/panels/Notifications/Notifications";
+import NotificationsPanel from "src/panels/Notifications/NotificationsContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
