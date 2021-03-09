@@ -5,13 +5,16 @@ import {
   Div,
   Text,
   SimpleCell,
-  Avatar
+  Avatar,
+  CellButton
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import Card from 'src/components/Card/Card';
 
 import Img5 from "src/img/profile/5.svg";
+
+import { Icon28DeleteOutline } from '@vkontakte/icons';
 
 import style from "./LinkedGroup.scss";
 
@@ -46,12 +49,13 @@ export default class extends React.Component<IProps> {
                 <Avatar size={40}  />
               }
               expandable
-              after="Изм."
+              indicator="Изм."
               description="182 учёных"
             >
               SkyRegils Studio
             </SimpleCell>
           </Card>
+          <CellButton before={<Icon28DeleteOutline />} mode="danger">Удалить сообщество</CellButton>
         </Div>
       </Panel>
     );
