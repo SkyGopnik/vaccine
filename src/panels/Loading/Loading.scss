@@ -1,5 +1,5 @@
 .bg {
-  position: absolute;
+  position: fixed;
   top: 0;
 
   width: 100%;
@@ -50,7 +50,7 @@
     justify-content: center;
 
     :global {
-      .Title {
+      .Title, .Headline {
         padding: 10px 16px;
 
         border-radius: 12px;
