@@ -56,7 +56,15 @@ export default class extends React.Component<IProps, IState> {
 
   async getUser() {
     const { user, changeModal } = this.props;
-    const { value } = this.state;
+    let value = this.state.value;
+
+    // Проверяем на присутствие ссылки
+    const matchUrl = value.match(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/);
+
+    if (matchUrl && matchUrl[5]) {
+      value = matchUrl[5].replace('/', '');
+    }
+
     const { data } = await axios.get(`/user/id?userId=${value}`);
 
     if (data) {
