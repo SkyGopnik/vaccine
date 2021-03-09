@@ -19,7 +19,7 @@ interface IProps {
   id: string,
   user: UserInterface | null,
   changeAdditional(data: object),
-  changePanel(panel: string, panelData?: any)
+  changePanel(panel: string, panelData?: any),
 }
 
 export default class extends React.Component<IProps> {
@@ -30,7 +30,7 @@ export default class extends React.Component<IProps> {
   }
 
   render() {
-    const { id, user, changeAdditional } = this.props;
+    const { id, user, changeAdditional, changePanel } = this.props;
     const { easyAnimation, showRating } = user.data.additional;
 
     return (
@@ -83,6 +83,13 @@ export default class extends React.Component<IProps> {
               disabled
             >
               Отображение в рейтинге
+            </SimpleCell>
+            <SimpleCell
+              expandable 
+              indicator="Name"
+              onClick={() => changePanel('linkedGroup')}
+            >
+              Сообщество
             </SimpleCell>
           </Card>
         </Div>

@@ -5,6 +5,8 @@ import ProfilePanel from "src/panels/Profile/ProfileContainer";
 import FriendsPanel from "src/panels/Friends/FriendsContainer";
 import SettingsPanel from "src/panels/Settings/SettingsContainer";
 import NotificationsPanel from "src/panels/Notifications/NotificationsContainer";
+import RefPanel from "src/panels/Ref/Ref";
+import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -46,6 +48,14 @@ export default class extends React.Component<IProps> {
           {
             id: 'notifications',
             component: NotificationsPanel
+          },
+          {
+            id: 'ref',
+            component: RefPanel
+          },
+          {
+            id: 'linkedGroup',
+            component: LinkedGroupPanel
           }
         ]}
       />
