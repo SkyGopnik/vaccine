@@ -150,7 +150,7 @@ export default class extends React.Component<IProps, IState> {
     // console.log(click.count);
     // console.log('user cheat - ' + cheatCount);
 
-    if (count < 10) {
+    if (count < 7) {
       syncUser(lo.merge(user, {
         data: {
           balance: new Decimal(user.data.balance).add(user.data.click)
