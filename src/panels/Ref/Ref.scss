@@ -1,0 +1,36 @@
+.block {
+  :global {
+    .Header {
+      .Header__in {
+        padding: 0;
+      }
+    }
+
+    .Text {
+      color: #6D7885;
+    }
+  }
+
+  .ref {
+    text-align: center;
+  
+    :global {
+      .Title {
+        margin: 18px 0px;
+        color: #000000;
+      }
+    }
+  }
+
+  .input {
+    :global {
+      display: flex;
+      .Input {
+        width: 80%;
+      }
+      .Button {
+        margin-left: 8px;
+      }
+    }
+  }
+}
