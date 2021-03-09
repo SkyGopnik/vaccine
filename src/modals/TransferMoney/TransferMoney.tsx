@@ -10,7 +10,7 @@ import {
   Spinner, Avatar, Text, Snackbar
 } from "@vkontakte/vkui";
 
-import {Icon16Done, Icon28MoneySendOutline} from "@vkontakte/icons";
+import {Icon16Cancel, Icon16Done, Icon28MoneySendOutline} from "@vkontakte/icons";
 
 import {UserInterface} from "src/store/user/reducers";
 
@@ -174,9 +174,6 @@ export default class extends React.Component<IProps, IState> {
         sum: numValue
       });
 
-      // Закрываем модалку
-      window.history.go(modalData.backType === 'double' ? -2 : -1);
-
       // Показываем уведомление
       changeSnackbar(
         <Snackbar
@@ -194,7 +191,21 @@ export default class extends React.Component<IProps, IState> {
       this.setState({
         loading: false
       });
+
+      changeSnackbar(
+        <Snackbar
+          className={`${this.paddingNeed() ? style.snackbar : ''} error-snack`}
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
+        >
+          Очень много заражённых, давай попробуем позже
+        </Snackbar>
+      );
     }
+
+    // Закрываем модалку
+    window.history.go(modalData.backType === 'double' ? -2 : -1);
   }
 
   render() {

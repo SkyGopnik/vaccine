@@ -41,6 +41,16 @@
     cursor: pointer;
   }
 
+  .SimpleCell__main {
+    .SimpleCell__children {
+      line-height: 22px;
+    }
+
+    .SimpleCell__description {
+      line-height: 18px;
+    }
+  }
+
   @media screen and (max-width: 450px) {
     .ModalCard--android, .ModalCard--ios {
       .ModalCard__in {
