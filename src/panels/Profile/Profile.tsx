@@ -151,23 +151,23 @@ export default class extends React.Component<IProps, IState> {
           )}
         </Div>
         <Div>
-          <Card
-            icon={<img src={Img1} alt="" />}
-            title="Спасение друзей"
-            description="За каждое приглашение друга в игру вы получите вакцину на свой счёт"
-            actionsInfo={{
-              action: (
-                <Button
-                  mode="outline"
-                  size="m"
-                  onClick={() => changePanel('ref')}
-                >
-                  Пригласить
-                </Button>
-              ),
-              info: '0 друзей в игре'
-            }}
-          />
+          {/*<Card*/}
+          {/*  icon={<img src={Img1} alt="" />}*/}
+          {/*  title="Спасение друзей"*/}
+          {/*  description="За каждое приглашение друга в игру вы получите вакцину на свой счёт"*/}
+          {/*  actionsInfo={{*/}
+          {/*    action: (*/}
+          {/*      <Button*/}
+          {/*        mode="outline"*/}
+          {/*        size="m"*/}
+          {/*        onClick={() => changePanel('ref')}*/}
+          {/*      >*/}
+          {/*        Пригласить*/}
+          {/*      </Button>*/}
+          {/*    ),*/}
+          {/*    info: '0 друзей в игре'*/}
+          {/*  }}*/}
+          {/*/>*/}
           <Card
             icon={<img src={Img2} alt="" />}
             title="Передача вакцины"

@@ -5,9 +5,11 @@ import {
   APP_CHANGE_MODAL,
   APP_CHANGE_STORY,
   APP_CHANGE_SNACKBAR,
-  updateHistory
+  updateHistory, changeModal
 } from './actions';
 import {ReactNode} from "react";
+
+let modalTime = new Date().getTime();
 
 export interface AppReducerInterface {
   view: string,
@@ -104,7 +106,21 @@ export const appReducer = (state = defaultState, action) => {
       }, `${state.view}/${state.panel}/${state.story}/${action.payload.modal}`);
     }
 
+    const currentTime = new Date().getTime();
+
+    if ((currentTime - modalTime) < 700) {
+      setTimeout(() => {
+        changeModal(action.payload.modal, action.payload.modalData);
+      }, 700);
+
+      return {
+        ...state
+      };
+    }
+
     console.log('APP_CHANGE_MODAL'+action.payload.modal)
+
+    modalTime = new Date().getTime();
 
     return {
       ...state,

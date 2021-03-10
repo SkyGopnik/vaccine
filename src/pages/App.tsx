@@ -154,6 +154,8 @@ export default class extends React.Component<IProps, IState> {
         // Отменяем стандартное событие
         e.preventDefault();
 
+        console.log('popstate');
+
         /*
           В общем, в чём прикол этого бреда, когда мы возвращаемся назад,
           в прошлой модалке у нас может использоваться информация из modalData

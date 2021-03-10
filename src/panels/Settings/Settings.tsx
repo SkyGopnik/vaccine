@@ -84,13 +84,13 @@ export default class extends React.Component<IProps> {
             >
               Отображение в рейтинге
             </SimpleCell>
-            <SimpleCell
-              expandable 
-              indicator="Name"
-              onClick={() => changePanel('linkedGroup')}
-            >
-              Сообщество
-            </SimpleCell>
+            {/*<SimpleCell*/}
+            {/*  expandable */}
+            {/*  indicator="Name"*/}
+            {/*  onClick={() => changePanel('linkedGroup')}*/}
+            {/*>*/}
+            {/*  Сообщество*/}
+            {/*</SimpleCell>*/}
           </Card>
         </Div>
       </Panel>

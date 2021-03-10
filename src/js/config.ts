@@ -1,6 +1,6 @@
 export let config;
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.localConfig === 'production') {
   config = {
     wsUrl: 'wss://vaccine-wss.skyreglis.studio',
     apiUrl: 'https://vaccine.skyreglis.studio'
