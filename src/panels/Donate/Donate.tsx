@@ -44,7 +44,7 @@ export default class extends React.Component<IProps, IState> {
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Магазин
         </PanelHeader>
-        <FixedLayout vertical="top">
+        <FixedLayout className={style.subHeader} vertical="top">
           <Tabs>
             <TabsItem
               onClick={() => this.setState({ type: 'sub' })}
@@ -76,15 +76,17 @@ export default class extends React.Component<IProps, IState> {
               <Text weight="regular" className={style.dark}>
                 <div>· 10 млн вакцины, 2 маски и 2 респиратора раз в неделю</div>
                 <div>· место в рейтинге донов в игре</div>
-                <div>· набор стикеров ВКонтакте раз в месяц</div>
-                <div>· чай, кофе, шаверма с доставкой</div>
+                <div>· набор стикеров ВКонтакте раз в месяц</div>
+                <div>· чай, кофе, шаверма с доставкой</div>
               </Text>
             </Card>
             <Caption level="1" weight="regular">Подписка оформляется через VK Donut — сервис ВКонтакте. Её можно отключить в сообществе игры в любой момент. <Link>Читать подробнее</Link></Caption>
           </Div>
         )}
         {type === 'vaccine' && (
-          <div>123</div>
+          <Div className={style.block}>
+            123
+          </Div>
         )}
       </Panel>
     );

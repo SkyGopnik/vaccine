@@ -1,4 +1,10 @@
+.subHeader {
+  background: var(--header_background);
+}
+
 .block {
+  margin-top: 50px;
+  
   :global {
     .Header {
       .Header__in {
