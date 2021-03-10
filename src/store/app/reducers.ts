@@ -109,10 +109,6 @@ export const appReducer = (state = defaultState, action) => {
     const currentTime = new Date().getTime();
 
     if ((currentTime - modalTime) < 700) {
-      setTimeout(() => {
-        changeModal(action.payload.modal, action.payload.modalData);
-      }, 700);
-
       return {
         ...state
       };
@@ -120,7 +116,9 @@ export const appReducer = (state = defaultState, action) => {
 
     console.log('APP_CHANGE_MODAL'+action.payload.modal)
 
-    modalTime = new Date().getTime();
+    if (action.payload.modal) {
+      modalTime = new Date().getTime();
+    }
 
     return {
       ...state,
