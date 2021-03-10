@@ -1,0 +1,27 @@
+.block {
+  :global {
+    .Header {
+      .Header__in {
+        padding: 0;
+      }
+    }
+
+    .Text {
+      color: #6D7885;
+    }
+
+    .Caption {
+      color: #6D7885;
+    }
+  }
+
+  .headline {
+    margin-top: -10px;
+    margin-bottom: 10px;
+    color: #000000;
+  }
+
+  .dark {
+    color: #2C2D2E;
+  }
+}

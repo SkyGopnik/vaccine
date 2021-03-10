@@ -91,6 +91,11 @@ export default class extends React.Component<IProps> {
             {/*>*/}
             {/*  Сообщество*/}
             {/*</SimpleCell>*/}
+            {/*<SimpleCell*/}
+            {/*  onClick={() => changePanel('Donate')}*/}
+            {/*>*/}
+            {/*  Магазин*/}
+            {/*</SimpleCell>*/}
           </Card>
         </Div>
       </Panel>

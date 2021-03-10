@@ -7,6 +7,7 @@ import SettingsPanel from "src/panels/Settings/SettingsContainer";
 import NotificationsPanel from "src/panels/Notifications/NotificationsContainer";
 import RefPanel from "src/panels/Ref/Ref";
 import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
+import DonatePanel from "src/panels/Donate/Donate";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -56,6 +57,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'linkedGroup',
             component: LinkedGroupPanel
+          },
+          {
+            id: 'donate',
+            component: DonatePanel
           }
         ]}
       />
