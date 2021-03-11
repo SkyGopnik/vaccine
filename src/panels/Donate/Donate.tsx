@@ -13,7 +13,6 @@ import {
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
-
 import Card from 'src/components/Card/Card';
 
 import style from "./Donate.scss";

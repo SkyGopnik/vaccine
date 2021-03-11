@@ -105,9 +105,6 @@ export default class extends React.Component<IProps, IState> {
             </Button>
           </Div>
         )}
-        {/*{(story === 'game' && panel === 'improvements') && user && (*/}
-        {/*  <Headline className={style.balance} weight="medium"><div>У вас {user.data.balance}</div> <MainIcon /></Headline>*/}
-        {/*)}*/}
         <div className={style.items}>
           {tabbarItems.map((item) => (
             <TabbarItemLight

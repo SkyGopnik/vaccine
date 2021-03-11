@@ -62,9 +62,19 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_STORY:
-    if (state.story !== action.payload.story) {
-      updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
-    }
+    // console.log('------');
+    // console.log(state.story);
+    // console.log(action.payload.story);
+    // updateHistory(state.view, 'main', action.payload.story, action.payload.panelData);
+
+    window.history.pushState({
+      view: state.view,
+      panel: 'main',
+      story: action.payload.story,
+      data: JSON.stringify(action.payload.panelData),
+      modal: state.modal,
+      modalData: JSON.stringify(state.modalData)
+    }, `${state.view}/${state.panel}/${action.payload.story}/${state.modal}`);
 
     try {
       window.scroll({ top: 0, behavior: state.story === action.payload.story ? 'smooth' : 'auto' });
