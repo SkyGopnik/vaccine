@@ -181,7 +181,6 @@ export default class extends React.Component<IProps, IState> {
     return (
       <ConfigProvider
         scheme={scheme}
-        // platform={queryGet('reglis_platform') === 'web' ? Platform.VKCOM : undefined}
         transitionMotionEnabled={false}
       >
         <AdaptivityProvider>
