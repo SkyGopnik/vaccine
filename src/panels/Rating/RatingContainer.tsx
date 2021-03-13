@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { getRating } from "src/store/rating/actions";
 import { changeModal } from "src/store/app/actions";
 import { sendWsMessage } from "src/store/webSocket/actions";

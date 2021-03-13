@@ -6,7 +6,7 @@ import {
 
 import {UserDataInterface} from "src/store/user/reducers";
 
-export interface RatingReducerIterface {
+export interface RatingReducerInterface {
   list: {
     loading: boolean,
     data: Array<UserDataInterface>,

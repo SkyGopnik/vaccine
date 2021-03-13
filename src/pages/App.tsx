@@ -139,18 +139,16 @@ export default class extends React.Component<IProps, IState> {
 
   menu = (e) => {
     const {
-      view,
       changeModal,
-      updateHistory,
       changeViewPanelStory
     } = this.props;
 
-    // Если история переходов существует
-    if (e.state) {
-      const {view, panel, story, modal, modalData} = e.state;
-      const currentView = this.props.view;
+    const currentView = this.props.view;
 
-      if (currentView === 'main') {
+    if (currentView === 'main') {
+      // Если история переходов существует
+      if (e.state) {
+        const {view, panel, story, modal, modalData} = e.state;
         // Отменяем стандартное событие
         e.preventDefault();
 
@@ -162,15 +160,15 @@ export default class extends React.Component<IProps, IState> {
           изменять modalData сразу нельзя, т.к. тогда на модалке которая закрывается
           будет undefined
           TODO: Как вариант сохранять modalData во внутреннее состояние модалки, чтобы избавить её от зависимости и предотварить баги
-         */
+        */
         changeModal(null, undefined, true);
         setTimeout(() => changeModal(modal, modalData ? JSON.parse(modalData) : null, true), 400);
 
         // Устанавливаем новые значения для View и Panel
         changeViewPanelStory(view, panel, story, null, true);
+      } else {
+        changeViewPanelStory('main', 'main', 'game', null, true);
       }
-    } else {
-      changeViewPanelStory('main', 'main', 'game', null, true);
     }
   }
 

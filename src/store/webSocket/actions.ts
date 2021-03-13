@@ -13,7 +13,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
   return new Promise((resolve, reject) => {
     thunkAPI.dispatch(connectWsStarted());
 
-    socket = new WebSocket(arg);
+    socket = new WebSocket(arg + `?user=${document.location.href}`);
     console.log("Attempting Connection WS...");
 
     thunkAPI.dispatch(changeView('loading'));
@@ -40,57 +40,6 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
         }
       }
 
-      // if (type === 'AuthSuccess') {
-      //   const ref = hashGet('ref');
-      //
-      //   if (ref) {
-      //     thunkAPI.dispatch(sendWsMessage({
-      //       type: 'SaveRef',
-      //       refId: ref
-      //     }));
-      //
-      //     window.location.hash = '';
-      //   }
-      // }
-
-      // if (type === 'RefUser') {
-      //   const { refId, currentId } = JSON.parse(msg.data);
-      //
-      //   if (refId) {
-      //     try {
-      //       const { data } = await axios.get(`/user/ref?refId=${refId}`);
-      //
-      //       const refUser = lo.find(data, {
-      //         userId: refId
-      //       });
-      //
-      //       const currentUser = lo.find(data, {
-      //         userId: currentId
-      //       });
-      //
-      //       // Обновляем баланс пользователю который привёл реферала
-      //       thunkAPI.dispatch(sendWsMessage({
-      //         type: 'RefSystem',
-      //         refId: refId,
-      //         sum: refUser.click * 500
-      //       }));
-      //
-      //       // Модалка с тем что ты получил денег за то что зашёл по рефералке
-      //       thunkAPI.dispatch(changeModal('refMoney', {
-      //         data: refUser,
-      //         sum: currentUser.click * 1000
-      //       }));
-      //
-      //       // Обновляем себе
-      //       thunkAPI.dispatch(sendWsMessage({
-      //         type: 'SyncUser'
-      //       }));
-      //     } catch (e) {
-      //       console.log(e);
-      //     }
-      //   }
-      // }
-
       thunkAPI.dispatch(connectWsMessage(msg.data));
     };
 
@@ -100,11 +49,6 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
       console.log('onopen');
 
       console.log("Successfully connected WS");
-
-      socket.send(JSON.stringify({
-        type: 'AuthUser',
-        user: document.location.href
-      }));
 
       thunkAPI.dispatch(changeView('main'));
 

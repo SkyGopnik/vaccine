@@ -37,6 +37,7 @@ interface IProps {
   story: string,
   syncUser(data: UserInterface),
   getRating(needLoading?: boolean),
+  getNotifications(needLoading?: boolean),
   changeSnackbar(snackbar: ReactNode | null),
   sendWsMessage(data: object)
 }
@@ -128,6 +129,7 @@ export default class extends React.Component<IProps, IState> {
       syncUser,
       changeSnackbar,
       getRating,
+      getNotifications,
       sendWsMessage
     } = this.props;
 
@@ -158,6 +160,9 @@ export default class extends React.Component<IProps, IState> {
       if (story === 'rating' && panel === 'main') {
         // Обновляем рейтинг
         await getRating(false);
+      } else if (story === 'profile' && panel === 'notifications') {
+        // Обновляем события
+        await getNotifications(false);
       }
 
       // Уменьшаем баланс пользователю

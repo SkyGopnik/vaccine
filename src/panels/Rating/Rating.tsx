@@ -16,14 +16,14 @@ import {
 
 import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
-import {RatingReducerIterface} from "src/store/rating/reducers";
+import {RatingReducerInterface} from "src/store/rating/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
 import { locale } from "src/functions/balanceFormat";
 
 import style from './Rating.scss';
 
-interface IProps extends RatingReducerIterface {
+interface IProps extends RatingReducerInterface {
   id: string,
   snackbar: ReactNode | null,
   user: UserInterface | null,
@@ -47,7 +47,7 @@ export default class extends React.Component<IProps, IState> {
   async componentDidMount() {
     const { getRating } = this.props;
 
-    await getRating(false);
+    await getRating();
   }
 
   async onRefresh() {
@@ -56,7 +56,7 @@ export default class extends React.Component<IProps, IState> {
     this.setState({ ptr: true });
 
     setTimeout(async () => {
-      await getRating();
+      await getRating(false);
 
       sendWsMessage({
          type: 'SyncUser'

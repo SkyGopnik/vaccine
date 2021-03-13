@@ -165,29 +165,6 @@ export default class extends React.Component<IProps, IState> {
 
       this.changeProgress();
     }
-    // } else {
-    //   console.log('----');
-    //   console.log(cheatCount);
-    //   console.log(click.count);
-    //   if (!isAdsShown) {
-    //     isAdsShown = true;
-    //     // @ts-ignore
-    //     bridge.send('VKWebAppShowNativeAds', {ad_format: 'reward'})
-    //       .then((res) => {
-    //         isAdsShown = false;
-    //       }).catch((err) => {
-    //         isAdsShown = false;
-    //       });
-    //
-    //     setTimeout(() => {
-    //       isAdsShown = false;
-    //
-    //       this.setState({
-    //         antiClick: antiClickDefault
-    //       });
-    //     }, 3000);
-    //   }
-    // }
   }
 
   render() {
