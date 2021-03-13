@@ -103,10 +103,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum, {
-          minimumFractionDigits: 4,
-          maximumFractionDigits: 4
-        })}</span> вакцины</span>
+        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,
@@ -123,10 +120,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Получил' : 'получил'} <span style={{ fontWeight: 500 }}>{locale(sum, {
-          minimumFractionDigits: 4,
-          maximumFractionDigits: 4
-        })}</span> вакцины</span>
+        <span>{!lowText ? 'Получил' : 'получил'} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,
