@@ -5,7 +5,7 @@ export const GET_NOTIFICATIONS_STARTED = 'GET_NOTIFICATIONS_STARTED';
 export const GET_NOTIFICATIONS_SUCCESS = 'GET_NOTIFICATIONS_SUCCESS';
 export const GET_NOTIFICATIONS_FAILURE = 'GET_NOTIFICATIONS_FAILURE';
 
-export const getNotifications = createAsyncThunk('getRating', async (arg: boolean = true, thunkAPI) => {
+export const getNotifications = createAsyncThunk('getNotifications', async (arg: boolean = true, thunkAPI) => {
   if (arg) {
     thunkAPI.dispatch(getNotificationsStarted());
   }

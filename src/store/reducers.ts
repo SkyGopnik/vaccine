@@ -5,11 +5,13 @@ import { webSocketReducer } from './webSocket/reducers';
 import { userReducer } from "./user/reducers";
 import { ratingReducer } from "./rating/reducers";
 import { notificationsReducer } from "./notifications/reducers";
+import { profileReducer } from "src/store/profile/reducers";
 
 export default combineReducers({
   app: appReducer,
   webSocket: webSocketReducer,
   user: userReducer,
   rating: ratingReducer,
-  notifications: notificationsReducer
+  notifications: notificationsReducer,
+  profile: profileReducer
 });
