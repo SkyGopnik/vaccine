@@ -25,6 +25,7 @@ import style from './TransferMoney.scss';
 interface IProps {
   modalData: {
     backType?: 'double' | 'normal',
+    userType?: 'user' | 'friend',
     userId: string,
     firstName: string,
     lastName: string,
@@ -152,7 +153,7 @@ export default class extends React.Component<IProps, IState> {
     // Передаем деньги
     try {
       await axios.post('/user/transfer/money', {
-        type: modalData.backType && modalData.backType === 'double' ? 'user' : 'friend',
+        type: modalData.userType && modalData.userType === 'friend' ? 'friend' : 'user',
         sum: numValue,
         toUserId: modalData.userId
       });

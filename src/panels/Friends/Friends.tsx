@@ -88,7 +88,10 @@ export default class extends React.Component<IProps, IState> {
                     after={
                       <IconButton
                         icon={<Icon28MoneySendOutline />}
-                        onClick={() => changeModal('transferMoney', item)}
+                        onClick={() => changeModal('transferMoney', {
+                          ...item,
+                          userType: 'friend'
+                        })}
                       />
                     }
                     multiline
