@@ -81,7 +81,7 @@ const getTime = (_time: Date): string => {
   }
 
   // Для всех остальных случаев - 1 мар в 16:53
-  return `${time.getDay()} ${months[time.getMonth()].toLowerCase()} в ${formatNumber(time.getMinutes())}`;
+  return `${time.getDay()} ${months[time.getMonth()].toLowerCase()} в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
 };
 
 export default function (notification: NotificationInterface, lowText?: boolean): {
@@ -103,7 +103,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
+        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
       ),
       photo,
       isNew: notification.isNew,
@@ -120,7 +120,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Получил' : 'получил'} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
+        <span>{!lowText ? 'Получил' : 'получил'} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
       ),
       photo,
       isNew: notification.isNew,
