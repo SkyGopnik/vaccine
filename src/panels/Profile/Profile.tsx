@@ -25,11 +25,9 @@ import {
 import Card from 'src/components/Card/Card';
 import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
 
-import balanceFormat from "src/functions/balanceFormat";
 import getDate from "src/functions/getDate";
-import declBySex from "src/functions/declBySex";
+import declNum from "src/functions/decl_num";
 import { locale } from "src/functions/balanceFormat";
-import getNotifications from "src/functions/getNotifications";
 
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileReducerInterface} from "src/store/profile/reducers";
@@ -160,7 +158,7 @@ export default class extends React.Component<IProps, IState> {
                     Пригласить
                   </Button>
                 ),
-                info: '0 друзей в игре'
+                info: stat.saveFriends && stat.saveFriends !== 0 ? `${stat.saveFriends} ${declNum(stat.saveFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
               }}
             />
             <Card

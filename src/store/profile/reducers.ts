@@ -18,7 +18,9 @@ export interface ProfileReducerInterface {
       saveFriends?: number,
       transfer?: number,
       improvements?: number,
-      achievements?: number
+      achievements?: number,
+      refCode?: number,
+      ref?: number
     },
     notification: Notification
   },

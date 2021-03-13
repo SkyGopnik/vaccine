@@ -106,7 +106,7 @@ export default class extends React.Component<IProps, IState> {
                   header="Спаси своих друзей!"
                   // action={<Button size="m">Спасти друзей</Button>}
                 >
-                  Похоже, твои друзья ещё не присоединилсь к игре, но ты можешь это исправить
+                  Похоже, твои друзья ещё не присоединились к игре, но ты можешь это исправить
                 </Placeholder>
               )
             ) : (

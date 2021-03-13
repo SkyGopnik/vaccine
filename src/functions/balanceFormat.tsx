@@ -18,5 +18,5 @@ export default function (balance: number, localeNeed: boolean = true) {
 export function locale (balance: number) {
   const [whole, fractional] = Utility.noExponents(balance).split('.');
 
-  return new Decimal(whole).toNumber().toLocaleString('ru') + (fractional ? `.${fractional}` : '');
+  return new Decimal(whole).toNumber().toLocaleString('ru') + (fractional && fractional.replace(/0*$/,"") !== "" ? `.${fractional.replace(/0*$/,"")}` : '');
 }

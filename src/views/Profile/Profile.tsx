@@ -5,7 +5,7 @@ import ProfilePanel from "src/panels/Profile/ProfileContainer";
 import FriendsPanel from "src/panels/Friends/FriendsContainer";
 import SettingsPanel from "src/panels/Settings/SettingsContainer";
 import NotificationsPanel from "src/panels/Notifications/NotificationsContainer";
-import RefPanel from "src/panels/Ref/Ref";
+import RefPanel from "src/panels/Ref/RefContainer";
 import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
 import DonatePanel from "src/panels/Donate/Donate";
 

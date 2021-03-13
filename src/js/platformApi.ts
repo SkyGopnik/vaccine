@@ -69,4 +69,18 @@ export default class platformApi {
       ).then((res) => cb && cb(res)).catch((err) => cb && cb(err));
     }
   }
+
+  public static copyToClipboard(text: string, cb?: Function) {
+    if (
+      type === 'vk'
+      || type === 'vk_game'
+    ) {
+      bridge.send(
+        "VKWebAppCopyText",
+        {
+          "text": text
+        }
+      ).then((res) => cb && cb(res)).catch((err) => cb && cb(err));
+    }
+  }
 }
