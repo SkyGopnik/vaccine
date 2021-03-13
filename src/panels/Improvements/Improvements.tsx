@@ -16,8 +16,7 @@ import {
   Snackbar,
   Avatar,
   FixedLayout,
-  Spinner,
-  SliderSwitch
+  Spinner
 } from '@vkontakte/vkui';
 
 import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";

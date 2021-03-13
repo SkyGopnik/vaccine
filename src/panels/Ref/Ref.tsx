@@ -8,7 +8,8 @@ import {
   Subhead,
   Header,
   Input,
-  Button
+  Button,
+  Spacing
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -42,7 +43,7 @@ export default class extends React.Component<IProps> {
           Спасиние друзей
         </PanelHeader>
         <Div className={style.block}>
-          <Text weight="regular" style={{ marginBottom: 16 }}>Скопируй код и покажи его другу. За каждое приглашение ты и твой друг получите бонусную вакцину. Спаси своих друзей!</Text>
+          <Text weight="regular">Скопируй код и покажи его другу. За каждое приглашение ты и твой друг получите бонусную вакцину. Спаси своих друзей!</Text>
           <Card>
             <div className={style.ref}>
               <Title level="1" weight="semibold">11928</Title>
@@ -61,7 +62,7 @@ export default class extends React.Component<IProps> {
         </Div>
         <Div className={style.block}>
           <Header mode="secondary">У меня есть код приглашения</Header>
-          <Text weight="regular" style={{ marginBottom: 16 }}>Есть код? Ура — ты спасён. Осталось лишь ввести этот код от друга сюда. За это ты получишь подарок.</Text>
+          <Text weight="regular">Есть код? Ура — ты спасён. Осталось лишь ввести этот код от друга сюда. За это ты получишь подарок.</Text>
           <Card
             icon={<img src={Img6} alt="" />}
             title="Ввести код"
@@ -75,6 +76,7 @@ export default class extends React.Component<IProps> {
               </div>
             </Subhead>
           </Card>
+          <Spacing size={55} />
         </Div>
       </Panel>
     );

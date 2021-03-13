@@ -1,4 +1,8 @@
 .block {
+  &:last-child {
+    margin-bottom: 50px;
+  }
+
   :global {
     .Header {
       .Header__in {
@@ -7,13 +11,15 @@
     }
 
     .Text {
+      margin-bottom: 12px;
+
       color: #6D7885;
     }
   }
 
   .ref {
     text-align: center;
-  
+
     :global {
       .Title {
         margin: 18px 0px;
@@ -25,9 +31,11 @@
   .input {
     :global {
       display: flex;
+
       .Input {
         width: 80%;
       }
+
       .Button {
         margin-left: 8px;
       }
