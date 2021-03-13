@@ -55,6 +55,11 @@ const getTime = (_time: Date): string => {
     return num;
   }
 
+  // Только что
+  if (difference === 0) {
+    return 'только что';
+  }
+
   // < 1 минуты
   if (difference < 60) {
     return `${difference} ${declNum(difference, ['секунду', 'секунды', 'секунд'])} назад`;
