@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'block': string;
+  'code': string;
   'input': string;
   'ref': string;
 }

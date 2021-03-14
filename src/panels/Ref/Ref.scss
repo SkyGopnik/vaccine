@@ -29,15 +29,19 @@
   }
 
   .input {
-    :global {
+    padding: 0;
+
+    .code {
       display: flex;
 
-      .Input {
-        width: 80%;
-      }
+      :global {
+        .Input {
+          width: 80%;
+        }
 
-      .Button {
-        margin-left: 8px;
+        .Button {
+          margin-left: 8px;
+        }
       }
     }
   }

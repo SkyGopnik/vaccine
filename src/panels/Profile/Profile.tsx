@@ -10,7 +10,7 @@ import {
   Button,
   Subhead,
   SimpleCell,
-  Snackbar, PanelHeaderButton, PullToRefresh, Spacing
+  Snackbar, PanelHeaderButton, PullToRefresh
 } from '@vkontakte/vkui';
 
 import {
@@ -258,7 +258,7 @@ export default class extends React.Component<IProps, IState> {
                 Написать разработчикам
               </SimpleCell>
             </Card>
-            <Spacing size={55} />
+            {/*<Spacing size={55} />*/}
           </Div>
         </PullToRefresh>
         {snackbar}

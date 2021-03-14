@@ -1,4 +1,5 @@
 import React, {ReactNode} from "react";
+import axios from "axios";
 import {
   Panel,
   PanelHeader,
@@ -9,7 +10,10 @@ import {
   Header,
   Input,
   Button,
-  Spacing, Avatar, Snackbar
+  Avatar,
+  Snackbar,
+  FormItem,
+  Spinner
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -18,35 +22,67 @@ import Card from 'src/components/Card/Card';
 import Img5 from "src/img/profile/5.svg";
 import Img6 from "src/img/profile/6.svg";
 
-import {Icon16Done, Icon28Send} from '@vkontakte/icons';
+import {Icon16Cancel, Icon16Done, Icon28Send} from '@vkontakte/icons';
 
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 
 import {locale} from "src/functions/balanceFormat";
+import isset from "src/functions/isset";
 
 import platformApi from "src/js/platformApi";
 
 import style from "./Ref.scss";
+import lo from "lodash";
+import Decimal from "decimal.js";
+import {UserInterface} from "src/store/user/reducers";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
   snackbar: ReactNode | null,
-  changeSnackbar(snackbar: ReactNode | null)
+  user: UserInterface,
+  syncUser(data: UserInterface),
+  changeSnackbar(snackbar: ReactNode | null),
+  sendWsMessage(data: object)
 }
 
-export default class extends React.Component<IProps> {
+interface IState {
+  value: null | string,
+  error: string,
+  loading: boolean
+}
+
+const localization = {
+  "Referral isn't exist": "Реферальный код не существует",
+  "What are you doing here?": "Зачем ты вводишь свой же реферальный код?",
+  "Ref was activated": "Вы уже активировали реферальный код"
+};
+
+export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      value: '',
+      error: undefined,
+      loading: false
+    };
 
     this.copyCode = this.copyCode.bind(this);
+  }
+
+  componentDidMount() {
+    const { data } = this.props;
+    const { additional } = data;
+
+    this.setState({
+      value: additional.refCode ? additional.refCode : ''
+    });
   }
 
   copyCode() {
     const { data, changeSnackbar } = this.props;
 
-    platformApi.copyToClipboard(String(data.stat.refCode), (res) => {
+    platformApi.copyToClipboard(String(data.ref.refCode), (res) => {
       if (res.result) {
         changeSnackbar(
           <Snackbar
@@ -59,27 +95,128 @@ export default class extends React.Component<IProps> {
               </Avatar>
             }
           >
-            Код успешно скопирован в буфер обмена
+            Код скопирован. Пусть друг откроет приложение и вставит в этом разделе
           </Snackbar>
         );
       }
     });
   }
 
+  handleInputChange(value: string) {
+    const sendError = (error: string) => {
+      throw error;
+    };
+
+    let error = '';
+
+    try {
+      if (value.length === 0) {
+        sendError('А где код?');
+      }
+
+      if (!/^\d+$/.test(value)) {
+        sendError('Неправильный формат');
+      }
+    } catch (e) {
+      error = e;
+    }
+
+    this.setState({
+      value,
+      error
+    });
+  }
+
+  async activateRef() {
+    const {
+      user,
+      syncUser,
+      getProfile,
+      changeSnackbar,
+      sendWsMessage
+    } = this.props;
+    const { value } = this.state;
+
+    this.setState({
+      loading: true
+    });
+
+    try {
+      const { data } = await axios.post('/user/ref', {
+        code: value
+      });
+
+      // Обновляем себе баланс
+      syncUser(lo.merge(user, {
+        data: {
+          balance: new Decimal(user.data.balance).plus(data.bonus)
+        }
+      }));
+
+      // Синхронизируем другого пользователя если он в игре
+      sendWsMessage({
+        type: 'RefSystem',
+        refId: data.refUserId,
+        sum: data.bonus
+      });
+
+      await getProfile(false);
+
+      changeSnackbar(
+        <Snackbar
+          className="success-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+        >
+          <div>Реферальный код активирован</div>
+          <Text weight="medium">Получено {locale(data.bonus)} вакцины</Text>
+        </Snackbar>
+      );
+    } catch (e) {
+      console.log(e.response.data.message);
+      changeSnackbar(
+        <Snackbar
+          className="error-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
+        >
+          {localization[e.response.data.message]}
+        </Snackbar>
+      );
+    }
+
+    const { data } = this.props;
+    const { additional } = data;
+
+    this.setState({
+      loading: false,
+      value: additional.refCode ? additional.refCode : '',
+      error: undefined
+    });
+  }
+
   render() {
-    const { id, data, snackbar, changeSnackbar } = this.props;
-    const { stat } = data;
+    const { id, data, snackbar } = this.props;
+    const {
+      value,
+      error,
+      loading
+    } = this.state;
+    const { stat, additional } = data;
+    const { ref, refCode } = data.ref;
 
     return (
       <Panel id={id}>
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
-          Спасиние друзей
+          Спасение друзей
         </PanelHeader>
         <Div className={style.block}>
-          <Text weight="regular">Скопируй код и покажи его другу. За каждое приглашение ты и твой друг получите бонусную вакцину. Спаси своих друзей!</Text>
+          <Text weight="regular">Скопируй код и отправь его другу. За каждое приглашение ты и твой друг получите бонусную вакцину. Спаси своих друзей!</Text>
           <Card>
             <div className={style.ref} onClick={this.copyCode}>
-              <Title level="1" weight="semibold">{stat.refCode || 0}</Title>
+              <Title level="1" weight="semibold">{refCode || 0}</Title>
               <Subhead weight="regular">Нажми на код, чтобы скопировать его</Subhead>
             </div>
           </Card>
@@ -89,7 +226,7 @@ export default class extends React.Component<IProps> {
           >
             <Subhead weight="regular">
               <div>· Спасено друзей: {stat.saveFriends || 0}</div>
-              <div>· Получено вакцины от друзей: {stat.transfer && locale(stat.transfer) || 0}</div>
+              <div>· Получено вакцины за друзей: {ref && locale(ref) || 0}</div>
             </Subhead>
           </Card>
         </Div>
@@ -101,15 +238,31 @@ export default class extends React.Component<IProps> {
             title="Ввести код"
           >
             <Subhead weight="regular">
-              <div className={style.input}>
-                <Input placeholder="11928" />
-                <Button className={style.input}>
-                  <Icon28Send />
-                </Button>
-              </div>
+              <FormItem
+                className={style.input}
+                status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
+                bottom={error ? error : ''}
+              >
+                <div className={style.code}>
+                  <Input
+                    value={value}
+                    type="text"
+                    placeholder="11928"
+                    disabled={loading || additional.refCode}
+                    onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                  />
+                  <Button
+                    disabled={loading || (isset(error) ? (error !== '') : true) || additional.refCode}
+                    onClick={() => this.activateRef()}
+                    stretched
+                  >
+                    {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
+                  </Button>
+                </div>
+              </FormItem>
             </Subhead>
           </Card>
-          <Spacing size={55} />
+          {/*<Spacing size={55} />*/}
         </Div>
         {snackbar}
       </Panel>

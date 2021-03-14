@@ -15,10 +15,10 @@ export const getProfile = createAsyncThunk('getProfile', async (arg: boolean = t
   try {
     const { data } = await axios.get('/user/profile');
 
-    const { stat, notification } = data;
+    const { notification } = data;
 
     thunkAPI.dispatch(getProfileSuccess({
-      stat,
+      ...data,
       notification: notification ? getNotifications(notification, true) : null
     }));
   } catch (e) {

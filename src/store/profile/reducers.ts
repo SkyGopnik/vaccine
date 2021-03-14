@@ -1,11 +1,8 @@
-import {ReactNode} from "react";
 import {
   GET_PROFILE_STARTED,
   GET_PROFILE_SUCCESS,
   GET_PROFILE_FAILURE
 } from './actions';
-
-import getNotifications from "src/functions/getNotifications";
 
 import {Notification} from "src/store/notifications/reducers";
 
@@ -18,10 +15,13 @@ export interface ProfileReducerInterface {
       saveFriends?: number,
       transfer?: number,
       improvements?: number,
-      achievements?: number,
+      achievements?: number
+    },
+    ref: {
       refCode?: number,
       ref?: number
     },
+    additional: any,
     notification: Notification
   },
   error: any,

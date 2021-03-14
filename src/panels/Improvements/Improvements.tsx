@@ -132,7 +132,7 @@ export default class extends React.Component<IProps, IState> {
               onClose={() => changeSnackbar(null)}
               before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
             >
-              <div>Вы успешно купили улучшение.</div>
+              <div>Улучшение куплено</div>
               <Text weight="medium">Осталось {locale(new Decimal(user.data.balance).minus(price).toNumber())} вакцины</Text>
             </Snackbar>
           );
