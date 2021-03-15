@@ -149,7 +149,7 @@ export default class extends React.Component<IProps, IState> {
       // Обновляем себе баланс
       syncUser(lo.merge(user, {
         data: {
-          balance: new Decimal(user.data.balance).plus(data.bonus)
+          balance: new Decimal(user.data.balance).plus(data.bonusUser)
         }
       }));
 
@@ -157,7 +157,7 @@ export default class extends React.Component<IProps, IState> {
       sendWsMessage({
         type: 'RefSystem',
         refId: data.refUserId,
-        sum: data.bonus
+        sum: data.bonusRef
       });
 
       await getProfile(false);
