@@ -16,7 +16,7 @@ export default function (balance: number, localeNeed: boolean = true) {
 };
 
 export function locale (balance: number) {
-  const [whole, fractional] = Utility.noExponents(balance).split('.');
+  const [whole, fractional] = Number(Utility.noExponents(balance)).toFixed(4).split('.');
 
   return new Decimal(whole).toNumber().toLocaleString('ru') + (fractional && fractional.replace(/0*$/,"") !== "" ? `.${fractional.replace(/0*$/,"")}` : '');
 }
