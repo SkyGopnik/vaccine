@@ -114,6 +114,10 @@ export default class extends React.Component<IProps, IState> {
         sendError('А где код?');
       }
 
+      if (value.length > 50) {
+        sendError('Код должен быть меньше 50 символов');
+      }
+
       if (!/^\d+$/.test(value)) {
         sendError('Неправильный формат');
       }
