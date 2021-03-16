@@ -24,7 +24,8 @@ import style from "./Friends.scss";
 interface IProps {
   id: string,
   snackbar: ReactNode | null,
-  changeModal(modal: string | null, modalData?: Object)
+  changeModal(modal: string | null, modalData?: Object),
+  changePanel(panel: string, panelData?: any)
 }
 
 interface IState {
@@ -54,8 +55,6 @@ export default class extends React.Component<IProps, IState> {
         users: response.items.map((item) => String(item.id))
       });
 
-      console.log(data);
-
       this.setState({
         friends: data
       });
@@ -66,7 +65,12 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, snackbar, changeModal } = this.props;
+    const {
+      id,
+      snackbar,
+      changeModal,
+      changePanel
+    } = this.props;
     const { friends } = this.state;
 
     return (
@@ -102,9 +106,18 @@ export default class extends React.Component<IProps, IState> {
                 ))
               ) : (
                 <Placeholder
+                  className={style.placeholder}
                   icon={<Icon56UserAddOutline />}
                   header="Спаси своих друзей!"
-                  // action={<Button size="m">Спасти друзей</Button>}
+                  action={
+                    <Button
+                      size="l"
+                      onClick={() => changePanel('ref')}
+                      stretched
+                    >
+                      Спасти друзей
+                    </Button>
+                  }
                 >
                   Похоже, твои друзья ещё не присоединились к игре, но ты можешь это исправить
                 </Placeholder>

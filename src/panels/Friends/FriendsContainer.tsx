@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeModal } from "src/store/app/actions";
+import { changeModal, changePanel } from "src/store/app/actions";
 
 import Friends from './Friends';
 
@@ -15,7 +15,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = {
-  changeModal
+  changeModal,
+  changePanel
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FriendsContainer);

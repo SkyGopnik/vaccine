@@ -1,3 +1,26 @@
+.placeholder {
+  padding: 12px;
+
+  :global {
+    .Placeholder__in {
+      padding: 0;
+
+      .Title, .Headline {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+      .Placeholder__icon {
+        margin-top: 18px;
+      }
+
+      .Placeholder__action {
+        margin-top: 48px;
+      }
+    }
+  }
+}
+
 .card {
   //padding: 0 12px;
   overflow: hidden;
