@@ -44,6 +44,10 @@ export default class extends React.Component<IProps, IState> {
       error = 'А кому переводим?';
     }
 
+    if (value.length > 50) {
+      error = 'ID или коротки адрес должен быть меньше 50 символов';
+    }
+
     if (!/^\S*$/.test(value)) {
       error = 'И что ты делаешь?';
     }
@@ -58,34 +62,40 @@ export default class extends React.Component<IProps, IState> {
     const { user, changeModal } = this.props;
     let value = this.state.value;
 
-    // Проверяем на присутствие ссылки
-    const matchUrl = value.match(/^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-Za-zА-Яа-я0-9\-]*\.?)*\.{1}[A-Za-zА-Яа-я0-9-]{2,8}(\/([\w#!:.?+=&%@!\-\/])*)?/);
+    console.log(value);
 
-    if (matchUrl && matchUrl[5]) {
-      value = matchUrl[5].replace('/', '');
+    // Проверяем на присутствие ссылки
+    const matchUrl = value.match(/\/\w+/gm);
+
+    if (matchUrl && matchUrl[matchUrl.length - 1]) {
+      value = matchUrl[matchUrl.length - 1].replace('/', '');
     }
 
-    const { data } = await axios.get(`/user/id?userId=${value}`);
+    try {
+      const { data } = await axios.get(`/user/id?userId=${value}`);
 
-    if (data) {
-      if (user.id !== String(data.id)) {
-        changeModal('transferMoney', {
-          backType: 'double',
-          userId: String(data.id),
-          firstName: data.first_name,
-          lastName: data.last_name,
-          photo: data.photo_100,
-          sex: data.sex
-        });
+      if (data) {
+        if (user.id !== String(data.id)) {
+          changeModal('transferMoney', {
+            backType: 'double',
+            userId: String(data.id),
+            firstName: data.first_name,
+            lastName: data.last_name,
+            photo: data.photo_100,
+            sex: data.sex
+          });
+        } else {
+          this.setState({
+            error: 'Что я делаю?'
+          });
+        }
       } else {
         this.setState({
-          error: 'Что я делаю?'
+          error: 'Пользователь не присоединился к игре'
         });
       }
-    } else {
-      this.setState({
-        error: 'Пользователь не присоединился к игре'
-      });
+    } catch (e) {
+      console.log(e);
     }
   }
 

@@ -52,7 +52,7 @@ interface IState {
 }
 
 const localization = {
-  "Referral isn't exist": "Реферальный код не существует",
+  "Referral isn't exist": "Реферального кода не существует",
   "What are you doing here?": "Зачем ты вводишь свой же реферальный код?",
   "Ref was activated": "Вы уже активировали реферальный код"
 };
@@ -114,8 +114,8 @@ export default class extends React.Component<IProps, IState> {
         sendError('А где код?');
       }
 
-      if (value.length > 50) {
-        sendError('Код должен быть меньше 50 символов');
+      if (value.length > 10) {
+        sendError('Код должен быть меньше 10 символов');
       }
 
       if (!/^\d+$/.test(value)) {
