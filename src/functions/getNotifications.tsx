@@ -4,14 +4,11 @@ import declNum from "src/functions/decl_num";
 import {locale} from "src/functions/balanceFormat";
 
 import { UserInfoInterface } from "src/store/user/reducers";
-/*
-  getTransferMoney - уведомление, когда тебе перевели деньги
- */
 
 export interface NotificationInterface {
   id: number,
-  type: 'getTransferMoney',
-  additional: AdditionalInterface["getTransferMoney"] | AdditionalInterface["sendTransferMoney"],
+  type: 'getTransferMoney' | 'sendTransferMoney' | 'getRefActivate' | 'refActivated',
+  additional: AdditionalInterface["getTransferMoney" |  "sendTransferMoney" | "getRefActivate" | "refActivated"],
   isNew: boolean,
   createdAt: Date,
   updatedAt: Date,
@@ -19,11 +16,23 @@ export interface NotificationInterface {
 }
 
 export interface AdditionalInterface {
+  // Передал тебе...
   getTransferMoney: {
     sum: number,
     user: UserInfoInterface
   },
+  // Получил ...
   sendTransferMoney: {
+    sum: number,
+    user: UserInfoInterface
+  },
+  // Получено {n} вакцины, за использование реферального кода
+  getRefActivate: {
+    sum: number,
+    user: UserInfoInterface
+  },
+  // {name} использовал твой код, получено {n} вакцины
+  refActivated: {
     sum: number,
     user: UserInfoInterface
   }
@@ -95,6 +104,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
   photo: string,
   isNew: boolean,
   isRepeat?: boolean,
+  isProfileTitle: boolean,
   time: string,
   user?: UserInfoInterface
 } {
@@ -112,6 +122,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       ),
       photo,
       isNew: notification.isNew,
+      isProfileTitle: true,
       time: getTime(notification.createdAt),
       user: additional.user
     };
@@ -129,6 +140,45 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       ),
       photo,
       isNew: notification.isNew,
+      isProfileTitle: true,
+      isRepeat: true,
+      time: getTime(notification.createdAt),
+      user: additional.user
+    };
+  }
+
+  if (type === 'getRefActivate') {
+    const additional: AdditionalInterface["getRefActivate"] = notification.additional;
+    const {sum} = additional;
+    const {firstName, lastName, photo} = additional.user;
+
+    return {
+      title: `${firstName} ${lastName}`,
+      text: (
+        <span>Получено <span style={{fontWeight: 500}}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}, за использование реферального кода</span>
+      ),
+      photo,
+      isNew: notification.isNew,
+      isProfileTitle: true,
+      isRepeat: true,
+      time: getTime(notification.createdAt),
+      user: additional.user
+    };
+  }
+
+  if (type === 'refActivated') {
+    const additional: AdditionalInterface["refActivated"] = notification.additional;
+    const {sum} = additional;
+    const {firstName, lastName, photo} = additional.user;
+
+    return {
+      title: `${firstName} ${lastName}`,
+      text: (
+        <span>{!lowText ? 'Использовал' : 'использовал'} твой реферальный код, получено <span style={{fontWeight: 500}}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
+      ),
+      photo,
+      isNew: notification.isNew,
+      isProfileTitle: true,
       isRepeat: true,
       time: getTime(notification.createdAt),
       user: additional.user
