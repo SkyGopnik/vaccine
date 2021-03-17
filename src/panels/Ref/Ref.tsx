@@ -71,11 +71,17 @@ export default class extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
+    this.updateCode();
+  }
+
+  updateCode() {
     const { data } = this.props;
     const { additional } = data;
 
     this.setState({
-      value: additional.refCode ? additional.refCode : ''
+      loading: false,
+      value: additional.code ? additional.code : '',
+      error: undefined
     });
   }
 
@@ -174,7 +180,7 @@ export default class extends React.Component<IProps, IState> {
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
           <div>Реферальный код активирован</div>
-          <Text weight="medium">Получено {locale(data.bonus)} вакцины</Text>
+          <Text weight="medium">Получено {locale(data.bonusUser)} вакцины</Text>
         </Snackbar>
       );
     } catch (e) {
@@ -191,14 +197,7 @@ export default class extends React.Component<IProps, IState> {
       );
     }
 
-    const { data } = this.props;
-    const { additional } = data;
-
-    this.setState({
-      loading: false,
-      value: additional.refCode ? additional.refCode : '',
-      error: undefined
-    });
+    this.updateCode();
   }
 
   render() {
@@ -251,11 +250,11 @@ export default class extends React.Component<IProps, IState> {
                   value={value}
                   type="text"
                   placeholder="11928"
-                  disabled={loading || additional.refCode}
+                  disabled={loading || additional.code}
                   onChange={(e) => this.handleInputChange(e.currentTarget.value)}
                 />
                 <Button
-                  disabled={loading || (isset(error) ? (error !== '') : true) || additional.refCode}
+                  disabled={loading || (isset(error) ? (error !== '') : true) || additional.code}
                   onClick={() => this.activateRef()}
                   stretched
                 >

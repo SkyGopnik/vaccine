@@ -95,7 +95,7 @@ export default class extends React.Component<IProps, IState> {
       // Обновляем себе баланс
       syncUser(lo.merge(user, {
         data: {
-          balance: new Decimal(user.data.balance).plus(data.bonusUser)
+          balance: new Decimal(user.data.balance).plus(data.bonus)
         }
       }));
 
@@ -123,6 +123,12 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     }
+
+    this.setState({
+      loading: false,
+      value: '',
+      error: undefined
+    });
   }
 
   render() {

@@ -41,7 +41,7 @@ export default class extends React.Component<IProps, IState> {
     let error = '';
 
     if (value.length === 0) {
-      error = 'А кому переводим?';
+      error = undefined;
     }
 
     if (value.length > 50) {

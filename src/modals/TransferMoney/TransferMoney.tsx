@@ -81,7 +81,7 @@ export default class extends React.Component<IProps, IState> {
 
     try {
       if (value.length === 0) {
-        sendError('А что переводим?');
+        sendError(undefined);
       }
 
       if (!/^\d+(\.|,)?\d*$/.test(value)) {
@@ -91,7 +91,7 @@ export default class extends React.Component<IProps, IState> {
       const numValue = new Decimal(String(value).replace(',', '.')).toNumber();
 
       if (numValue === 0) {
-        sendError('А что переводим?');
+        sendError(undefined);
       }
 
       if (numValue > new Decimal(user.data.balance).toNumber()) {
