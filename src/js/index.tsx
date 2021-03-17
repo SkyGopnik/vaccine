@@ -5,7 +5,6 @@ import bridge from '@vkontakte/vk-bridge';
 import { createStore, applyMiddleware  } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import queryGet from "src/functions/query_get";
 
 import { config } from 'src/js/config';
 
@@ -20,7 +19,7 @@ import rootReducer from '../store/reducers';
 
 // Стили VKUI
 import '@vkontakte/vkui/dist/vkui.css';
-import '@vkontakte/vkui/dist/unstable.css'
+import '@vkontakte/vkui/dist/unstable.css';
 import platformApi from "src/js/platformApi";
 
 // Главный объект стора

@@ -5,9 +5,7 @@ import {
 } from "@vkontakte/vkui";
 import React from "react";
 
-import Icon24Back from '@vkontakte/icons/dist/24/back';
-
-import Icon28ChevronBack from '@vkontakte/icons/dist/28/chevron_back';
+import {Icon24Back, Icon28ChevronBack} from "@vkontakte/icons";
 
 const osname = platform();
 

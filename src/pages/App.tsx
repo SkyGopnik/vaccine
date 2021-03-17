@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
-import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Root} from '@vkontakte/vkui';
-import { isMobile } from "react-device-detect";
+import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Platform, Root} from '@vkontakte/vkui';
+import {isMobile} from "react-device-detect";
 
 import Rating from "src/views/Rating/RatingContainer";
 import Game from 'src/views/Game/GameContainer';
@@ -14,9 +14,6 @@ import WrongOrientation from "src/views/WrongOrientation";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
 import Modals from "src/components/Modals/ModalsContainer";
-
-import unixTime from '../functions/unixtime';
-import queryGet from '../functions/query_get';
 import platformApi from "src/js/platformApi";
 
 import {AppReducerInterface} from "src/store/app/reducers";
