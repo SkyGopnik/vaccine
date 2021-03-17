@@ -10,7 +10,8 @@ const OnboardContainer = (props) => <Settings {...props} />;
 
 const mapStateToProps = (state) => {
   const props = {
-    user: state.user.data
+    user: state.user.data,
+    snackbar: state.app.snackbar
   };
 
   return props;

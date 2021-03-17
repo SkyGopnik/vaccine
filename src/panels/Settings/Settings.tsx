@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {
   Panel,
   PanelHeader,
@@ -10,6 +10,7 @@ import {
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
+import Promocode from "src/components/Promocode/PromocodeContainer";
 
 import {UserInterface} from "src/store/user/reducers";
 
@@ -18,6 +19,7 @@ import style from "./Settings.scss";
 interface IProps {
   id: string,
   user: UserInterface | null,
+  snackbar: ReactNode | null,
   changeAdditional(data: object),
   changePanel(panel: string, panelData?: any),
 }
@@ -30,7 +32,12 @@ export default class extends React.Component<IProps> {
   }
 
   render() {
-    const { id, user, changeAdditional, changePanel } = this.props;
+    const {
+      id,
+      user,
+      snackbar,
+      changeAdditional
+    } = this.props;
     const { easyAnimation, showRating } = user.data.additional;
 
     return (
@@ -38,6 +45,12 @@ export default class extends React.Component<IProps> {
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Настройки
         </PanelHeader>
+        <Div className={style.block}>
+          <Header mode="secondary">Промокод</Header>
+          <Card mode="shadow">
+            <Promocode />
+          </Card>
+        </Div>
         <Div className={style.block}>
           <Header mode="secondary">Оформление</Header>
           <Card mode="shadow">
@@ -98,6 +111,7 @@ export default class extends React.Component<IProps> {
             {/*</SimpleCell>*/}
           </Card>
         </Div>
+        {snackbar}
       </Panel>
     );
   }

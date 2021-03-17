@@ -54,7 +54,7 @@ interface IState {
 const localization = {
   "Referral isn't exist": "Реферального кода не существует",
   "What are you doing here?": "Зачем ты вводишь свой же реферальный код?",
-  "Ref was activated": "Вы уже активировали реферальный код"
+  "Ref was activated": "Вы уже активировали этот реферальный код"
 };
 
 export default class extends React.Component<IProps, IState> {
@@ -111,7 +111,7 @@ export default class extends React.Component<IProps, IState> {
 
     try {
       if (value.length === 0) {
-        sendError('А где код?');
+        sendError(undefined);
       }
 
       if (value.length > 10) {
@@ -241,30 +241,28 @@ export default class extends React.Component<IProps, IState> {
             icon={<img src={Img6} alt="" />}
             title="Ввести код"
           >
-            <Subhead weight="regular">
-              <FormItem
-                className={style.input}
-                status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
-                bottom={error ? error : ''}
-              >
-                <div className={style.code}>
-                  <Input
-                    value={value}
-                    type="text"
-                    placeholder="11928"
-                    disabled={loading || additional.refCode}
-                    onChange={(e) => this.handleInputChange(e.currentTarget.value)}
-                  />
-                  <Button
-                    disabled={loading || (isset(error) ? (error !== '') : true) || additional.refCode}
-                    onClick={() => this.activateRef()}
-                    stretched
-                  >
-                    {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
-                  </Button>
-                </div>
-              </FormItem>
-            </Subhead>
+            <FormItem
+              className={style.input}
+              status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
+              bottom={error ? error : ''}
+            >
+              <div className={style.code}>
+                <Input
+                  value={value}
+                  type="text"
+                  placeholder="11928"
+                  disabled={loading || additional.refCode}
+                  onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                />
+                <Button
+                  disabled={loading || (isset(error) ? (error !== '') : true) || additional.refCode}
+                  onClick={() => this.activateRef()}
+                  stretched
+                >
+                  {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
+                </Button>
+              </div>
+            </FormItem>
           </Card>
           {/*<Spacing size={55} />*/}
         </Div>

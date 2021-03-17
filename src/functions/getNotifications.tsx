@@ -7,8 +7,8 @@ import { UserInfoInterface } from "src/store/user/reducers";
 
 export interface NotificationInterface {
   id: number,
-  type: 'getTransferMoney' | 'sendTransferMoney' | 'getRefActivate' | 'refActivated',
-  additional: AdditionalInterface["getTransferMoney" |  "sendTransferMoney" | "getRefActivate" | "refActivated"],
+  type: 'getTransferMoney' | 'sendTransferMoney' | 'getRefActivate' | 'refActivated' | 'getPromocode',
+  additional: AdditionalInterface["getTransferMoney" |  "sendTransferMoney" | "getRefActivate" | "refActivated" | "getPromocode"],
   isNew: boolean,
   createdAt: Date,
   updatedAt: Date,
@@ -44,6 +44,11 @@ export interface AdditionalInterface {
   },
   // {name} использовал твой код, получено {n} вакцины
   refActivated: {
+    sum: number,
+    user: UserInfoInterface
+  },
+  // Получено {n} вакцины, за использование промокода
+  getPromocode: {
     sum: number,
     user: UserInfoInterface
   }
@@ -157,7 +162,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>Получено <span style={{fontWeight: 500}}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}, за использование реферального кода</span>
+        <span>Получено <span style={{fontWeight: 500}}>{locale(sum)}</span> вакцины, за использование реферального кода</span>
       ),
       photo,
       isNew: notification.isNew,
@@ -176,11 +181,30 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Использовал' : 'использовал'} твой реферальный код, получено <span style={{fontWeight: 500}}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
+        <span>{!lowText ? 'Использовал' : 'использовал'} твой реферальный код, получено <span style={{fontWeight: 500}}>{locale(sum)}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,
       isProfileTitle: true,
+      isRepeat: true,
+      time: getTime(notification.createdAt),
+      user: additional.user
+    };
+  }
+
+  if (type === 'getPromocode') {
+    const additional: AdditionalInterface["getPromocode"] = notification.additional;
+    const {sum} = additional;
+    const {firstName, lastName, photo} = additional.user;
+
+    return {
+      title: `${firstName} ${lastName}`,
+      text: (
+        <span>Получено <span style={{fontWeight: 500}}>{locale(sum)}</span> вакцины, за использование промокода</span>
+      ),
+      photo,
+      isNew: notification.isNew,
+      isProfileTitle: false,
       isRepeat: true,
       time: getTime(notification.createdAt),
       user: additional.user
