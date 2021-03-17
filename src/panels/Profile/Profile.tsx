@@ -185,7 +185,7 @@ export default class extends React.Component<IProps, IState> {
               <Card
                 icon={<img src={Img3} alt="" />}
                 title="События"
-                description={<span><span style={{ fontWeight: 500 }}>{notification.title}</span> {notification.text}</span>}
+                description={<span>{notification.isProfileTitle && <span style={{ fontWeight: 500 }}>{notification.title}</span>} {notification.text}</span>}
                 subDescription={notification.time}
                 actions={
                   <Button

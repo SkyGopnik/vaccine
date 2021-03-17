@@ -1,23 +1,12 @@
-import {ReactNode} from "react";
 import {
   GET_NOTIFICATIONS_STARTED,
   GET_NOTIFICATIONS_SUCCESS,
   GET_NOTIFICATIONS_FAILURE
 } from './actions';
 
-import getNotifications from "src/functions/getNotifications";
+import getNotifications, {RenderNotificationInterface} from "src/functions/getNotifications";
 
-import {UserInfoInterface} from "src/store/user/reducers";
-
-export interface Notification {
-  title: string,
-  text: ReactNode,
-  photo: string,
-  isNew: boolean,
-  isRepeat: boolean,
-  time: string,
-  user?: UserInfoInterface
-}
+export interface Notification extends RenderNotificationInterface {}
 
 export interface NotificationsReducerInterface {
   data: Array<Notification>,

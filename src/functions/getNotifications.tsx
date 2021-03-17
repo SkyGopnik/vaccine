@@ -15,6 +15,17 @@ export interface NotificationInterface {
   userId: string
 }
 
+export interface RenderNotificationInterface {
+  title: string,
+  text: ReactNode,
+  photo: string,
+  isNew: boolean,
+  isRepeat?: boolean,
+  isProfileTitle: boolean,
+  time: string,
+  user?: UserInfoInterface
+}
+
 export interface AdditionalInterface {
   // Передал тебе...
   getTransferMoney: {
@@ -98,16 +109,7 @@ const getTime = (_time: Date): string => {
   return `${time.getDay()} ${months[time.getMonth()].toLowerCase()} в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
 };
 
-export default function (notification: NotificationInterface, lowText?: boolean): {
-  title: string,
-  text: ReactNode,
-  photo: string,
-  isNew: boolean,
-  isRepeat?: boolean,
-  isProfileTitle: boolean,
-  time: string,
-  user?: UserInfoInterface
-} {
+export default function (notification: NotificationInterface, lowText?: boolean): RenderNotificationInterface {
   const { type } = notification;
 
   if (type === 'getTransferMoney') {
@@ -159,7 +161,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       ),
       photo,
       isNew: notification.isNew,
-      isProfileTitle: true,
+      isProfileTitle: false,
       isRepeat: true,
       time: getTime(notification.createdAt),
       user: additional.user
