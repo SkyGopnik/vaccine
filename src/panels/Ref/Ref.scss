@@ -1,48 +1,58 @@
-.block {
-  &:last-child {
-    margin-bottom: 50px;
-  }
-
-  :global {
-    .Header {
-      .Header__in {
-        padding: 0;
-      }
-    }
-
-    .Text {
-      margin-bottom: 12px;
-
-      color: #6D7885;
-    }
-  }
-
-  .ref {
-    text-align: center;
+.refPanel {
+  .block {
+    //&:last-child {
+    //  margin-bottom: 50px;
+    //}
 
     :global {
-      .Title {
-        margin: 18px 0px;
-        color: #000000;
+      .Header {
+        .Header__in {
+          padding: 0;
+
+          .Header__main {
+            margin-top: 0;
+          }
+        }
+      }
+
+      .Text {
+        margin-bottom: 12px;
+
+        color: #6D7885;
       }
     }
-  }
 
-  .input {
-    padding: 0;
-
-    .code {
-      display: flex;
+    .ref {
+      text-align: center;
 
       :global {
-        .Input {
-          width: 80%;
+        .Title {
+          margin: 18px 0px;
+          color: #000000;
         }
+      }
+    }
 
-        .Button {
-          margin-left: 8px;
+    .input {
+      padding: 0;
+
+      .code {
+        display: flex;
+
+        :global {
+          .Input {
+            width: 80%;
+          }
+
+          .Button {
+            margin-left: 8px;
+          }
         }
       }
     }
   }
+}
+
+.snackbar {
+  padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
 }

@@ -31,7 +31,13 @@ import platformApi from "src/js/platformApi";
 interface IProps extends AppReducerInterface {
   user: UserInterface,
   ratingUser: UserDataInterface | null,
-  ratingLoading: boolean
+  ratingLoading: boolean,
+  profile: {
+    ref: {
+      refCode?: number,
+      ref?: number
+    }
+  }
 }
 
 interface IState {
@@ -68,6 +74,7 @@ export default class extends React.Component<IProps, IState> {
       panel,
       story,
       user,
+      profile,
       ratingUser,
       ratingLoading,
       changeStory,
@@ -102,6 +109,17 @@ export default class extends React.Component<IProps, IState> {
               stretched
             >
               Улучшения
+            </Button>
+          </Div>
+        )}
+        {(story === 'profile' && panel === 'ref') && (
+          <Div className={style.button}>
+            <Button
+              size="m"
+              onClick={() => platformApi.sharePost(`Присоединяйся к игре и получи дополнительный бонус используя мой реферальный код - ${profile.ref.refCode}`)}
+              stretched
+            >
+              Поделиться приглашением
             </Button>
           </Div>
         )}

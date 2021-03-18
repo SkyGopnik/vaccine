@@ -1,5 +1,7 @@
 import React, {ReactNode} from "react";
 import axios from "axios";
+import lo from "lodash";
+import Decimal from "decimal.js";
 import {
   Panel,
   PanelHeader,
@@ -25,16 +27,16 @@ import Img6 from "src/img/profile/6.svg";
 import {Icon16Cancel, Icon16Done, Icon28Send} from '@vkontakte/icons';
 
 import {ProfileReducerInterface} from "src/store/profile/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 import {locale} from "src/functions/balanceFormat";
 import isset from "src/functions/isset";
 
+import Spacing from "src/components/Spacing";
+
 import platformApi from "src/js/platformApi";
 
 import style from "./Ref.scss";
-import lo from "lodash";
-import Decimal from "decimal.js";
-import {UserInterface} from "src/store/user/reducers";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -92,7 +94,7 @@ export default class extends React.Component<IProps, IState> {
       if (res.result) {
         changeSnackbar(
           <Snackbar
-            className="success-snack"
+            className={`${style.snackbar} success-snack`}
             layout="vertical"
             onClose={() => changeSnackbar(null)}
             before={
@@ -174,7 +176,7 @@ export default class extends React.Component<IProps, IState> {
 
       changeSnackbar(
         <Snackbar
-          className="success-snack"
+          className={`${style.snackbar} success-snack`}
           layout="vertical"
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
@@ -187,7 +189,7 @@ export default class extends React.Component<IProps, IState> {
       console.log(e.response.data.message);
       changeSnackbar(
         <Snackbar
-          className="error-snack"
+          className={`${style.snackbar} error-snack`}
           layout="vertical"
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
@@ -211,7 +213,7 @@ export default class extends React.Component<IProps, IState> {
     const { ref, refCode } = data.ref;
 
     return (
-      <Panel id={id}>
+      <Panel id={id} className={style.refPanel}>
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Спасение друзей
         </PanelHeader>
@@ -263,7 +265,7 @@ export default class extends React.Component<IProps, IState> {
               </div>
             </FormItem>
           </Card>
-          {/*<Spacing size={55} />*/}
+          <Spacing size={110} />
         </Div>
         {snackbar}
       </Panel>
