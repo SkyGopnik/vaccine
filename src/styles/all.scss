@@ -27,13 +27,15 @@
 
     flex-direction: column;
 
-    cursor: pointer;
-
     box-shadow: 0 -2px 4px 0 rgba(0,0,0,.06), 0 0 2px 0 rgba(0,0,0,.08);
     border-radius: 15px 15px 0px 0px;
 
     &:before {
       height: 0 !important;
+    }
+
+    .TabbarItem {
+      cursor: pointer;
     }
   }
 
