@@ -32,7 +32,9 @@ interface IState {
 
 const localization = {
   "Promocode isn't exist": "Промокода не существует",
-  "Promocode was activated": "Вы уже активировали этот промокод"
+  "Promocode was activated": "Вы уже активировали этот промокод",
+  "Promocode expire": "Срок действия промокода истёк",
+  "Promocode limit": "Промокод уже активировало максимальное количество людей"
 };
 
 export default class extends React.Component<IProps, IState> {
