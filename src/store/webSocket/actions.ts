@@ -1,6 +1,7 @@
-import {changeModal, changeView} from "src/store/app/actions";
-import {changeProgress, syncUser} from "src/store/user/actions";
+import {changeModal, changeSnackbar, changeView} from "src/store/app/actions";
+import {changeProgress, syncUser, balancePlus} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {passiveOfflineBonus} from "src/functions/getSnackbar";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -8,6 +9,7 @@ export const CONNECT_WS_SUCCESS = 'CONNECT_WS_SUCCESS';
 export const CONNECT_WS_FAILURE = 'CONNECT_WS_FAILURE';
 
 let socket;
+let ping;
 
 export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunkAPI) => {
   return new Promise((resolve, reject) => {
@@ -19,10 +21,14 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
     thunkAPI.dispatch(changeView('loading'));
 
     socket.onmessage = async (msg) => {
-      // console.log('onmessage');
-
       const {type, subType, data} = JSON.parse(msg.data);
-      // console.log(msg.data);
+
+      if (type === 'PassiveOfflineBonus') {
+        const { bonus } = JSON.parse(msg.data);
+
+        thunkAPI.dispatch(changeSnackbar(passiveOfflineBonus(bonus)));
+        thunkAPI.dispatch(balancePlus(bonus));
+      }
 
       if (type === 'SyncUser') {
         thunkAPI.dispatch(syncUser(data));
@@ -54,7 +60,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
       thunkAPI.dispatch(connectWsSuccess());
 
-      setInterval(() => thunkAPI.dispatch(sendWsMessage({ type: 'ping' })), 5000);
+      ping = setInterval(() => thunkAPI.dispatch(sendWsMessage({ type: 'ping' })), 5000);
     };
 
     socket.onclose = event => {
@@ -79,9 +85,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
 export const sendWsMessage = (data: object) => {
   if (socket.readyState) {
-    return () => {
-      socket.send(JSON.stringify(data));
-    };
+    return () => socket.send(JSON.stringify(data));
   }
 };
 

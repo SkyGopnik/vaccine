@@ -2,8 +2,10 @@ import lo from 'lodash';
 
 import {
   CHANGE_PROGRESS,
-  SYNC_USER
+  SYNC_USER,
+  BALANCE_PLUS
 } from './actions';
+import Decimal from "decimal.js";
 
 export interface UserInfoInterface {
   id?: number,
@@ -53,6 +55,18 @@ export const userReducer = (state = defaultState, { type, payload }) => {
       data: {
         ...payload
       }
+    };
+
+  case BALANCE_PLUS:
+    const { balance } = state.data.data;
+
+    return {
+      ...state,
+      data: lo.merge(state.data, {
+        data: {
+          balance: new Decimal(balance).add(payload)
+        }
+      })
     };
 
   default:

@@ -1,5 +1,4 @@
-import React from 'react';
-import bridge from '@vkontakte/vk-bridge';
+import React, {ReactNode} from 'react';
 import Decimal from 'decimal.js';
 import lo from 'lodash';
 import {
@@ -25,8 +24,10 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
   user: UserInterface | null,
   clickProgress: number,
+  snackbar: ReactNode,
   syncUser(data: UserInterface),
-  changeProgress(progress: number)
+  changeProgress(progress: number),
+  balancePlus(sum: number)
 }
 
 interface IState {
@@ -95,7 +96,7 @@ export default class extends React.Component<IProps, IState> {
   changeProgress() {
     const {
       user,
-      syncUser,
+      balancePlus,
       clickProgress,
       changeProgress
     } = this.props;
@@ -106,36 +107,20 @@ export default class extends React.Component<IProps, IState> {
         this.renderEffect();
       }
 
-      syncUser(lo.merge(user, {
-        data: {
-          balance: new Decimal(user.data.balance).add(user.data.click * 5)
-        }
-      }));
+      balancePlus(user.data.click * 5);
     }
 
     changeProgress(value < 100 ? value : 0);
   }
 
-  iconClick(e) {
-    // const icon = e.target.getBoundingClientRect();
+  iconClick() {
     const {
       user,
-      syncUser,
+      balancePlus,
       sendWsMessage
     } = this.props;
     const { lastClick } = this.state;
     const { time, count } = lastClick;
-    // const { cheatCount, click, interval } = antiClick;
-
-    // const x = Math.round(e.clientX - icon.left);
-    // const y = Math.round(e.clientY - icon.top);
-    //
-    // const time = new Date().getTime(); // Текущее время
-    // const curInterval = time - interval.time; // Текущий интервал
-    // const inaccuracy = 20; // Погрешность +- наше число
-    //
-    // const checkIntervalSimilarity = curInterval >= (interval.last - inaccuracy) && curInterval <= (interval.last + inaccuracy);
-    // const nextInterval = interval.count + 1;
 
     this.setState({
       lastClick: {
@@ -144,18 +129,8 @@ export default class extends React.Component<IProps, IState> {
       }
     });
 
-    // console.log('----');
-    // console.log(curInterval);
-    // console.log('x - ', click.x, ' y - ', click.y, ' real X - ', x, ' real Y - ', y);
-    // console.log(click.count);
-    // console.log('user cheat - ' + cheatCount);
-
     if (count < 7) {
-      syncUser(lo.merge(user, {
-        data: {
-          balance: new Decimal(user.data.balance).add(user.data.click)
-        }
-      }));
+      balancePlus(user.data.click);
 
       sendWsMessage({type: 'ClickUser'});
 
@@ -168,7 +143,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, user, clickProgress } = this.props;
+    const { id, user, snackbar, clickProgress } = this.props;
     const { effects } = this.state;
 
     return (
@@ -214,10 +189,11 @@ export default class extends React.Component<IProps, IState> {
           ))}
           <MainIcon
             className={style.icon}
-            onClick={(e) => this.iconClick(e)}
+            onClick={() => this.iconClick()}
           />
           <Progress className={style.progress} value={clickProgress} />
         </div>
+        {snackbar}
       </Panel>
     );
   }
