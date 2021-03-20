@@ -4,6 +4,8 @@ import {Icon16Done} from "@vkontakte/icons";
 
 import {changeSnackbar} from "src/store/app/actions";
 
+import {locale} from "src/functions/balanceFormat";
+
 export function passiveOfflineBonus(sum: number) {
   return (
     <Snackbar
@@ -13,7 +15,7 @@ export function passiveOfflineBonus(sum: number) {
       before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
     >
       <div>Пока тебя не было, мы заработали</div>
-      <Text weight="medium">{sum} вакцины</Text>
+      <Text weight="medium">{locale(sum)} вакцины</Text>
     </Snackbar>
   );
 };

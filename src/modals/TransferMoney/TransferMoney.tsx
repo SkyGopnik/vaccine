@@ -16,7 +16,7 @@ import {UserInterface} from "src/store/user/reducers";
 
 import isset from "src/functions/isset";
 import declBySex from "src/functions/declBySex";
-import balanceFormat from "src/functions/balanceFormat";
+import balanceFormat, {locale} from "src/functions/balanceFormat";
 
 import Utility from "src/utility";
 
@@ -190,7 +190,7 @@ export default class extends React.Component<IProps, IState> {
           after={<Avatar src={photo} size={32} />}
         >
           <div>{toName} {declBySex(sex, ['получил (a)', 'получила', 'получил'])}</div>
-          <Text weight="medium">{numValue} вакцины</Text>
+          <Text weight="medium">{locale(numValue)} вакцины</Text>
         </Snackbar>
       );
     } catch (e) {
