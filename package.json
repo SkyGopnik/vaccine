@@ -68,6 +68,7 @@
     "react-dom": "^17.0.1",
     "react-hot-loader": "^4.12.21",
     "react-redux": "^7.2.1",
+    "react-swipeable": "^5.5.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "sass-loader": "^8.0.2",

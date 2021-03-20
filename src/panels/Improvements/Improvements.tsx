@@ -20,6 +20,7 @@ import {
 } from '@vkontakte/vkui';
 
 import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
+import { Swipeable } from 'react-swipeable';
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import MainIcon from "src/components/MainIcon";
@@ -222,6 +223,28 @@ export default class extends React.Component<IProps, IState> {
     return (this.getBalanceBribeLimit() + new Decimal(balance).toNumber() - this.calculatePrice(price, this.itemCount(name))) < 0;
   }
 
+  swipe(motion: 'left' | 'right') {
+    const { type } = this.state;
+
+    const types: Array<'vaccine' | 'scientists' | 'pharmacy'> = ['vaccine', 'scientists'];
+
+    try {
+      window.scroll({ top: 0, behavior: 'auto' });
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (motion === 'left') {
+      this.setState({
+        type: types[types.indexOf(type) + 1] ? types[types.indexOf(type) + 1] : types[0]
+      });
+    } else if (motion === 'right') {
+      this.setState({
+        type: types[types.indexOf(type) - 1] ? types[types.indexOf(type) - 1] : types[types.length - 1]
+      });
+    }
+  }
+
   render() {
     const { id, user, snackbar } = this.props;
     const {
@@ -259,52 +282,57 @@ export default class extends React.Component<IProps, IState> {
             {/*</TabsItem>*/}
           </Tabs>
         </FixedLayout>
-        <Div className={style.list}>
-          {improvements[type].map((item, index) => (
-            <Card
-              className={style.card}
-              key={index}
-              mode="shadow"
-            >
-              <div className={style.icon}>
-                <img src={item.icon} alt=""/>
-              </div>
-              <div className={style.content}>
-                <div className={style.header}>
-                  <Headline weight="medium">{item.name}</Headline>
-                  <Caption level="1" weight="regular">{item.count}/{item.pref}</Caption>
+        <Swipeable
+          onSwipedLeft={() => this.swipe('left')}
+          onSwipedRight={() => this.swipe('right')}
+        >
+          <Div className={style.list}>
+            {improvements[type].map((item, index) => (
+              <Card
+                className={style.card}
+                key={index}
+                mode="shadow"
+              >
+                <div className={style.icon}>
+                  <img src={item.icon} alt=""/>
                 </div>
-                <Text
-                  className={style.body}
-                  weight="regular"
-                >
-                  {item.desc}
-                </Text>
-                <div className={style.button}>
-                  <Button
-                    className={(!this.checkAdsWatch(user.data.balance, item.price, item.name) && new Decimal(user.data.balance).toNumber() < this.calculatePrice(item.price, this.itemCount(item.name))) ? style.watchAds : '123'}
-                    mode="outline"
-                    size="m"
-                    // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
-                    // item.price * lo.filter - стоимость с множителем
-                    disabled={buttons[index] || loading || firstLoading || user && this.checkAdsWatch(user.data.balance, item.price, item.name)}
-                    onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
+                <div className={style.content}>
+                  <div className={style.header}>
+                    <Headline weight="medium">{item.name}</Headline>
+                    <Caption level="1" weight="regular">{item.count}/{item.pref}</Caption>
+                  </div>
+                  <Text
+                    className={style.body}
+                    weight="regular"
                   >
-                    {!firstLoading && !buttons[index] ? (
-                      <>
-                        <div>{locale(this.calculatePrice(item.price, this.itemCount(item.name)))}</div>
-                        <div><MainIcon className={style.btnIcon} /></div>
-                      </>
-                    ) : <Spinner size="small" />}
-                  </Button>
-                  {stat[type] && this.itemCount(item.name) !== 0 && (
-                    <Caption className={style.buyInfo} level="1" weight="regular">{this.itemCount(item.name)} куплено</Caption>
-                  )}
+                    {item.desc}
+                  </Text>
+                  <div className={style.button}>
+                    <Button
+                      className={(!this.checkAdsWatch(user.data.balance, item.price, item.name) && new Decimal(user.data.balance).toNumber() < this.calculatePrice(item.price, this.itemCount(item.name))) ? style.watchAds : '123'}
+                      mode="outline"
+                      size="m"
+                      // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
+                      // item.price * lo.filter - стоимость с множителем
+                      disabled={buttons[index] || loading || firstLoading || user && this.checkAdsWatch(user.data.balance, item.price, item.name)}
+                      onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
+                    >
+                      {!firstLoading && !buttons[index] ? (
+                        <>
+                          <div>{locale(this.calculatePrice(item.price, this.itemCount(item.name)))}</div>
+                          <div><MainIcon className={style.btnIcon} /></div>
+                        </>
+                      ) : <Spinner size="small" />}
+                    </Button>
+                    {stat[type] && this.itemCount(item.name) !== 0 && (
+                      <Caption className={style.buyInfo} level="1" weight="regular">{this.itemCount(item.name)} куплено</Caption>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </Div>
+              </Card>
+            ))}
+          </Div>
+        </Swipeable>
         {snackbar}
       </Panel>
     );
