@@ -53,6 +53,12 @@ export const appReducer = (state = defaultState, action) => {
   case APP_CHANGE_PANEL:
     updateHistory(state.view, action.payload.panel, state.story, action.payload.panelData);
 
+    try {
+      window.scroll({ top: 0, behavior: 'auto' });
+    } catch (e) {
+      console.log(e);
+    }
+
     return {
       ...state,
       modal: null,
