@@ -81,7 +81,7 @@ const getTime = (_time: Date): string => {
   }
 
   // Только что
-  if (difference === 0) {
+  if (difference <= 0) {
     return 'только что';
   }
 
