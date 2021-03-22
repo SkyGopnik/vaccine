@@ -12,7 +12,7 @@ import {
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import Card from 'src/components/Card/Card';
 
-import Img5 from "src/img/profile/5.svg";
+import Img from "src/img/profile/6.svg";
 
 import { Icon28DeleteOutline } from '@vkontakte/icons';
 
@@ -39,20 +39,17 @@ export default class extends React.Component<IProps> {
           Сообщество
         </PanelHeader>
         <Div className={style.block}>
-          <Text weight="regular" style={{ marginBottom: 16 }}>Ты можешь создавать вакцину вместе с подписчиками выбранного сообщества.</Text>
+          <Text weight="regular" style={{ marginBottom: 16 }}>Ты можешь создавать вакцину вместе с учёными выбранного сообщества</Text>
           <Card
-            icon={<img src={Img5} alt="" />}
+            icon={<img src={Img} alt="" />}
             title="Моё сообщество"
           >
-            <SimpleCell 
-              before={
-                <Avatar size={40}  />
-              }
-              expandable
-              indicator="Изм."
+            <SimpleCell
+              before={<Avatar size={40} />}
               description="182 учёных"
+              disabled
             >
-              SkyRegils Studio
+              SkyReglis Studio
             </SimpleCell>
           </Card>
           <CellButton before={<Icon28DeleteOutline />} mode="danger">Удалить сообщество</CellButton>

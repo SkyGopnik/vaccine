@@ -6,6 +6,7 @@ import FriendsPanel from "src/panels/Friends/FriendsContainer";
 import SettingsPanel from "src/panels/Settings/SettingsContainer";
 import NotificationsPanel from "src/panels/Notifications/NotificationsContainer";
 import RefPanel from "src/panels/Ref/RefContainer";
+import AdminPanel from "src/panels/Admin/AdminContainer";
 import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
 import DonatePanel from "src/panels/Donate/Donate";
 
@@ -53,6 +54,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'ref',
             component: RefPanel
+          },
+          {
+            id: 'admin',
+            component: AdminPanel
           },
           {
             id: 'linkedGroup',

@@ -36,6 +36,7 @@ export default class extends React.Component<IProps> {
       id,
       user,
       snackbar,
+      changePanel,
       changeAdditional
     } = this.props;
     const { easyAnimation, showRating } = user.data.additional;
@@ -98,7 +99,7 @@ export default class extends React.Component<IProps> {
               Отображение в рейтинге
             </SimpleCell>
             {/*<SimpleCell*/}
-            {/*  expandable */}
+            {/*  expandable*/}
             {/*  indicator="Name"*/}
             {/*  onClick={() => changePanel('linkedGroup')}*/}
             {/*>*/}
@@ -108,6 +109,9 @@ export default class extends React.Component<IProps> {
             {/*  onClick={() => changePanel('donate')}*/}
             {/*>*/}
             {/*  Магазин*/}
+            {/*</SimpleCell>*/}
+            {/*<SimpleCell onClick={() => changePanel('admin')}>*/}
+            {/*  Будка бомжа*/}
             {/*</SimpleCell>*/}
           </Card>
         </Div>

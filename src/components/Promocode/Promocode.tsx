@@ -90,9 +90,7 @@ export default class extends React.Component<IProps, IState> {
     });
 
     try {
-      const { data } = await axios.post('/user/promocode', {
-        code: value
-      });
+      const { data } = await axios.get(`/promocode/?code=${value}`);
 
       // Обновляем себе баланс
       syncUser(lo.merge(user, {
