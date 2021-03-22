@@ -167,7 +167,6 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       photo,
       isNew: notification.isNew,
       isProfileTitle: false,
-      isRepeat: true,
       time: getTime(notification.createdAt),
       user: additional.user
     };
@@ -186,7 +185,6 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       photo,
       isNew: notification.isNew,
       isProfileTitle: true,
-      isRepeat: true,
       time: getTime(notification.createdAt),
       user: additional.user
     };
@@ -205,7 +203,6 @@ export default function (notification: NotificationInterface, lowText?: boolean)
       photo,
       isNew: notification.isNew,
       isProfileTitle: false,
-      isRepeat: true,
       time: getTime(notification.createdAt),
       user: additional.user
     };
