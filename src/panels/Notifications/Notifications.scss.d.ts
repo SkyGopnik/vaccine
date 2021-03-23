@@ -3,8 +3,6 @@
 interface CssExports {
   'block': string;
   'card': string;
-  'content': string;
-  'info': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
