@@ -44,8 +44,8 @@ export default class extends React.Component<IProps, IState> {
       error = undefined;
     }
 
-    if (value.length > 50) {
-      error = 'ID или коротки адрес должен быть меньше 50 символов';
+    if (value.length >= 50) {
+      error = 'ID или короткий адрес должен быть меньше 50 символов';
     }
 
     if (!/^\S*$/.test(value)) {

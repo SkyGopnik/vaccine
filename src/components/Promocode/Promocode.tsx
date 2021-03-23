@@ -60,7 +60,7 @@ export default class extends React.Component<IProps, IState> {
         sendError(undefined);
       }
 
-      if (value.length > 30) {
+      if (value.length >= 30) {
         sendError('Код должен быть меньше 30 символов');
       }
 
