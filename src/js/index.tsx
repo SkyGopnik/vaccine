@@ -23,7 +23,7 @@ import '@vkontakte/vkui/dist/unstable.css';
 import platformApi from "src/js/platformApi";
 
 // Главный объект стора
-const store = createStore(rootReducer, applyMiddleware(thunk));
+export const store = createStore(rootReducer, applyMiddleware(thunk));
 
 // Use scroll helper
 const root = document.getElementById('root');

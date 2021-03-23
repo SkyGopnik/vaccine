@@ -98,9 +98,6 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_VIEW_PANEL_STORY:
-      console.log(!action.payload.isPopstate);
-    console.log('APP_CHANGE_VIEW_PANEL_STORY')
-
     return {
       ...state,
       modal: !action.payload.isPopstate ? null : state.modal,

@@ -23,40 +23,21 @@
     .Card__in {
       display: flex;
     }
-  }
 
-  .info {
-    flex: 1;
+    .RichCell {
+      flex: 1;
 
-    margin-left: 8px;
-
-    display: flex;
-    justify-content: space-between;
-
-    .content {
-      :global {
-        .Headline, .Text {
-          margin-bottom: 4px;
-        }
-
-        .Text {
-          color: #6D7885;
-        }
-
-        .Caption {
-          color: #818C99;
-        }
-      }
-    }
-
-    :global {
-      .IconButton {
-        color: var(--accent);
-
-        .Icon {
-          padding-right: 0;
-        }
-      }
+      padding: 0;
     }
   }
+
+    //:global {
+    //  .IconButton {
+    //    color: var(--accent);
+    //
+    //    .Icon {
+    //      padding-right: 0;
+    //    }
+    //  }
+    //}
 }

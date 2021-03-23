@@ -11,8 +11,9 @@ import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
 import isset from "src/functions/isset";
 
-import style from "./TransferUser.scss";
 import {UserInterface} from "src/store/user/reducers";
+
+import style from "./TransferUser.scss";
 
 interface IProps {
   id: string,
@@ -44,8 +45,8 @@ export default class extends React.Component<IProps, IState> {
       error = undefined;
     }
 
-    if (value.length > 50) {
-      error = 'ID или коротки адрес должен быть меньше 50 символов';
+    if (value.length >= 50) {
+      error = 'ID или короткий адрес должен быть меньше 50 символов';
     }
 
     if (!/^\S*$/.test(value)) {
@@ -60,7 +61,7 @@ export default class extends React.Component<IProps, IState> {
 
   async getUser() {
     const { user, changeModal } = this.props;
-    let value = this.state.value;
+    let { value } = this.state;
 
     console.log(value);
 
@@ -100,7 +101,6 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id } = this.props;
     const {
       value,
       error,
