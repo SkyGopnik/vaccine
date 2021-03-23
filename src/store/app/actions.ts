@@ -1,5 +1,7 @@
 import {ReactNode} from "react";
 
+import { store } from 'src/js';
+
 export const APP_CHANGE_VIEW = 'APP_CHANGE_VIEW';
 export const APP_CHANGE_PANEL = 'APP_CHANGE_PANEL';
 export const APP_CHANGE_VIEW_PANEL_STORY = 'APP_CHANGE_VIEW_PANEL_STORY';
@@ -50,19 +52,22 @@ export const changeViewPanelStory = (view: string, panel: string, story: string 
 };
 
 export const changeModal = (modal: null | string, modalData?: Object, isPopstate?: boolean) => {
-  console.log('changeModal' + modal);
-  // Блокировка и разблокировка скрола при открытии модалки
-  const body = document.getElementsByTagName('body')[0];
-  body.style.overflowY = modal ? 'hidden' : 'scroll';
+  const { app } = store.getState();
 
-  return {
-    type: APP_CHANGE_MODAL,
-    payload: {
-      modal,
-      modalData,
-      isPopstate
-    }
-  };
+  if (app.view === 'main') {
+    // Блокировка и разблокировка скрола при открытии модалки
+    const body = document.getElementsByTagName('body')[0];
+    body.style.overflowY = modal ? 'hidden' : 'scroll';
+
+    return {
+      type: APP_CHANGE_MODAL,
+      payload: {
+        modal,
+        modalData,
+        isPopstate
+      }
+    };
+  }
 };
 
 export const updateHistory = (view: string, panel: string, story: string = null, data?: any) => {
