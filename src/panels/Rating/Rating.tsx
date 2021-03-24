@@ -16,6 +16,8 @@ import {
 
 import {Icon28MoneySendOutline} from "@vkontakte/icons";
 
+import Spacing from "src/components/Spacing";
+
 import {RatingReducerInterface} from "src/store/rating/reducers";
 import {UserInterface} from "src/store/user/reducers";
 
@@ -128,6 +130,7 @@ export default class extends React.Component<IProps, IState> {
                 </Div>
               )}
             </Card>
+            <Spacing size={100} />
           </Div>
         </PullToRefresh>
         {snackbar}
