@@ -173,6 +173,7 @@ export default class extends React.Component<IProps, IState> {
                   <Button
                     mode="outline"
                     size="m"
+                    disabled={!data}
                     onClick={() => changePanel('ref')}
                   >
                     Пригласить
