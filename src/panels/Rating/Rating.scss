@@ -1,43 +1,51 @@
-.card {
-  padding: 0 12px;
-
-  .userItem {
-    display: flex;
-    align-items: center;
-
-    &:first-child {
-      padding-top: 12px;
+.rating {
+  :global {
+    .Snackbar {
+      padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 65px) !important;
     }
+  }
 
-    &:last-child {
-      padding-bottom: 12px;
-    }
+  .card {
+    padding: 0 12px;
 
-    .topNumber {
-      min-width: 30px;
-      text-align: center;
+    .userItem {
+      display: flex;
+      align-items: center;
 
-      font-weight: bold;
-
-      color: var(--header_tint);
-    }
-
-    :global {
-      .SimpleCell {
-        width: 100%;
-
-        padding-right: 0;
+      &:first-child {
+        padding-top: 12px;
       }
-    }
 
-    @media screen and (max-width: 330px) {
+      &:last-child {
+        padding-bottom: 12px;
+      }
+
       .topNumber {
-        display: none;
+        min-width: 30px;
+        text-align: center;
+
+        font-weight: bold;
+
+        color: var(--header_tint);
       }
 
       :global {
         .SimpleCell {
-          padding-left: 0;
+          width: 100%;
+
+          padding-right: 0;
+        }
+      }
+
+      @media screen and (max-width: 330px) {
+        .topNumber {
+          display: none;
+        }
+
+        :global {
+          .SimpleCell {
+            padding-left: 0;
+          }
         }
       }
     }

@@ -1,9 +1,11 @@
-.refPanel {
-  .block {
-    //&:last-child {
-    //  margin-bottom: 50px;
-    //}
+.ref {
+  :global {
+    .Snackbar {
+      padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
+    }
+  }
 
+  .block {
     :global {
       .Header {
         .Header__in {
@@ -22,7 +24,7 @@
       }
     }
 
-    .ref {
+    .refCode {
       text-align: center;
 
       :global {
@@ -51,8 +53,4 @@
       }
     }
   }
-}
-
-.snackbar {
-  padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
 }

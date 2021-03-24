@@ -63,8 +63,7 @@ export const appReducer = (state = defaultState, action) => {
       ...state,
       modal: null,
       panel: action.payload.panel,
-      panelData: action.payload.panelData,
-      snackbar: null
+      panelData: action.payload.panelData
     };
 
   case APP_CHANGE_STORY:
@@ -93,8 +92,7 @@ export const appReducer = (state = defaultState, action) => {
       story: action.payload.story,
       panel: 'main',
       panelData: action.payload.panelData,
-      modal: null,
-      snackbar: null
+      modal: null
     };
 
   case APP_CHANGE_VIEW_PANEL_STORY:

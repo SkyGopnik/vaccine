@@ -5,8 +5,7 @@ interface CssExports {
   'code': string;
   'input': string;
   'ref': string;
-  'refPanel': string;
-  'snackbar': string;
+  'refCode': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

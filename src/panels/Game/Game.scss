@@ -1,118 +1,126 @@
-.info {
-  position: absolute;
-  top: calc(var(--safe-area-inset-top) + 64px);
-
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  text-align: center;
-
-  .balance {
-    :global {
-      .Caption {
-        margin-bottom: 5px;
-
-        color: #818C99;
-      }
+.game {
+  :global {
+    .Snackbar {
+      padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
     }
   }
 
-  .stat {
-    margin-top: 8px;
+  .info {
+    position: absolute;
+    top: calc(var(--safe-area-inset-top) + 64px);
 
-    :global {
-      .Caption {
-        &:nth-child(1) {
-          margin-bottom: 4px;
+    width: 100%;
 
-          color: #4BB34B;
-        }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-        &:nth-child(2) {
-          color: #4986CC;
+    text-align: center;
+
+    .balance {
+      :global {
+        .Caption {
+          margin-bottom: 5px;
+
+          color: #818C99;
         }
       }
     }
-  }
-}
 
-.iconWithProgress {
-  position: absolute;
-  top: calc(var(--safe-area-inset-top) + 50px);
+    .stat {
+      margin-top: 8px;
 
-  width: 100%;
-  height: calc(100vh - calc(var(--safe-area-inset-top) + 64px));
+      :global {
+        .Caption {
+          &:nth-child(1) {
+            margin-bottom: 4px;
 
-  //background-color: gainsboro;
+            color: #4BB34B;
+          }
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .icon {
-    cursor: pointer;
-
-    &:active {
-      animation: pulse .5s linear infinite;
-    }
-  }
-
-  .progress {
-    width: 135px;
-    height: 8px;
-
-    margin-top: 24px;
-
-    overflow: hidden;
-    border-radius: 4px;
-
-    :global {
-      .Progress__in {
-        background: #78D0B1 !important;
+          &:nth-child(2) {
+            color: #4986CC;
+          }
+        }
       }
     }
   }
 
-  @media screen and (min-height: 750px) {
+  .iconWithProgress {
+    position: absolute;
+    top: calc(var(--safe-area-inset-top) + 50px);
+
+    width: 100%;
+    height: calc(100vh - calc(var(--safe-area-inset-top) + 64px));
+
+    //background-color: gainsboro;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     .icon {
-      svg {
-        width: 300px;
-        height: 300px;
+      cursor: pointer;
+
+      &:active {
+        animation: pulse .5s linear infinite;
+      }
+    }
+
+    .progress {
+      width: 135px;
+      height: 8px;
+
+      margin-top: 24px;
+
+      overflow: hidden;
+      border-radius: 4px;
+
+      :global {
+        .Progress__in {
+          background: #78D0B1 !important;
+        }
+      }
+    }
+
+    @media screen and (min-height: 750px) {
+      .icon {
+        svg {
+          width: 300px;
+          height: 300px;
+        }
+      }
+    }
+
+    @media screen and (max-height: 650px) {
+      .icon {
+        svg {
+          width: 203px;
+          height: 203px;
+        }
+      }
+    }
+
+    @media screen and (max-height: 550px) {
+      .icon {
+        svg {
+          width: 180px;
+          height: 180px;
+        }
       }
     }
   }
 
-  @media screen and (max-height: 650px) {
-    .icon {
-      svg {
-        width: 203px;
-        height: 203px;
-      }
+  @keyframes pulse {
+    from {
+      transform: scale(.95);
     }
-  }
-
-  @media screen and (max-height: 550px) {
-    .icon {
-      svg {
-        width: 180px;
-        height: 180px;
-      }
+    50% {
+      transform: scale(1);
     }
-  }
-}
-
-@keyframes pulse {
-  from {
-    transform: scale(.95);
-  }
-  50% {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(.95);
+    to {
+      transform: scale(.95);
+    }
   }
 }

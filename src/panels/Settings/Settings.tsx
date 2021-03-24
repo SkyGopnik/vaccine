@@ -6,7 +6,7 @@ import {
   Card,
   Div,
   SimpleCell,
-  Switch
+  Switch, Snackbar, Avatar, Text
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -15,6 +15,9 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 
 import style from "./Settings.scss";
+import {Icon16Done} from "@vkontakte/icons";
+import {locale} from "src/functions/balanceFormat";
+import Decimal from "decimal.js";
 
 interface IProps {
   id: string,
@@ -22,6 +25,7 @@ interface IProps {
   snackbar: ReactNode | null,
   changeAdditional(data: object),
   changePanel(panel: string, panelData?: any),
+  changeSnackbar(snackbar: ReactNode)
 }
 
 export default class extends React.Component<IProps> {
@@ -37,6 +41,7 @@ export default class extends React.Component<IProps> {
       user,
       snackbar,
       changePanel,
+      changeSnackbar,
       changeAdditional
     } = this.props;
     const { easyAnimation, showRating } = user.data.additional;
@@ -113,6 +118,23 @@ export default class extends React.Component<IProps> {
             {/*<SimpleCell onClick={() => changePanel('admin')}>*/}
             {/*  Будка бомжа*/}
             {/*</SimpleCell>*/}
+            <SimpleCell
+              onClick={() => {
+                changeSnackbar(
+                  <Snackbar
+                    className="success-snack"
+                    layout="vertical"
+                    duration={10000000}
+                    onClose={() => changeSnackbar(null)}
+                    before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+                  >
+                    Я туточки
+                  </Snackbar>
+                );
+              }}
+            >
+              Бесконечный снекбар
+            </SimpleCell>
           </Card>
         </Div>
         {snackbar}

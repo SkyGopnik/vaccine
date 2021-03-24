@@ -115,12 +115,6 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  paddingNeed() {
-    const { panel, story } = this.props;
-
-    return story === 'rating' && panel === 'main';
-  }
-
   async transferMoney() {
     const { panel, story } = this.props;
     const { value } = this.state;
@@ -183,7 +177,7 @@ export default class extends React.Component<IProps, IState> {
       // Показываем уведомление
       changeSnackbar(
         <Snackbar
-          className={`${this.paddingNeed() ? style.snackbar : ''} success-snack`}
+          className="success-snack"
           layout="vertical"
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
@@ -200,7 +194,7 @@ export default class extends React.Component<IProps, IState> {
 
       changeSnackbar(
         <Snackbar
-          className={`${this.paddingNeed() ? style.snackbar : ''} error-snack`}
+          className="error-snack"
           layout="vertical"
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}

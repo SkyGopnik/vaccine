@@ -79,7 +79,7 @@ export default class extends React.Component<IProps, IState> {
     const { ptr } = this.state;
 
     return (
-      <Panel id={id}>
+      <Panel id={id} className={style.rating}>
         <PanelHeader separator={false}>
           Рейтинг
         </PanelHeader>
@@ -130,7 +130,7 @@ export default class extends React.Component<IProps, IState> {
                 </Div>
               )}
             </Card>
-            <Spacing size={100} />
+            <Spacing size={140} />
           </Div>
         </PullToRefresh>
         {snackbar}

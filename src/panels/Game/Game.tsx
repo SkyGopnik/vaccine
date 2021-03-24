@@ -147,7 +147,7 @@ export default class extends React.Component<IProps, IState> {
     const { effects } = this.state;
 
     return (
-      <Panel id={id}>
+      <Panel id={id} className={style.game}>
         <EmptyBackground />
         {user && user.data && (
           <div className={style.info}>

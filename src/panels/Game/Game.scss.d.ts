@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'balance': string;
+  'game': string;
   'icon': string;
   'iconWithProgress': string;
   'info': string;
