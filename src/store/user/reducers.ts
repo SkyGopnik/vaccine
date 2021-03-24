@@ -12,7 +12,7 @@ export interface UserInfoInterface {
   firstName: string
   lastName: string
   photo: string
-  sex: 0 | 1 | 2
+  sex: 0 | 1 | 2 // 0 - неопр, 1 - женский, 2 - мужской
   city?: string | null,
   userId?: string
 }

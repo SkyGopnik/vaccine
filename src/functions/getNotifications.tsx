@@ -1,6 +1,7 @@
 import React, {ReactNode} from "react";
 
 import declNum from "src/functions/decl_num";
+import declBySex from "src/functions/declBySex";
 import {locale} from "src/functions/balanceFormat";
 
 import { UserInfoInterface } from "src/store/user/reducers";
@@ -117,15 +118,21 @@ const getTime = (_time: Date): string => {
 export default function (notification: NotificationInterface, lowText?: boolean): RenderNotificationInterface {
   const { type } = notification;
 
+  const upperFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
   if (type === 'getTransferMoney') {
     const additional: AdditionalInterface["getTransferMoney"] = notification.additional;
     const { sum } = additional;
-    const { firstName, lastName, photo } = additional.user;
+    const { firstName, lastName, photo, sex } = additional.user;
+
+    const action = declBySex(sex, ['передал(а)', 'передала', 'передал']);
 
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Передал' : 'передал'} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
+        <span>{!lowText ? upperFirstLetter(action) : action} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
       ),
       photo,
       isNew: notification.isNew,
@@ -138,12 +145,14 @@ export default function (notification: NotificationInterface, lowText?: boolean)
   if (type === 'sendTransferMoney') {
     const additional: AdditionalInterface["sendTransferMoney"] = notification.additional;
     const { sum } = additional;
-    const { firstName, lastName, photo } = additional.user;
+    const { firstName, lastName, photo, sex } = additional.user;
+
+    const action = declBySex(sex, ['получил(а)', 'получила', 'получил']);
 
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Получил' : 'получил'} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
+        <span>{!lowText ? upperFirstLetter(action) : action} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
       ),
       photo,
       isNew: notification.isNew,
@@ -157,7 +166,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
   if (type === 'getRefActivate') {
     const additional: AdditionalInterface["getRefActivate"] = notification.additional;
     const {sum} = additional;
-    const {firstName, lastName, photo} = additional.user;
+    const { firstName, lastName, photo } = additional.user;
 
     return {
       title: `${firstName} ${lastName}`,
@@ -175,12 +184,14 @@ export default function (notification: NotificationInterface, lowText?: boolean)
   if (type === 'refActivated') {
     const additional: AdditionalInterface["refActivated"] = notification.additional;
     const {sum} = additional;
-    const {firstName, lastName, photo} = additional.user;
+    const { firstName, lastName, photo, sex } = additional.user;
+
+    const action = declBySex(sex, ['использовал(а)', 'использовала', 'использовал']);
 
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? 'Использовал' : 'использовал'} твой реферальный код, получено <span style={{fontWeight: 500}}>{locale(sum)}</span> вакцины</span>
+        <span>{!lowText ? upperFirstLetter(action) : action} твой реферальный код, получено <span style={{fontWeight: 500}}>{locale(sum)}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,
