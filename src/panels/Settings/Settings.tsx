@@ -6,7 +6,7 @@ import {
   Card,
   Div,
   SimpleCell,
-  Switch, Snackbar, Avatar, Text
+  Switch, Snackbar, Avatar, Text, Button
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -15,7 +15,7 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 
 import style from "./Settings.scss";
-import {Icon16Done} from "@vkontakte/icons";
+import {Icon16Done, Icon24WriteOutline} from "@vkontakte/icons";
 import {locale} from "src/functions/balanceFormat";
 import Decimal from "decimal.js";
 
@@ -25,7 +25,8 @@ interface IProps {
   snackbar: ReactNode | null,
   changeAdditional(data: object),
   changePanel(panel: string, panelData?: any),
-  changeSnackbar(snackbar: ReactNode)
+  changeSnackbar(snackbar: ReactNode),
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
 }
 
 export default class extends React.Component<IProps> {
@@ -42,7 +43,8 @@ export default class extends React.Component<IProps> {
       snackbar,
       changePanel,
       changeSnackbar,
-      changeAdditional
+      changeAdditional,
+      changeModal
     } = this.props;
     const { easyAnimation, showRating } = user.data.additional;
 
@@ -115,9 +117,9 @@ export default class extends React.Component<IProps> {
             {/*>*/}
             {/*  Магазин*/}
             {/*</SimpleCell>*/}
-            {/*<SimpleCell onClick={() => changePanel('admin')}>*/}
-            {/*  Будка бомжа*/}
-            {/*</SimpleCell>*/}
+            <SimpleCell onClick={() => changePanel('admin')}>
+              Будка бомжа
+            </SimpleCell>
             <SimpleCell
               onClick={() => {
                 changeSnackbar(

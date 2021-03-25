@@ -34,7 +34,7 @@ export default class extends React.Component<IProps> {
     const {
       id,
       snackbar,
-      changePanel
+      changeModal
     } = this.props;
 
     return (
@@ -45,7 +45,7 @@ export default class extends React.Component<IProps> {
         <Div className={style.block}>
           <Header mode="secondary">Промокоды</Header>
           <Card mode="shadow">
-            <SimpleCell onClick={() => changePanel('donate')}>
+            <SimpleCell onClick={() => changeModal('сreatedPromocode')}>
               Добавить
             </SimpleCell>
           </Card>

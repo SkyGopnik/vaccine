@@ -21,7 +21,7 @@ import style from "./Promocode.scss";
 interface IProps {
   user: UserInterface,
   syncUser(data: UserInterface),
-  changeSnackbar(snackbar: ReactNode | null)
+  changeSnackbar(snackbar: ReactNode | null),
 }
 
 interface IState {
@@ -81,7 +81,7 @@ export default class extends React.Component<IProps, IState> {
     const {
       user,
       syncUser,
-      changeSnackbar
+      changeSnackbar,
     } = this.props;
     const { value } = this.state;
 
