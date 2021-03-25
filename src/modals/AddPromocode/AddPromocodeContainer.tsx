@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 
 import { changeModal } from 'src/store/app/actions';
 
-import CreatedPromocode from './CreatedPromocode';
+import  AddPromocode from './AddPromocode';
 
 
-const CreatedPromocodeContainer = (props) => <CreatedPromocode {...props} />;
+const AddPromocodeContainer = (props) => <AddPromocode {...props} />;
 
 const mapStateToProps = (state) => {
   return {
@@ -19,4 +19,4 @@ const mapDispatchToProps = {
   changeModal
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatedPromocodeContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPromocodeContainer);

@@ -7,7 +7,7 @@ import RefMoney from "src/modals/RefMoney/RefMoneyContainer";
 import TransferGet from "src/modals/TransferGet/TransferGetContainer";
 import TransferMoney from "src/modals/TransferMoney/TransferMoneyContainer";
 import TransferUser from "src/modals/TransferUser/TransferUserContainer";
-import CreatedPromocode from "src/modals/CreatedPromocode/CreatedPromocodeContainer";
+import AddPromocode from "src/modals/AddPromocode/AddPromocodeContainer";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 
@@ -24,7 +24,7 @@ export default (props: IProps) => {
       <TransferGet id="transferGet" />
       <TransferMoney id="transferMoney" />
       <TransferUser id="transferUser" />
-      <CreatedPromocode id="сreatedPromocode" />
+      <AddPromocode id="addPromocode" />
     </ModalRoot>
   );
 };

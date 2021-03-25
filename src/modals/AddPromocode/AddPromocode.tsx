@@ -13,7 +13,7 @@ import isset from "src/functions/isset";
 
 import {UserInterface} from "src/store/user/reducers";
 
-import style from "./CreatedPromocode.scss";
+import style from "./AddPromocode.scss";
 
 interface IProps {
   id: string,

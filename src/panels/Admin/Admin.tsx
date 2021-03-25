@@ -45,7 +45,7 @@ export default class extends React.Component<IProps> {
         <Div className={style.block}>
           <Header mode="secondary">Промокоды</Header>
           <Card mode="shadow">
-            <SimpleCell onClick={() => changeModal('сreatedPromocode')}>
+            <SimpleCell onClick={() => changeModal('addPromocode')}>
               Добавить
             </SimpleCell>
           </Card>
