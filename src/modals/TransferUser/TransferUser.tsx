@@ -22,7 +22,7 @@ interface IProps {
 }
 
 interface IState {
-  value: null | string,
+  value: string,
   error: string,
   loading: boolean
 }

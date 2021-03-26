@@ -21,134 +21,128 @@ interface IProps {
   changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
 }
 
+interface FormItem {
+  value: string,
+  error?: string,
+  rules?: {
+    required?: boolean,
+    max?: number
+  }
+}
+
 interface IState {
-  value: null | string,
-  valueName: null | string,
-  valueQuantity: null | string,
-  valueUse: null | string,
-  valueDate: null | string,
-  errorName: string,
-  errorQuantity: string,
-  errorUse: string,
-  errorDate: string,
+  code: FormItem,
+  bonus: FormItem,
+  limit: FormItem,
+  expireAt: FormItem,
   loading: boolean
 }
+
+const inputs = [
+  {
+    name: 'code',
+    type: 'text',
+    placeholder: 'FreeVaccine'
+  },
+  {
+    name: 'bonus',
+    type: 'number',
+    placeholder: '0.0005'
+  },
+  {
+    name: 'limit',
+    type: 'number',
+    placeholder: '50'
+  },
+  {
+    name: 'expireAt',
+    type: 'date',
+    placeholder: '16.04.2021'
+  }
+];
 
 export default class extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: '',
-      valueName: '',
-      valueQuantity: '',
-      valueUse: '',
-      valueDate: '',
-      errorName: undefined,
-      errorQuantity: undefined,
-      errorUse: undefined,
-      errorDate: undefined,
+      code: {
+        value: ''
+      },
+      bonus: {
+        value: ''
+      },
+      limit: {
+        value: ''
+      },
+      expireAt: {
+        value: ''
+      },
       loading: false
     };
   }
 
-  handleInputChangeName(valueName: string) {
-    let errorName = '';
+  handleInputChange(e) {
+    const { name, value } = e.target;
+    const item: FormItem = this.state[name];
 
-    if (valueName.length === 0) {
-      errorName = undefined;
-    }
+    let error = '';
 
-    if (valueName.length >= 50) {
-      errorName = 'Название промокода должно быть меньше 50 символов';
-    }
+    if (item.rules) {
+      if (value.length === 0 && item.rules.required) {
+        error = 'Поле обязательно для заполнения';
+      }
 
-    if (!/^\S*$/.test(valueName)) {
-      errorName = 'И что ты делаешь?';
+      if (value.length >= item.rules.max) {
+        error = `Название промокода должно быть меньше ${item.rules.max} символов`;
+      }
     }
 
     this.setState({
-      valueName,
-      errorName
+      ...this.state,
+      [name]: {
+        value,
+        error
+      }
     });
   }
 
-  handleInputChangeQuantity(valueQuantity: string) {
-    let errorQuantity = '';
+  isFormValid() {
+    let isValid = true;
 
-    if (valueQuantity.length === 0) {
-      errorQuantity = undefined;
-    }
+    inputs.forEach((item) => {
+      const { value, rules } = this.state[item.name];
 
-    if (valueQuantity.length >= 10) {
-      errorQuantity = 'Бонус должен быть меньше 10 символов';
-    }
-
-    if (!/^\S*$/.test(valueQuantity)) {
-      errorQuantity = 'И что ты делаешь?';
-    }
-
-    this.setState({
-      valueQuantity,
-      errorQuantity
+      if (value.length == 0 && rules && rules.required) {
+        isValid = false;
+      }
     });
+
+    return isValid;
   }
 
-  handleInputChangeUse(valueUse: string) {
-    let errorUse = '';
-
-    if (valueUse.length === 0) {
-      errorUse = undefined;
-    }
-
-    if (valueUse.length >= 10) {
-      errorUse = 'Количество использований должно быть меньше 10 символов';
-    }
-
-    if (!/^\S*$/.test(valueUse)) {
-      errorUse = 'И что ты делаешь?';
+  addPromocode() {
+    if (!this.isFormValid()) {
+      throw Error('Form isn\'t valid');
     }
 
     this.setState({
-      valueUse,
-      errorUse
+      loading: true
     });
-  }
 
-  handleInputChangeDate(valueDate: string) {
-    let errorDate = '';
-
-    if (valueDate.length === 0) {
-      errorDate = undefined;
-    }
-    /*xd, хз как настроить
-    поэтому оставил так */
-    if (valueDate.length >= 50) {
-      errorDate = '??';
-    }
-
-    if (!/^\S*$/.test(valueDate)) {
-      errorDate = 'И что ты делаешь?';
-    }
-
-    this.setState({
-      valueDate,
-      errorDate
-    });
+    // axios
   }
 
   render() {
-    const {
-      valueName,
-      valueQuantity,
-      valueUse,
-      valueDate,
-      errorName,
-      errorQuantity,
-      errorUse,
-      errorDate,
-      loading
-    } = this.state;
+    const { loading } = this.state;
+
+    const value = (name: string) => {
+      return this.state[name].value;
+    };
+
+    const error = (name: string) => {
+      return this.state[name].error;
+    };
 
     return (
       <ModalCard
@@ -159,64 +153,28 @@ export default class extends React.Component<IProps, IState> {
           <Button
             before={!loading && <Icon28WriteOutline width={24} height={24} />}
             size="l"
-            disabled={loading || isset(errorName) || isset(errorQuantity) || isset(errorUse) || isset(errorDate) ? (errorName !== '') || (errorQuantity !== '') || (errorUse !== '') || (errorDate !== '') : true}
+            disabled={loading || !this.isFormValid()}
+            onClick={() => this.addPromocode()}
           >
             Создать
           </Button>
         }
         onClose={() => window.history.back()}
       >
-        <FormItem
-          status={isset(errorName) ? (errorName === '' ? 'valid' : 'error') : 'default'}
-          bottom={errorName ? errorName : ''}
-          top='Название'
-        >
-          <Input
-            value={valueName}
-            type="text"
-            placeholder="Промокод1"
-            onChange={(e) => this.handleInputChangeName(e.currentTarget.value)}
-            maxLength = {50}
-          />
-        </FormItem>
-        <FormItem
-          status={isset(errorQuantity) ? (errorQuantity === '' ? 'valid' : 'error') : 'default'}
-          bottom={errorQuantity ? errorQuantity : ''}
-          top='Бонус'
-        >
-          <Input
-            value={valueQuantity}
-            type="number"
-            placeholder="25"
-            onChange={(e) => this.handleInputChangeQuantity(e.currentTarget.value)}
-            maxLength = {10}
-          />
-        </FormItem>
-        <FormItem
-          status={isset(errorUse) ? (errorUse === '' ? 'valid' : 'error') : 'default'}
-          bottom={errorUse ? errorUse : ''}
-          top='Количество использований'
-        >
-          <Input
-            value={valueUse}
-            type="number"
-            placeholder="2"
-            maxLength = {10}
-            onChange={(e) => this.handleInputChangeUse(e.currentTarget.value)}
-          />
-        </FormItem>
-        <FormItem
-          status={isset(errorDate) ? (errorDate === '' ? 'valid' : 'error') : 'default'}
-          bottom={errorDate ? errorDate : ''}
-          top='Дата окончания'
-        >
-          <Input
-            value={valueDate}
-            type="date"
-            placeholder="23.02.22"
-            onChange={(e) => this.handleInputChangeDate(e.currentTarget.value)}
-          />
-        </FormItem>
+        {inputs.map((item) => (
+          <FormItem
+            status={isset(error(item.name)) ? (error(item.name) === '' ? 'valid' : 'error') : 'default'}
+            bottom={error(item.name) ? error(item.name) : ''}
+            top='Название'
+          >
+            <Input
+              value={value(item.name)}
+              type={item.type}
+              placeholder={item.placeholder}
+              onChange={this.handleInputChange}
+            />
+          </FormItem>
+        ))}
       </ModalCard>
     );
   }
