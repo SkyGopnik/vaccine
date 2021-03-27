@@ -5,8 +5,11 @@ interface CssExports {
   'copy': string;
   'copyItem': string;
   'header': string;
+  'item': string;
+  'list': string;
   'mini': string;
   'modal': string;
+  'recent': string;
   'shareItem': string;
 }
 export const cssExports: CssExports;

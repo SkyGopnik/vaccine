@@ -86,9 +86,6 @@ export default class extends React.Component<IProps, IState> {
           before={<Avatar size={48} src={item.photo} />}
           text={item.text}
           caption={item.time}
-          after={item.isRepeat && (
-            <Icon28MoneySendOutline onClick={() => changeModal('transferMoney', item.user)} />
-          )}
           multiline
         >
           {item.title}

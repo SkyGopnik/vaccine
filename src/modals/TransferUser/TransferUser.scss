@@ -69,6 +69,41 @@
     }
   }
 
+  .recent {
+    margin-bottom: 12px;
+
+    :global {
+      .Subhead {
+        color: #6D7885;
+      }
+    }
+
+    .list {
+      padding: 10px 0;
+
+      display: flex;
+
+      overflow-x: auto;
+
+      color: #818C99;
+
+      .item {
+        margin-right: 12px;
+
+        display: flex;
+        align-items: center;
+
+        :global {
+          .Caption {
+            margin: 0 8px;
+
+            white-space: nowrap;
+          }
+        }
+      }
+    }
+  }
+
   :global {
     .FormItem {
       padding-left: 0;

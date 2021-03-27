@@ -8,7 +8,8 @@ import {
   Separator,
   Title,
   RichCell,
-  Avatar, Caption
+  Avatar, Caption, Subhead,
+  HorizontalScroll
 } from "@vkontakte/vkui";
 import { Icon28MoneySendOutline, Icon24ChevronLeft, Icon24MoreHorizontal } from "@vkontakte/icons";
 
@@ -16,7 +17,7 @@ import Card from "src/components/Card/Card";
 
 import isset from "src/functions/isset";
 
-import {UserInterface} from "src/store/user/reducers";
+import {UserInfoInterface, UserInterface} from "src/store/user/reducers";
 
 import style from "./TransferUser.scss";
 import {getRandomInt} from "@vkontakte/vkjs";
@@ -31,7 +32,8 @@ interface IState {
   value: string,
   error: string,
   loading: boolean,
-  randomTeam: Team
+  randomTeam: Team,
+  recentTransfer: Array<UserInfoInterface> | null
 }
 
 interface Team {
@@ -53,7 +55,7 @@ const team: Array<Team> = [
   },
   {
     name: 'Антон Иванков',
-    status: 'Продам гараж',
+    status: 'Задизайнил стул',
     img: 'https://sun1-90.userapi.com/s/v1/if1/Ef_yRkoR42rVnJs5VbrSzOM-ARTrQSR7Tze7GDPvYja0IjV5_HGfR-vHJhecCndUxPxZgb7R.jpg?size=100x0&quality=96&crop=0,0,2160,2160&ava=1'
   },
   {
@@ -71,8 +73,17 @@ export default class extends React.Component<IProps, IState> {
       value: '',
       error: undefined,
       loading: false,
-      randomTeam: team[getRandomInt(0, (team.length - 1))]
+      randomTeam: team[getRandomInt(0, (team.length - 1))],
+      recentTransfer: null
     };
+  }
+
+  async componentDidMount() {
+    const { data } = await axios.get('/user/transfer/recent');
+
+    this.setState({
+      recentTransfer: data.map((item) => item.additional.user)
+    });
   }
 
   handleInputChange(value: string) {
@@ -140,8 +151,10 @@ export default class extends React.Component<IProps, IState> {
       value,
       error,
       loading,
-      randomTeam
+      randomTeam,
+      recentTransfer
     } = this.state;
+    const { changeModal } = this.props;
 
     return (
       <ModalCard
@@ -193,6 +206,30 @@ export default class extends React.Component<IProps, IState> {
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
           />
         </FormItem>
+        {recentTransfer && (
+          <div className={style.recent}>
+            <Subhead weight="regular">Недавние переводы</Subhead>
+            <HorizontalScroll>
+              <div className={style.list}>
+                {recentTransfer.map((item, index) => (
+                  <div
+                    className={style.item}
+                    key={index}
+                    onClick={() => {
+                      changeModal('transferMoney', {
+                        backType: 'double',
+                        ...item
+                      });
+                    }}
+                  >
+                    <Avatar size={24} src={item.photo} />
+                    <Caption level="1" weight="regular">{item.firstName} {item.lastName.substr(0, 1)}.</Caption>
+                  </div>
+                ))}
+              </div>
+            </HorizontalScroll>
+          </div>
+        )}
       </ModalCard>
     );
   }
