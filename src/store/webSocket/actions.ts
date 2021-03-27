@@ -60,7 +60,10 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
       thunkAPI.dispatch(connectWsSuccess());
 
-      ping = setInterval(() => thunkAPI.dispatch(sendWsMessage({ type: 'ping' })), 5000);
+      ping = setInterval(() => {
+        thunkAPI.dispatch(sendWsMessage({ type: 'ping' }));
+        thunkAPI.dispatch(sendWsMessage({ type: 'SyncUser' }));
+      }, 5000);
     };
 
     socket.onclose = event => {
