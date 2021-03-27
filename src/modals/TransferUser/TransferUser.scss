@@ -1,4 +1,74 @@
 .modal {
+  .copy {
+    margin-top: 12px;
+    margin-bottom: 0;
+
+    position: relative;
+
+    .header {
+      padding: 16px 12px;
+
+      display: flex;
+      justify-content: space-between;
+
+      :global {
+        .Title {
+          color: #000000;
+        }
+      }
+
+      svg {
+        color: var(--accent);
+      }
+    }
+
+    .mini {
+      position: absolute;
+      top: 65px;
+      left: calc(50% - 95px);
+
+      display: flex;
+      align-items: center;
+
+      color: #FFFFFF;
+
+      z-index: 100;
+
+      .arrow {
+        width: 0;
+        height: 0;
+
+        position: absolute;
+        top: -10px;
+        left: calc(50% - 20px);
+
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid #3A3A3C;
+      }
+
+      .copyItem {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+
+        background-color: #3A3A3C;
+      }
+
+      .shareItem {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+        background-color: #1C1C1E;
+      }
+
+      :global {
+        .Caption {
+          padding: 7px 16px;
+        }
+      }
+    }
+  }
+
   :global {
     .FormItem {
       padding-left: 0;

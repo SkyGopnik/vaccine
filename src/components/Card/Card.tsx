@@ -1,10 +1,12 @@
-import React, {ReactNode} from "react";
+import React, { ReactNode } from "react";
+import { classNames } from "@vkontakte/vkjs";
 
-import {Button, Caption, Card, Text} from "@vkontakte/vkui";
+import { Caption, Card, Text } from "@vkontakte/vkui";
 
 import style from './Card.scss';
 
 interface IProps {
+  className?: string,
   icon?: ReactNode,
   title?: string | ReactNode,
   description?: string | ReactNode,
@@ -27,6 +29,7 @@ export default class extends React.Component<IProps> {
 
   render() {
     const {
+      className,
       icon,
       title,
       description,
@@ -39,7 +42,7 @@ export default class extends React.Component<IProps> {
 
     return (
       <Card
-        className={style.card}
+        className={!className ? style.card : classNames(style.card, className)}
         mode="shadow"
         style={noPadding && { padding: '0' }}
       >
