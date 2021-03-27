@@ -66,7 +66,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
     socket.onclose = event => {
       reject(event);
 
-      console.log('onclose');
+      clearInterval(ping);
 
       console.log("Socket Closed Connection: ", event);
 
@@ -78,6 +78,8 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
     };
 
     socket.onerror = error => {
+      clearInterval(ping);
+
       console.log("Socket Error: ", error);
     };
   });
