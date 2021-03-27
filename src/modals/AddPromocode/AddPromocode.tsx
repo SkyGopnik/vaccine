@@ -40,21 +40,25 @@ interface IState {
 
 const inputs = [
   {
+    title: 'Название',
     name: 'code',
     type: 'text',
     placeholder: 'FreeVaccine'
   },
   {
+    title: 'Бонус',
     name: 'bonus',
     type: 'number',
     placeholder: '0.0005'
   },
   {
+    title: 'Лимит',
     name: 'limit',
     type: 'number',
     placeholder: '50'
   },
   {
+    title: 'Срок',
     name: 'expireAt',
     type: 'date',
     placeholder: '16.04.2021'
@@ -100,8 +104,6 @@ export default class extends React.Component<IProps, IState> {
     const { name, value } = e.target;
     const item: FormItem = this.state[name];
 
-    console.log(item);
-
     let error = '';
 
     if (item.rules) {
@@ -128,8 +130,6 @@ export default class extends React.Component<IProps, IState> {
 
     inputs.forEach((item) => {
       const { value, rules } = this.state[item.name];
-
-      console.log(value);
 
       if (value.length == 0 && rules && rules.required) {
         isValid = false;
@@ -182,6 +182,8 @@ export default class extends React.Component<IProps, IState> {
       );
     }
 
+    window.history.back();
+
     this.setState({
       loading: false
     });
@@ -220,7 +222,7 @@ export default class extends React.Component<IProps, IState> {
             key={index}
             status={isset(error(item.name)) ? (error(item.name) === '' ? 'valid' : 'error') : 'default'}
             bottom={error(item.name) ? error(item.name) : ''}
-            top='Название'
+            top={item.title}
           >
             <Input
               name={item.name}

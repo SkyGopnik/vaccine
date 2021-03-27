@@ -249,7 +249,7 @@ export default class extends React.Component<IProps, IState> {
       >
         <FormItem
           status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
-          bottom={error ? error : ''}
+          bottom={error ? error : null}
         >
           <Input
             value={value}
