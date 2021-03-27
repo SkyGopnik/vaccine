@@ -5,13 +5,10 @@ import {
   Header,
   Card,
   Div,
-  SimpleCell,
-  Switch
+  SimpleCell
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
-
-import {UserInterface} from "src/store/user/reducers";
 
 import style from "./Admin.scss";
 
