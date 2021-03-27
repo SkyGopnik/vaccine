@@ -1,24 +1,24 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import axios from "axios";
 import {
+  Avatar,
   Button,
   FormItem,
   Input,
-  ModalCard
+  ModalCard, Snackbar, Text
 } from "@vkontakte/vkui";
 
-import {Icon28WriteOutline} from "@vkontakte/icons";
+import {Icon16Cancel, Icon16Done, Icon28WriteOutline} from "@vkontakte/icons";
 
 import isset from "src/functions/isset";
 
-import {UserInterface} from "src/store/user/reducers";
-
 import style from "./AddPromocode.scss";
+import declBySex from "src/functions/declBySex";
+import {locale} from "src/functions/balanceFormat";
 
 interface IProps {
   id: string,
-  user: UserInterface,
-  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
+  changeSnackbar(snackbar: ReactNode | null)
 }
 
 interface FormItem {
@@ -67,24 +67,40 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       code: {
-        value: ''
+        value: '',
+        rules: {
+          required: true
+        }
       },
       bonus: {
-        value: ''
+        value: '',
+        rules: {
+          required: true
+        }
       },
       limit: {
-        value: ''
+        value: '',
+        rules: {
+          required: true
+        }
       },
       expireAt: {
-        value: ''
+        value: '',
+        rules: {
+          required: true
+        }
       },
       loading: false
     };
+
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange(e) {
     const { name, value } = e.target;
     const item: FormItem = this.state[name];
+
+    console.log(item);
 
     let error = '';
 
@@ -113,6 +129,8 @@ export default class extends React.Component<IProps, IState> {
     inputs.forEach((item) => {
       const { value, rules } = this.state[item.name];
 
+      console.log(value);
+
       if (value.length == 0 && rules && rules.required) {
         isValid = false;
       }
@@ -121,7 +139,7 @@ export default class extends React.Component<IProps, IState> {
     return isValid;
   }
 
-  addPromocode() {
+  async addPromocode() {
     if (!this.isFormValid()) {
       throw Error('Form isn\'t valid');
     }
@@ -130,7 +148,43 @@ export default class extends React.Component<IProps, IState> {
       loading: true
     });
 
-    // axios
+    const { changeSnackbar } = this.props;
+    const { code, bonus, limit, expireAt } = this.state;
+
+    try {
+      const { data } = await axios.post('/promocode', {
+        code: code.value,
+        bonus: bonus.value,
+        limit: limit.value,
+        expireAt: expireAt.value
+      });
+
+      changeSnackbar(
+        <Snackbar
+          className="success-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+        >
+          <div>Промокод с названием {data.id}, бонусом {data.bonus}, лимитом {data.limit} создан и действует до {data.expireAt}</div>
+        </Snackbar>
+      );
+    } catch (e) {
+      changeSnackbar(
+        <Snackbar
+          className="error-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
+        >
+          {e.response.data.message}
+        </Snackbar>
+      );
+    }
+
+    this.setState({
+      loading: false
+    });
   }
 
   render() {
@@ -161,13 +215,15 @@ export default class extends React.Component<IProps, IState> {
         }
         onClose={() => window.history.back()}
       >
-        {inputs.map((item) => (
+        {inputs.map((item, index) => (
           <FormItem
+            key={index}
             status={isset(error(item.name)) ? (error(item.name) === '' ? 'valid' : 'error') : 'default'}
             bottom={error(item.name) ? error(item.name) : ''}
             top='Название'
           >
             <Input
+              name={item.name}
               value={value(item.name)}
               type={item.type}
               placeholder={item.placeholder}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { changeModal } from 'src/store/app/actions';
+import { changeSnackbar } from 'src/store/app/actions';
 
 import  AddPromocode from './AddPromocode';
 
@@ -9,14 +9,11 @@ import  AddPromocode from './AddPromocode';
 const AddPromocodeContainer = (props) => <AddPromocode {...props} />;
 
 const mapStateToProps = (state) => {
-  return {
-    user: state.user.data,
-    modalData: state.app.modalData
-  };
+  return {};
 };
 
 const mapDispatchToProps = {
-  changeModal
+  changeSnackbar
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddPromocodeContainer);
