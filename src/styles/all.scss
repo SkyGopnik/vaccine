@@ -65,6 +65,14 @@
     }
   }
 
+  @media screen and (max-width: 700px) {
+    .ModalCard--android, .ModalCard--ios {
+      .ModalCard__in {
+        max-width: 400px;
+      }
+    }
+  }
+
   .success-snack {
     .Snackbar__in {
       .Snackbar__body {

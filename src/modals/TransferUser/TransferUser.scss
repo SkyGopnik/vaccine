@@ -13,6 +13,10 @@
 
       :global {
         .Title {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
           color: #000000;
         }
       }
