@@ -6,8 +6,6 @@ import RatingPanel from '../../panels/Rating/RatingContainer';
 
 // Модалки
 import TransferMoney from "src/modals/TransferMoney/TransferMoneyContainer";
-import NewFriend from "src/modals/NewFriend/NewFriendContainer";
-import TransferGet from "src/modals/TransferGet/TransferGetContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';

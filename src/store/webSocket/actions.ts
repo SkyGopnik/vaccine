@@ -1,7 +1,7 @@
 import {changeModal, changeSnackbar, changeView} from "src/store/app/actions";
 import {changeProgress, syncUser, balancePlus} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {passiveOfflineBonus} from "src/functions/getSnackbar";
+import {passiveOfflineBonus, transferGet, newFriend} from "src/functions/getSnackbar";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -36,13 +36,13 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
         if (subType === 'TransferMoney') {
           const {transfer} = JSON.parse(msg.data);
 
-          thunkAPI.dispatch(changeModal('transferGet', transfer));
+          thunkAPI.dispatch(changeSnackbar(transferGet(transfer)));
         }
 
         if (subType === 'RefSystem') {
           const {ref} = JSON.parse(msg.data);
 
-          thunkAPI.dispatch(changeModal('newFriend', ref));
+          thunkAPI.dispatch(changeSnackbar(newFriend(ref)));
         }
       }
 
