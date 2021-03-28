@@ -1,4 +1,5 @@
 import React from 'react';
+import lo from 'lodash';
 import axios from "axios";
 import {
   Button,
@@ -211,7 +212,7 @@ export default class extends React.Component<IProps, IState> {
             <Subhead weight="regular">Недавние переводы</Subhead>
             <HorizontalScroll>
               <div className={style.list}>
-                {recentTransfer.map((item, index) => (
+                {lo.uniqBy(recentTransfer.map((item, index) => (
                   <div
                     className={style.item}
                     key={index}
@@ -225,7 +226,7 @@ export default class extends React.Component<IProps, IState> {
                     <Avatar size={24} src={item.photo} />
                     <Caption level="1" weight="regular">{item.firstName} {item.lastName.substr(0, 1)}.</Caption>
                   </div>
-                ))}
+                )), 'userId')}
               </div>
             </HorizontalScroll>
           </div>
