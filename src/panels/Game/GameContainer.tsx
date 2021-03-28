@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { sendWsMessage } from "src/store/webSocket/actions";
+import { changeSnackbar } from "src/store/app/actions";
 import { syncUser, changeProgress, balancePlus } from "src/store/user/actions";
 import Game from './Game';
 
@@ -22,7 +23,8 @@ const mapDispatchToProps = {
   sendWsMessage,
   syncUser,
   changeProgress,
-  balancePlus
+  balancePlus,
+  changeSnackbar
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameContainer);

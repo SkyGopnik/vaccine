@@ -5,7 +5,7 @@ import {
   Panel,
   Progress,
   Caption,
-  Title
+  Title, Avatar, Snackbar, Text
 } from '@vkontakte/vkui';
 
 import MainIcon from "src/components/MainIcon";
@@ -19,6 +19,7 @@ import {UserInterface} from "src/store/user/reducers";
 import balanceFormat, { locale } from "src/functions/balanceFormat";
 
 import style from './Game.scss';
+import {Icon16Done} from "@vkontakte/icons";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
@@ -27,7 +28,8 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   snackbar: ReactNode,
   syncUser(data: UserInterface),
   changeProgress(progress: number),
-  balancePlus(sum: number)
+  balancePlus(sum: number),
+  changeSnackbar(snackbar: ReactNode | null)
 }
 
 interface IState {
@@ -98,7 +100,8 @@ export default class extends React.Component<IProps, IState> {
       user,
       balancePlus,
       clickProgress,
-      changeProgress
+      changeProgress,
+      changeSnackbar
     } = this.props;
     const value = clickProgress + 2;
 
@@ -108,6 +111,18 @@ export default class extends React.Component<IProps, IState> {
       }
 
       balancePlus(user.data.click * 5);
+
+      changeSnackbar(
+        <Snackbar
+          className="success-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+        >
+          <div>Ты получил <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
+          <div>Отличная работа, так держать!</div>
+        </Snackbar>
+      );
     }
 
     changeProgress(value < 100 ? value : 0);
