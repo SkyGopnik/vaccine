@@ -35,17 +35,8 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 
 interface IState {
   scheme: AppearanceSchemeType,
-  isHorizontal: boolean
-}
-
-interface Scheme {
-  status: 'light' | 'dark',
-  color: string
-}
-
-interface SchemeArray {
-  bright_light: Scheme,
-  space_gray: Scheme
+  isHorizontal: boolean,
+  lastView: string
 }
 
 let isExit;
@@ -56,7 +47,8 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       scheme: 'bright_light',
-      isHorizontal: false
+      isHorizontal: false,
+      lastView: 'main'
     };
 
     this.menu = this.menu.bind(this);
@@ -66,8 +58,7 @@ export default class extends React.Component<IProps, IState> {
     const {
       changeView,
       connectWs,
-      syncUser,
-      view
+      syncUser
     } = this.props;
 
     try {
@@ -116,7 +107,12 @@ export default class extends React.Component<IProps, IState> {
     document.documentElement.style.setProperty('--header_background', '#F8FCFE');
 
     window.addEventListener("orientationchange", (e) => {
-      const { isHorizontal } = this.state;
+      const { view } = this.props;
+      const { isHorizontal, lastView } = this.state;
+
+      this.setState({
+        lastView: view
+      });
 
       if (!isHorizontal) {
         // Поворот в горизонтальный режим
@@ -125,7 +121,7 @@ export default class extends React.Component<IProps, IState> {
       } else {
         // Возврат в вертикальный
         console.log('Возврат в вертикальный');
-        changeView('main');
+        changeView(lastView);
       }
 
       this.setState({
