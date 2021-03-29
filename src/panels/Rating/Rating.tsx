@@ -30,7 +30,8 @@ interface IProps extends RatingReducerInterface {
   snackbar: ReactNode | null,
   user: UserInterface | null,
   changeModal(modal: string | null, modalData?: Object),
-  sendWsMessage(data: object)
+  sendWsMessage(data: object),
+  changePanel(panel: string, panelData?: any)
 }
 
 interface IState {
@@ -74,7 +75,8 @@ export default class extends React.Component<IProps, IState> {
       user,
       list,
       snackbar,
-      changeModal
+      changeModal,
+      changePanel
     } = this.props;
     const { ptr } = this.state;
 
@@ -110,7 +112,13 @@ export default class extends React.Component<IProps, IState> {
                   <SimpleCell
                     target="_blank"
                     // href={`https://vk.com/skgopnik`}
-                    before={<Avatar size={48} src={item.user.info.photo} />}
+                    before={
+                      <Avatar
+                        size={48}
+                        src={item.user.info.photo}
+                        onClick={() => changePanel('user', item)}
+                      />
+                    }
                     after={(item.userId !== list.user.userId) && (
                       <IconButton
                         icon={<Icon28MoneySendOutline />}
