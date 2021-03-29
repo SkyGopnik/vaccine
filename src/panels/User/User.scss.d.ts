@@ -3,6 +3,7 @@
 interface CssExports {
   'avatar': string;
   'improvements': string;
+  'user': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

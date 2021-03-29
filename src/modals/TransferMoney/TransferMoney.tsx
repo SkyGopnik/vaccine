@@ -188,9 +188,7 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     } catch (e) {
-      this.setState({
-        loading: false
-      });
+      console.log(e);
 
       changeSnackbar(
         <Snackbar
@@ -203,6 +201,10 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     }
+
+    this.setState({
+      loading: false
+    });
 
     // Закрываем модалку
     window.history.go(modalData.backType === 'double' ? -2 : -1);

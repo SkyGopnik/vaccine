@@ -68,25 +68,12 @@ export default class extends React.Component<IProps, IState> {
         key={index}
         mode="shadow"
       >
-        {/*<Avatar src={item.photo} size={48} />*/}
-        {/*<div className={style.info}>*/}
-        {/*  <div className={style.content}>*/}
-        {/*    <Headline weight="regular">{item.title}</Headline>*/}
-        {/*    <Text weight="regular">{item.text}</Text>*/}
-        {/*    <Caption level="2" weight="regular">{item.time}</Caption>*/}
-        {/*  </div>*/}
-        {/*  {item.isRepeat && (*/}
-        {/*    <IconButton*/}
-        {/*      icon={<Icon28MoneySendOutline />}*/}
-        {/*      onClick={() => changeModal('transferMoney', item.user)}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*</div>*/}
         <RichCell
           before={<Avatar size={48} src={item.photo} />}
           text={item.text}
           caption={item.time}
           multiline
+          disabled
         >
           {item.title}
         </RichCell>

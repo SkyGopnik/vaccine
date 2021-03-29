@@ -13,20 +13,17 @@ import TabbarLight from './TabbarLight';
 
 const TabbarLightContainer = (props) => <TabbarLight {...props} />;
 
-const mapStateToProps = (state) => {
-  const props = {
-    view: state.app.view,
-    panel: state.app.panel,
-    modal: state.app.modal,
-    story: state.app.story,
-    user: state.user.data,
-    ratingUser: state.rating.list.user,
-    ratingLoading: state.rating.list.loading,
-    profile: state.profile.data
-  };
-
-  return props;
-};
+const mapStateToProps = (state) => ({
+  view: state.app.view,
+  panel: state.app.panel,
+  modal: state.app.modal,
+  story: state.app.story,
+  user: state.user.data,
+  ratingUser: state.rating.list.user,
+  ratingLoading: state.rating.list.loading,
+  profile: state.profile.data,
+  randomUser: state.randomUser
+});
 
 const mapDispatchToProps = {
   changeView,

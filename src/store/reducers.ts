@@ -6,6 +6,7 @@ import { userReducer } from "./user/reducers";
 import { ratingReducer } from "./rating/reducers";
 import { notificationsReducer } from "./notifications/reducers";
 import { profileReducer } from "src/store/profile/reducers";
+import { randomUserReducer } from "src/store/randomUser/reducers";
 
 export default combineReducers({
   app: appReducer,
@@ -13,5 +14,6 @@ export default combineReducers({
   user: userReducer,
   rating: ratingReducer,
   notifications: notificationsReducer,
-  profile: profileReducer
+  profile: profileReducer,
+  randomUser: randomUserReducer
 });

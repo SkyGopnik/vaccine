@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { getRating } from "src/store/rating/actions";
-import { changeModal, changePanel } from "src/store/app/actions";
+import { changeModal, changePanel, changeStory } from "src/store/app/actions";
 import { sendWsMessage } from "src/store/webSocket/actions";
 
 import Rating from './Rating';
@@ -19,6 +19,7 @@ const mapDispatchToProps = {
   getRating,
   changeModal,
   changePanel,
+  changeStory,
   sendWsMessage
 };
 

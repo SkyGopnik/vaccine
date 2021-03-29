@@ -1,29 +1,38 @@
-.avatar {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
+.user {
   :global {
-    .Headline {
-      margin-top: 8px !important;
-    }
-
-    .Caption {
-      margin-top: 4px !important;
-
-      color: #818C99;
+    .Snackbar {
+      padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
     }
   }
-}
 
-.improvements {
-  div {
-    &:nth-child(1) {
-      color: #4BB34B;
-    }
+  .avatar {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 
-    &:nth-child(2) {
-      color: #4986CC;
+    :global {
+      .Headline {
+        margin-top: 8px !important;
+      }
+
+      .Caption {
+        margin-top: 4px !important;
+
+        color: #818C99;
+      }
     }
   }
+
+  .improvements {
+    div {
+      &:nth-child(1) {
+        color: #4BB34B;
+      }
+
+      &:nth-child(2) {
+        color: #4986CC;
+      }
+    }
+  }
+
 }
