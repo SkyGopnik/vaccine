@@ -41,6 +41,7 @@ import Img4 from "src/img/profile/4.svg";
 import Img5 from "src/img/profile/5.svg";
 
 import style from './Profile.scss';
+import Spacing from "src/components/Spacing";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -258,7 +259,7 @@ export default class extends React.Component<IProps, IState> {
                 Написать разработчикам
               </SimpleCell>
             </Card>
-            {/*<Spacing size={55} />*/}
+            <Spacing size={55} />
           </Div>
         </PullToRefresh>
         {snackbar}

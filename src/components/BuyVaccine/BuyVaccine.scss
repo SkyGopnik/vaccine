@@ -1,0 +1,17 @@
+.buy {
+  padding: 0 !important;
+
+  .input {
+    display: flex;
+
+    :global {
+      .Input {
+        width: 80%;
+      }
+
+      .Button {
+        margin-left: 8px;
+      }
+    }
+  }
+}

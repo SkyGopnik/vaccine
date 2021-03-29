@@ -18,6 +18,7 @@ import style from "./Settings.scss";
 import {Icon16Done, Icon24WriteOutline} from "@vkontakte/icons";
 import {locale} from "src/functions/balanceFormat";
 import Decimal from "decimal.js";
+import Spacing from "src/components/Spacing";
 
 interface IProps {
   id: string,
@@ -112,11 +113,11 @@ export default class extends React.Component<IProps> {
             {/*>*/}
             {/*  Сообщество*/}
             {/*</SimpleCell>*/}
-            {/*<SimpleCell*/}
-            {/*  onClick={() => changePanel('donate')}*/}
-            {/*>*/}
-            {/*  Магазин*/}
-            {/*</SimpleCell>*/}
+            <SimpleCell
+              onClick={() => changePanel('donate')}
+            >
+              Магазин
+            </SimpleCell>
             <SimpleCell onClick={() => changePanel('admin')}>
               Будка бомжа
             </SimpleCell>
@@ -138,6 +139,7 @@ export default class extends React.Component<IProps> {
               Бесконечный снекбар
             </SimpleCell>
           </Card>
+          <Spacing size={55} />
         </Div>
         {snackbar}
       </Panel>
