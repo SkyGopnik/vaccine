@@ -1,3 +1,9 @@
+import Img1 from "src/img/tasks/1.svg";
+import Img2 from "src/img/tasks/2.svg";
+import Img3 from "src/img/tasks/3.svg";
+import Img4 from "src/img/tasks/4.svg";
+import Img5 from "src/img/tasks/5.svg";
+
 export const improvements: {
   [key: string]: Array<{
     name: string,
@@ -157,4 +163,40 @@ export const improvements: {
     }
   ],
   "pharmacy": []
+};
+ 
+export const tasks: {
+  [key: string]: Array<{
+    name: string,
+    desc: string,
+    icon: string,
+  }>
+} = {
+  "tasks": [
+    {
+      name: "Посмотреть рекламу",
+      desc: "+500 вакцины",
+      icon: Img1,
+    },
+    {
+      name: "Подписаться на нас",
+      desc: "+1000 вакцины",
+      icon: Img2,
+    },
+    {
+      name: "Включить уведомления",
+      desc: "+1000 вакцины",
+      icon: Img3,
+    },
+    {
+      name: "Поделиться приложением",
+      desc: "+1000 вакцины",
+      icon: Img4,
+    },
+    {
+      name: "Пригласить друзей",
+      desc: "+2000 вакцины за одного друга",
+      icon: Img5,
+    }
+  ]
 };

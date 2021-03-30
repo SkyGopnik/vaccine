@@ -9,6 +9,7 @@ import RefPanel from "src/panels/Ref/RefContainer";
 import AdminPanel from "src/panels/Admin/AdminContainer";
 import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
 import DonatePanel from "src/panels/Donate/Donate";
+import TasksPanel from "src/panels/Tasks/TasksContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -66,6 +67,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'donate',
             component: DonatePanel
+          },
+          {
+            id: 'tasks',
+            component: TasksPanel
           }
         ]}
       />

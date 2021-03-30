@@ -120,6 +120,9 @@ export default class extends React.Component<IProps> {
             <SimpleCell onClick={() => changePanel('admin')}>
               Будка бомжа
             </SimpleCell>
+            <SimpleCell onClick={() => changePanel('tasks')}>
+              Задания
+            </SimpleCell>
             <SimpleCell
               onClick={() => {
                 changeSnackbar(
