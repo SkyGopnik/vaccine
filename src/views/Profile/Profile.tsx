@@ -15,6 +15,7 @@ import TasksPanel from "src/panels/Tasks/TasksContainer";
 import ViewLight from '../../components/ViewLight';
 
 import {AppReducerInterface} from "src/store/app/reducers";
+import UserPanel from "src/panels/User/UserContainer";
 
 interface IProps extends AppReducerInterface {
   id: string
@@ -71,6 +72,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'tasks',
             component: TasksPanel
+          },
+          {
+            id: 'user',
+            component: UserPanel
           }
         ]}
       />

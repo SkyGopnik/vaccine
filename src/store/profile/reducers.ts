@@ -6,17 +6,19 @@ import {
 
 import {Notification} from "src/store/notifications/reducers";
 
+export interface UserStat {
+  ratingPosition?: number,
+  startAt?: Date,
+  record?: number,
+  saveFriends?: number,
+  transfer?: number,
+  improvements?: number,
+  achievements?: number
+}
+
 export interface ProfileReducerInterface {
   data: {
-    stat: {
-      ratingPosition?: number,
-      startAt?: Date,
-      record?: number,
-      saveFriends?: number,
-      transfer?: number,
-      improvements?: number,
-      achievements?: number
-    },
+    stat: UserStat,
     ref: {
       refCode?: number,
       ref?: number

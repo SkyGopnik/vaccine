@@ -8,7 +8,7 @@ import {changeSnackbar} from "src/store/app/actions";
 import {UserInterface} from "src/store/user/reducers";
 
 import {locale} from "src/functions/balanceFormat";
-
+import declNum from "src/functions/decl_num";
 
 interface transferGet {
   data: UserInterface,
@@ -47,7 +47,7 @@ export function transferGet(data: transferGet) {
     onClose={() => store.dispatch(changeSnackbar(null))}
     before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
   >
-    <div>{data.data.info.firstName} {data.data.info.lastName} {declBySex(data.data.info.sex, ['передал (a)', 'передала', 'передал'])} тебе {data.sum} вакцины </div>
+    <div>{data.data.info.firstName} {data.data.info.lastName} {declBySex(data.data.info.sex, ['передал (a)', 'передала', 'передал'])} тебе {locale(data.sum)} {declNum(data.sum, ['вакцину', 'вакцины', 'вакцины'])}</div>
   </Snackbar>
   )
 }
@@ -60,7 +60,7 @@ export function newFriend(data: newFriend) {
     onClose={() => store.dispatch(changeSnackbar(null))}
     before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
   >
-    <div>Ты получил {data.sum} вакцины за нового друга </div>
+    <div>Ты получил {locale(data.sum)} {declNum(data.sum, ['вакцина', 'вакцины', 'вакцины'])} за нового друга </div>
   </Snackbar>
   )
 }

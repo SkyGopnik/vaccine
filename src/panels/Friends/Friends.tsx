@@ -88,7 +88,13 @@ export default class extends React.Component<IProps, IState> {
                 friends.map((item, index) => (
                   <SimpleCell
                     key={index}
-                    before={<Avatar size={48} src={item.photo} />}
+                    before={
+                      <Avatar
+                        size={48}
+                        src={item.photo}
+                        onClick={() => changePanel('user', item)}
+                      />
+                    }
                     after={
                       <IconButton
                         icon={<Icon28MoneySendOutline />}

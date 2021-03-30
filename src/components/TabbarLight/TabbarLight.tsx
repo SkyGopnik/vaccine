@@ -6,11 +6,11 @@ import {
   Div,
   SimpleCell,
   Avatar,
-  IconButton,
-  Headline
+  IconButton
 } from '@vkontakte/vkui';
 
 import {
+  Icon24MoneyTransferOutline,
   Icon28GameOutline,
   Icon28PollSquareOutline,
   Icon28Profile,
@@ -22,11 +22,13 @@ import TabbarItemLight from '../TabbarItemLight.jsx';
 import declNum from "src/functions/decl_num";
 import { locale } from "src/functions/balanceFormat";
 
+import platformApi from "src/js/platformApi";
+
 import {AppReducerInterface} from "src/store/app/reducers";
 import {UserDataInterface, UserInterface} from "src/store/user/reducers";
 
 import style from './TabbarLight.scss';
-import platformApi from "src/js/platformApi";
+import {RandomUserReducerInterface} from "src/store/randomUser/reducers";
 
 interface IProps extends AppReducerInterface {
   user: UserInterface,
@@ -37,7 +39,8 @@ interface IProps extends AppReducerInterface {
       refCode?: number,
       ref?: number
     }
-  }
+  },
+  randomUser: RandomUserReducerInterface
 }
 
 interface IState {
@@ -77,8 +80,10 @@ export default class extends React.Component<IProps, IState> {
       profile,
       ratingUser,
       ratingLoading,
+      randomUser,
       changeStory,
-      changePanel
+      changePanel,
+      changeModal
     } = this.props;
     const { tabbarItems } = this.state;
 
@@ -90,8 +95,14 @@ export default class extends React.Component<IProps, IState> {
             <SimpleCell
               target="_blank"
               href={`https://vk.com/skgopnik`}
-              before={<Avatar size={48} src={ratingUser.user.info.photo} />}
-              after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${ratingUser.balance.toLocaleString()} ${new Decimal(ratingUser.balance).toNumber() > 1 ? declNum(Math.round(new Decimal(ratingUser.balance).toNumber()), ['вакцину', 'вакцины', 'вакцины']) : 'вакцины'}!`)} />}
+              before={
+                <Avatar
+                  size={48}
+                  src={ratingUser.user.info.photo}
+                  onClick={() => changeStory('profile')}
+                />
+              }
+              after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${locale(ratingUser.balance)} ${new Decimal(ratingUser.balance).toNumber() > 1 ? declNum(Math.round(new Decimal(ratingUser.balance).toNumber()), ['вакцину', 'вакцины', 'вакцины']) : 'вакцины'}!`)} />}
               description={locale(ratingUser.balance)}
               multiline
               disabled
@@ -109,6 +120,22 @@ export default class extends React.Component<IProps, IState> {
               stretched
             >
               Улучшения
+            </Button>
+          </Div>
+        )}
+        {panel === 'user' && (
+          <Div className={style.button}>
+            <Button
+              size="m"
+              before={<Icon24MoneyTransferOutline />}
+              onClick={() => changeModal('transferMoney', {
+                backType: 'normal',
+                ...randomUser.data.data.user.info
+              })}
+              disabled={randomUser.loading}
+              stretched
+            >
+              Передать вакцину
             </Button>
           </Div>
         )}

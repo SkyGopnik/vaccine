@@ -8,7 +8,7 @@ import {
 import Decimal from "decimal.js";
 
 export interface UserInfoInterface {
-  id?: number,
+  id?: string,
   firstName: string
   lastName: string
   photo: string
@@ -18,7 +18,7 @@ export interface UserInfoInterface {
 }
 
 export interface UserDataInterface {
-  userId?: number
+  userId?: string
   balance: number
   passive: number
   click: number

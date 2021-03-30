@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { changeModal } from "src/store/app/actions";
+import { changeModal, changePanel } from "src/store/app/actions";
 import { getNotifications } from "src/store/notifications/actions";
 
 import Notifications from './Notifications';

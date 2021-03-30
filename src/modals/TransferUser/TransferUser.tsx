@@ -125,7 +125,7 @@ export default class extends React.Component<IProps, IState> {
     }
 
     try {
-      const { data } = await axios.get(`/user/id?userId=${value}`);
+      const { data } = await axios.get(`/user/${value}`);
 
       if (data) {
         if (user.id !== String(data.id)) {
@@ -212,7 +212,7 @@ export default class extends React.Component<IProps, IState> {
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
           />
         </FormItem>
-        {recentTransfer && (
+        {recentTransfer && recentTransfer.length !== 0 && (
           <div className={style.recent}>
             <Subhead weight="regular">Недавние переводы</Subhead>
             <HorizontalScroll>

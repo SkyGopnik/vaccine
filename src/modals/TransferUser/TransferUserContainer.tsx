@@ -7,11 +7,9 @@ import TransferUser from './TransferUser';
 
 const TransferUserContainer = (props) => <TransferUser {...props} />;
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.user.data
-  };
-};
+const mapStateToProps = (state) => ({
+  user: state.user.data
+});
 
 const mapDispatchToProps = {
   changeModal

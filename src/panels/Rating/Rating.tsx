@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import Decimal from 'decimal';
+import Decimal from 'decimal.js';
 import {
   Panel,
   PanelHeader,
@@ -30,7 +30,9 @@ interface IProps extends RatingReducerInterface {
   snackbar: ReactNode | null,
   user: UserInterface | null,
   changeModal(modal: string | null, modalData?: Object),
-  sendWsMessage(data: object)
+  changeStory(story: string, panelData?: any),
+  sendWsMessage(data: object),
+  changePanel(panel: string, panelData?: any)
 }
 
 interface IState {
@@ -74,7 +76,9 @@ export default class extends React.Component<IProps, IState> {
       user,
       list,
       snackbar,
-      changeModal
+      changeModal,
+      changePanel,
+      changeStory
     } = this.props;
     const { ptr } = this.state;
 
@@ -92,7 +96,7 @@ export default class extends React.Component<IProps, IState> {
           {/*    Больницы*/}
           {/*  </TabsItem>*/}
           {/*</Tabs>*/}
-          {!list.loading && (Decimal(user.data.balance).toNumber() !== (list.user && Decimal(list.user.balance).toNumber())) && (
+          {!list.loading && (new Decimal(user.data.balance).toNumber() !== (list.user && new Decimal(list.user.balance).toNumber())) && (
             <FormItem>
               <FormStatus header="Данные отличаются" mode="error">
                 Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить
@@ -110,7 +114,13 @@ export default class extends React.Component<IProps, IState> {
                   <SimpleCell
                     target="_blank"
                     // href={`https://vk.com/skgopnik`}
-                    before={<Avatar size={48} src={item.user.info.photo} />}
+                    before={
+                      <Avatar
+                        size={48}
+                        src={item.user.info.photo}
+                        onClick={() => user.id !== item.userId ? changePanel('user', item) : changeStory('profile')}
+                      />
+                    }
                     after={(item.userId !== list.user.userId) && (
                       <IconButton
                         icon={<Icon28MoneySendOutline />}

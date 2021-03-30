@@ -62,6 +62,10 @@ const getTime = (_time: Date): string => {
   const now = new Date();
   const time = new Date(_time);
 
+  console.log(_time);
+  console.log(time);
+  console.log('----------');
+
   // Текущая дата в Unixtime
   const nowUnix = (now.getTime() / 1000);
   // Входящая дата в Unixtime
@@ -102,17 +106,17 @@ const getTime = (_time: Date): string => {
   }
 
   // Сегодня
-  if (time.getDay() === now.getDay()) {
+  if (time.getDate() === now.getDate()) {
     return `сегодня в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
   }
 
   // Вчера
-  if ((time.getDay() + 1) === now.getDay()) {
+  if ((time.getDate() + 1) === now.getDate()) {
     return `вчера в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
   }
 
   // Для всех остальных случаев - 1 мар в 16:53
-  return `${time.getDay()} ${months[time.getMonth()].toLowerCase()} в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
+  return `${time.getDate()} ${months[time.getMonth()].toLowerCase()} в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
 };
 
 export default function (notification: NotificationInterface, lowText?: boolean): RenderNotificationInterface {

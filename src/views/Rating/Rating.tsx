@@ -2,10 +2,8 @@ import React from 'react';
 import {ModalRoot} from "@vkontakte/vkui";
 
 // Панели
-import RatingPanel from '../../panels/Rating/RatingContainer';
-
-// Модалки
-import TransferMoney from "src/modals/TransferMoney/TransferMoneyContainer";
+import RatingPanel from 'src/panels/Rating/RatingContainer';
+import UserPanel from 'src/panels/User/UserContainer';
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -24,8 +22,7 @@ export default class extends React.Component<IProps> {
   render() {
     const {
       id,
-      panel,
-      modal
+      panel
     } = this.props;
 
     return (
@@ -36,6 +33,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'main',
             component: RatingPanel
+          },
+          {
+            id: 'user',
+            component: UserPanel
           }
         ]}
       />

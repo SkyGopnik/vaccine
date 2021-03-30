@@ -1,5 +1,4 @@
 import React, {ReactNode} from "react";
-import axios from "axios";
 import {
   Panel,
   PanelHeader,
@@ -7,14 +6,10 @@ import {
   Card,
   Div,
   Avatar,
-  Text,
-  Caption,
-  Headline,
   Spinner,
-  IconButton, PullToRefresh, RichCell
+  PullToRefresh,
+  RichCell
 } from "@vkontakte/vkui";
-
-import { Icon28MoneySendOutline } from "@vkontakte/icons";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 
@@ -25,7 +20,8 @@ import style from "./Notifications.scss";
 interface IProps extends NotificationsReducerInterface {
   id: string,
   snackbar: ReactNode | null,
-  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
+  changePanel(panel: string, panelData?: any)
 }
 
 interface IState {
@@ -60,7 +56,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   notification(item: Notification, index: number) {
-    const { changeModal } = this.props;
+    const { changePanel } = this.props;
 
     return (
       <Card
@@ -68,25 +64,18 @@ export default class extends React.Component<IProps, IState> {
         key={index}
         mode="shadow"
       >
-        {/*<Avatar src={item.photo} size={48} />*/}
-        {/*<div className={style.info}>*/}
-        {/*  <div className={style.content}>*/}
-        {/*    <Headline weight="regular">{item.title}</Headline>*/}
-        {/*    <Text weight="regular">{item.text}</Text>*/}
-        {/*    <Caption level="2" weight="regular">{item.time}</Caption>*/}
-        {/*  </div>*/}
-        {/*  {item.isRepeat && (*/}
-        {/*    <IconButton*/}
-        {/*      icon={<Icon28MoneySendOutline />}*/}
-        {/*      onClick={() => changeModal('transferMoney', item.user)}*/}
-        {/*    />*/}
-        {/*  )}*/}
-        {/*</div>*/}
         <RichCell
-          before={<Avatar size={48} src={item.photo} />}
+          before={
+            <Avatar
+              size={48}
+              src={item.photo}
+              onClick={() => changePanel('user', item.user)}
+            />
+          }
           text={item.text}
           caption={item.time}
           multiline
+          disabled
         >
           {item.title}
         </RichCell>
