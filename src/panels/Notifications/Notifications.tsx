@@ -1,5 +1,4 @@
 import React, {ReactNode} from "react";
-import axios from "axios";
 import {
   Panel,
   PanelHeader,
@@ -7,14 +6,10 @@ import {
   Card,
   Div,
   Avatar,
-  Text,
-  Caption,
-  Headline,
   Spinner,
-  IconButton, PullToRefresh, RichCell
+  PullToRefresh,
+  RichCell
 } from "@vkontakte/vkui";
-
-import { Icon28MoneySendOutline } from "@vkontakte/icons";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 
@@ -25,7 +20,8 @@ import style from "./Notifications.scss";
 interface IProps extends NotificationsReducerInterface {
   id: string,
   snackbar: ReactNode | null,
-  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
+  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
+  changePanel(panel: string, panelData?: any)
 }
 
 interface IState {
@@ -60,7 +56,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   notification(item: Notification, index: number) {
-    const { changeModal } = this.props;
+    const { changePanel } = this.props;
 
     return (
       <Card
@@ -69,7 +65,13 @@ export default class extends React.Component<IProps, IState> {
         mode="shadow"
       >
         <RichCell
-          before={<Avatar size={48} src={item.photo} />}
+          before={
+            <Avatar
+              size={48}
+              src={item.photo}
+              onClick={() => changePanel('user', item.user)}
+            />
+          }
           text={item.text}
           caption={item.time}
           multiline
