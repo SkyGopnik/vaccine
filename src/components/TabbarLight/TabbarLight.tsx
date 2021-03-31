@@ -89,7 +89,7 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Tabbar>
-        {(story === 'rating' && panel === 'main') && (ratingUser && !ratingLoading) && (
+        {(story === 'rating' && panel === 'main') && ratingUser && (
           <div className={style.userItem}>
             <div className={style.topNumber}>{ratingUser.position.toFixed(0)}.</div>
             <SimpleCell

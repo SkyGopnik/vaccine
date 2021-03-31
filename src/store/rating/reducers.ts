@@ -9,7 +9,7 @@ import {UserDataInterface} from "src/store/user/reducers";
 export interface RatingReducerInterface {
   list: {
     loading: boolean,
-    data: Array<UserDataInterface>,
+    data: Array<UserDataInterface> | null,
     user: UserDataInterface | null,
     error: any
   },
@@ -19,7 +19,7 @@ export interface RatingReducerInterface {
 const defaultState = {
   list: {
     loading: false,
-    data: [],
+    data: null,
     user: null,
     error: null
   }

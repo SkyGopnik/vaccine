@@ -108,7 +108,7 @@ export default class extends React.Component<IProps, IState> {
               className={style.card}
               mode="shadow"
             >
-              {!list.loading ? list.data.map((item, index) => (
+              {list.data ? list.data.map((item, index) => (
                 <div className={style.userItem} key={index}>
                   <div className={style.topNumber}>{index + 1}.</div>
                   <SimpleCell
