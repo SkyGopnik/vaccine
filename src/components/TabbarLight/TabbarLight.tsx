@@ -94,7 +94,6 @@ export default class extends React.Component<IProps, IState> {
             <div className={style.topNumber}>{ratingUser.position.toFixed(0)}.</div>
             <SimpleCell
               target="_blank"
-              href={`https://vk.com/skgopnik`}
               before={
                 <Avatar
                   size={48}

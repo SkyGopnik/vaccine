@@ -100,4 +100,8 @@
       }
     }
   }
+
+  .Tooltip--y-bottom .Tooltip__corner {
+    bottom: 99% !important;
+  }
 }

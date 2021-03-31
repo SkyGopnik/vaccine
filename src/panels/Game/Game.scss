@@ -3,6 +3,10 @@
     .Snackbar {
       padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
     }
+
+    .PanelHeader__in {
+      background-color: transparent;
+    }
   }
 
   .info {

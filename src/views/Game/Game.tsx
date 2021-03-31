@@ -1,11 +1,11 @@
 import React from 'react';
 import lo from 'lodash';
 import Decimal from 'decimal.js';
-import axios from "axios";
 
 // Панели
 import GamePanel from "src/panels/Game/GameContainer";
 import ImprovementsPanel from "src/panels/Improvements/ImprovementsContainer";
+import TasksPanel from "src/panels/Tasks/TasksContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -13,8 +13,6 @@ import ViewLight from '../../components/ViewLight';
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {UserInterface} from "src/store/user/reducers";
-
-import hashGet from "src/functions/hash_get";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
@@ -91,6 +89,10 @@ export default class extends React.Component<IProps, IState> {
           {
             id: 'improvements',
             component: ImprovementsPanel
+          },
+          {
+            id: 'tasks',
+            component: TasksPanel
           }
         ]}
       />
