@@ -148,6 +148,14 @@ export default class extends React.Component<IProps, IState> {
         });
       }
     } catch (e) {
+      const localization = {
+        'No user found': 'Пользователь не найден'
+      };
+
+      this.setState({
+        error: localization[e.response.data.message]
+      });
+
       console.log(e);
     }
   }

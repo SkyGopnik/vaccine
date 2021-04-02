@@ -113,6 +113,7 @@ export default class extends React.Component<IProps, IState> {
       user,
       data,
       loading,
+      error,
       snackbar,
       changeModal,
       changePanel
@@ -175,7 +176,7 @@ export default class extends React.Component<IProps, IState> {
                   <Button
                     mode="outline"
                     size="m"
-                    disabled={loading}
+                    disabled={loading || error}
                     onClick={() => changePanel('ref')}
                   >
                     Пригласить

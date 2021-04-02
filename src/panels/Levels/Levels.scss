@@ -1,0 +1,60 @@
+.levels {
+  .card {
+    padding: 12px 16px;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+
+    :global {
+      .Card__in {
+        display: flex;
+        align-items: flex-start;
+      }
+    }
+
+    .info {
+      width: 100%;
+
+      margin-left: 8px;
+
+      .progressWrapper {
+        margin-top: 12px;
+
+        .progress {
+          height: 8px;
+
+          overflow: hidden;
+          border-radius: 4px;
+
+          :global {
+            .Progress__in {
+              background: #78D0B1 !important;
+            }
+          }
+        }
+
+        .numbers {
+          margin-top: 4px;
+
+          display: flex;
+          justify-content: space-between;
+
+          color: #6D7885;
+        }
+      }
+
+      :global {
+        .Text {
+          margin-top: 8px;
+
+          color: #2C2D2E;
+        }
+      }
+    }
+  }
+
+  .cardDisabled {
+    opacity: .5;
+  }
+}
