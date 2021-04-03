@@ -10,6 +10,7 @@ import AdminPanel from "src/panels/Admin/AdminContainer";
 import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
 import DonatePanel from "src/panels/Donate/Donate";
 import LevelsPanel from "src/panels/Levels/LevelsContainer";
+import UsersPanel from "src/panels/Users/UsersContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -76,6 +77,10 @@ export default class extends React.Component<IProps> {
           {
             id: 'levels',
             component: LevelsPanel
+          },
+          {
+            id: 'users',
+            component: UsersPanel
           }
         ]}
       />

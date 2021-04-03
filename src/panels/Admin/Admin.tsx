@@ -31,7 +31,8 @@ export default class extends React.Component<IProps> {
     const {
       id,
       snackbar,
-      changeModal
+      changeModal,
+      changePanel
     } = this.props;
 
     return (
@@ -44,6 +45,9 @@ export default class extends React.Component<IProps> {
           <Card mode="shadow">
             <SimpleCell onClick={() => changeModal('addPromocode')}>
               Добавить
+            </SimpleCell>
+            <SimpleCell onClick={() => changePanel('users')}>
+              Пользователи
             </SimpleCell>
           </Card>
         </Div>
