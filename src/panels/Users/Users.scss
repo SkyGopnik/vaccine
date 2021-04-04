@@ -1,0 +1,39 @@
+.users {
+
+  .card {
+    padding: 0 12px;
+
+    .usersItem {
+      display: flex;
+      align-items: center;
+
+      &:first-child {
+        padding-top: 12px;
+      }
+
+      &:last-child {
+        padding-bottom: 12px;
+      }
+
+      :global {
+        .SimpleCell {
+          width: 100%;
+
+          padding-right: 0;
+        }
+      }
+
+      @media screen and (max-width: 330px) {
+        .topNumber {
+          display: none;
+        }
+
+        :global {
+          .SimpleCell {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
