@@ -1,17 +1,16 @@
 const path = require('path');
-const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = {
   entry: path.join(__dirname, './src/js/index.tsx'),
   plugins: [
-    new webpack.HashedModuleIdsPlugin(),
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
+      hash: true,
       template: './src/index.html',
-      title: 'Caching'
-    })
+      inject: 'body'
+    }),
+    new CompressionPlugin()
   ],
   resolve: {
     modules: ['node_modules', path.resolve('./src')],
@@ -19,32 +18,6 @@ module.exports = {
       src: path.resolve(__dirname, './src')
     },
     extensions: ['.tsx', '.ts', '.js', '.jsx']
-  },
-  output: {
-    path: path.join(__dirname, '/www'),
-    filename: '[name].[contenthash].js'
-  },
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            // получает имя, то есть node_modules/packageName/not/this/part.js
-            // или node_modules/packageName
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-            // имена npm-пакетов можно, не опасаясь проблем, использовать
-            // в URL, но некоторые серверы не любят символы наподобие @
-            return `npm.${packageName.replace('@', '')}`;
-          }
-        }
-      }
-    }
   },
   module: {
     rules: [

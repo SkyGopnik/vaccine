@@ -1,7 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
-import {AdaptivityProvider, AppRoot, ConfigProvider, Epic, Platform, Root} from '@vkontakte/vkui';
+import {
+  ActionSheet,
+  ActionSheetItem,
+  AdaptivityProvider,
+  AppRoot,
+  ConfigProvider,
+  Epic,
+  Platform,
+  Root
+} from '@vkontakte/vkui';
 import {isMobile} from "react-device-detect";
 
 import Rating from "src/views/Rating/RatingContainer";
@@ -133,6 +142,7 @@ export default class extends React.Component<IProps, IState> {
   menu = (e) => {
     const {
       changeModal,
+      changePopout,
       changeViewPanelStory
     } = this.props;
 
@@ -157,6 +167,8 @@ export default class extends React.Component<IProps, IState> {
         changeModal(null, undefined, true);
         setTimeout(() => changeModal(modal, modalData ? JSON.parse(modalData) : null, true), 400);
 
+        changePopout(null, true);
+
         // Устанавливаем новые значения для View и Panel
         changeViewPanelStory(view, panel, story, null, true);
       } else {
@@ -166,9 +178,10 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { view, story } = this.props;
+    const { view, story, popout } = this.props;
     const { scheme } = this.state;
 
+    // @ts-ignore
     return (
       <ConfigProvider
         scheme={scheme}
@@ -179,6 +192,7 @@ export default class extends React.Component<IProps, IState> {
             <Root
               activeView={view}
               modal={<Modals />}
+              popout={popout}
             >
               <Epic
                 id="main"

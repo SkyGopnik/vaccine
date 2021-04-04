@@ -5,7 +5,8 @@ import {
   APP_CHANGE_MODAL,
   APP_CHANGE_STORY,
   APP_CHANGE_SNACKBAR,
-  updateHistory, changeModal
+  APP_CHANGE_POPOUT,
+  updateHistory
 } from './actions';
 import {ReactNode} from "react";
 
@@ -18,11 +19,13 @@ export interface AppReducerInterface {
   panelData: any,
   modal: string,
   modalData: any,
+  popout: string,
   snackbar: ReactNode | null,
   changeView(view: string),
   changePanel(panel: string, panelData?: any),
   changeViewPanelStory(view: string, panel: string, story?: string, panelData?: any, isPopstate?: boolean),
   changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
+  changePopout(popout: ReactNode | null, isPopstate?: boolean),
   changeStory(story: string, panelData?: any),
   changeSnackbar(snackbar: ReactNode | null),
   updateHistory(view: string, panel: string, story: string, history?: any)
@@ -35,6 +38,7 @@ const defaultState = {
   panelData: null,
   modal: null,
   modalData: null,
+  popout: null,
   snackbar: null
 };
 
@@ -92,13 +96,15 @@ export const appReducer = (state = defaultState, action) => {
       story: action.payload.story,
       panel: 'main',
       panelData: action.payload.panelData,
-      modal: null
+      modal: null,
+      popout: null
     };
 
   case APP_CHANGE_VIEW_PANEL_STORY:
     return {
       ...state,
       modal: !action.payload.isPopstate ? null : state.modal,
+      popout: !action.payload.isPopstate ? null : state.popout,
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,
@@ -125,8 +131,6 @@ export const appReducer = (state = defaultState, action) => {
       };
     }
 
-    console.log('APP_CHANGE_MODAL'+action.payload.modal)
-
     if (action.payload.modal) {
       modalTime = new Date().getTime();
     }
@@ -136,6 +140,25 @@ export const appReducer = (state = defaultState, action) => {
       modal: action.payload.modal,
       modalData: action.payload.modalData ? action.payload.modalData : state.modalData // Если данные не меняются, то оставляем их
     };
+
+    case APP_CHANGE_POPOUT:
+      if (!action.payload.isPopstate) {
+        window.history.pushState({
+          view: state.view,
+          panel: state.panel,
+          story: state.story,
+          data: JSON.stringify(state.panelData),
+          modal: state.modal,
+          modalData: JSON.stringify(state.modalData)
+        }, `${state.view}/${state.panel}/${state.story}/${state.modal}`);
+      }
+
+      console.log(action.payload.popout);
+
+      return {
+        ...state,
+        popout: action.payload.popout
+      };
 
   case APP_CHANGE_SNACKBAR:
     return {

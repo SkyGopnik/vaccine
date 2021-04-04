@@ -23,6 +23,7 @@ export interface ProfileReducerInterface {
       refCode?: number,
       ref?: number
     },
+    role: string,
     additional: any,
     notification: Notification
   },

@@ -9,15 +9,11 @@ import Profile from './Profile';
 
 const ProfileContainer = (props) => <Profile {...props} />;
 
-const mapStateToProps = (state) => {
-  const props = {
-    user: state.user.data,
-    snackbar: state.app.snackbar,
-    ...state.profile
-  };
-
-  return props;
-};
+const mapStateToProps = (state) => ({
+  user: state.user.data,
+  snackbar: state.app.snackbar,
+  ...state.profile
+});
 
 const mapDispatchToProps = {
   changeSnackbar,

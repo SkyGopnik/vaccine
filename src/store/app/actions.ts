@@ -6,6 +6,7 @@ export const APP_CHANGE_VIEW = 'APP_CHANGE_VIEW';
 export const APP_CHANGE_PANEL = 'APP_CHANGE_PANEL';
 export const APP_CHANGE_VIEW_PANEL_STORY = 'APP_CHANGE_VIEW_PANEL_STORY';
 export const APP_CHANGE_MODAL = 'APP_CHANGE_MODAL';
+export const APP_CHANGE_POPOUT = 'APP_CHANGE_POPOUT';
 export const APP_CHANGE_STORY = 'APP_CHANGE_STORY';
 export const APP_CHANGE_SNACKBAR = 'APP_CHANGE_SNACKBAR';
 
@@ -64,6 +65,24 @@ export const changeModal = (modal: null | string, modalData?: Object, isPopstate
       payload: {
         modal,
         modalData,
+        isPopstate
+      }
+    };
+  }
+};
+
+export const changePopout = (popout: null | string, isPopstate?: boolean) => {
+  const { app } = store.getState();
+
+  if (app.view === 'main') {
+    // Блокировка и разблокировка скрола при открытии модалки
+    const body = document.getElementsByTagName('body')[0];
+    body.style.overflowY = popout ? 'hidden' : 'scroll';
+
+    return {
+      type: APP_CHANGE_POPOUT,
+      payload: {
+        popout,
         isPopstate
       }
     };

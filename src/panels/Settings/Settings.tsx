@@ -6,27 +6,29 @@ import {
   Card,
   Div,
   SimpleCell,
-  Switch, Snackbar, Avatar, Text, Button
+  Switch,
+  Snackbar,
+  Avatar, ActionSheetItem, ActionSheet
 } from "@vkontakte/vkui";
+import {Icon16Done } from "@vkontakte/icons";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
+import Spacing from "src/components/Spacing";
 import Promocode from "src/components/Promocode/PromocodeContainer";
 
 import {UserInterface} from "src/store/user/reducers";
+import {ProfileReducerInterface} from "src/store/profile/reducers";
 
 import style from "./Settings.scss";
-import {Icon16Done, Icon24WriteOutline} from "@vkontakte/icons";
-import {locale} from "src/functions/balanceFormat";
-import Decimal from "decimal.js";
-import Spacing from "src/components/Spacing";
 
-interface IProps {
+interface IProps extends ProfileReducerInterface {
   id: string,
   user: UserInterface | null,
   snackbar: ReactNode | null,
   changeAdditional(data: object),
   changePanel(panel: string, panelData?: any),
   changeSnackbar(snackbar: ReactNode),
+  changePopout(popout: ReactNode | null),
   changeModal(modal: null | string, modalData?: any, isPopstate?: boolean)
 }
 
@@ -41,12 +43,14 @@ export default class extends React.Component<IProps> {
     const {
       id,
       user,
+      data,
       snackbar,
       changePanel,
+      changePopout,
       changeSnackbar,
-      changeAdditional,
-      changeModal
+      changeAdditional
     } = this.props;
+    const { role } = data;
     const { easyAnimation, showRating } = user.data.additional;
 
     return (
@@ -118,8 +122,35 @@ export default class extends React.Component<IProps> {
             >
               Магазин
             </SimpleCell>
-            <SimpleCell onClick={() => changePanel('admin')}>
-              Будка бомжа
+            {role === 'admin' && (
+              <SimpleCell onClick={() => changePanel('admin')}>
+                Будка бомжа
+              </SimpleCell>
+            )}
+            <SimpleCell onClick={() => changePopout(
+              <ActionSheet
+                iosCloseItem={<ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
+                // @ts-ignore
+                toggleRef={React.createRef().current}
+              >
+                <ActionSheetItem autoclose>
+                  Сохранить в закладках
+                </ActionSheetItem>
+                <ActionSheetItem autoclose>
+                  Закрепить запись
+                </ActionSheetItem>
+                <ActionSheetItem autoclose>
+                  Выключить комментирование
+                </ActionSheetItem>
+                <ActionSheetItem autoclose>
+                  Закрепить запись
+                </ActionSheetItem>
+                <ActionSheetItem autoclose mode="destructive">
+                  Удалить запись
+                </ActionSheetItem>
+              </ActionSheet>
+            )}>
+              Будка бомжа 2
             </SimpleCell>
             <SimpleCell
               onClick={() => {

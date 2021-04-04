@@ -1,21 +1,17 @@
 const path = require('path');
-const webpack = require('webpack');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, './src/js/index.tsx'),
   plugins: [
-    new webpack.HashedModuleIdsPlugin(),
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
+      hash: true,
       template: './src/index.html',
-      title: 'Caching'
+      inject: 'body'
     })
   ],
   output: {
-    path: path.resolve(__dirname, '/www'),
-    filename: '[name].[hash].js'
+    path: path.resolve(__dirname, '/www')
   },
   optimization: {
     runtimeChunk: 'single',
