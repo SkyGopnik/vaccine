@@ -2,6 +2,7 @@ import {changeModal, changeSnackbar, changeView} from "src/store/app/actions";
 import {changeProgress, syncUser, balancePlus} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {passiveOfflineBonus, transferGet, newFriend} from "src/functions/getSnackbar";
+import {AppReducerInterface} from "src/store/app/reducers";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -9,7 +10,8 @@ export const CONNECT_WS_SUCCESS = 'CONNECT_WS_SUCCESS';
 export const CONNECT_WS_FAILURE = 'CONNECT_WS_FAILURE';
 
 let socket;
-let ping;
+let ping; // interval для поддержки общения с сервером
+let error; // interval для вызова ошибки если она не смогла открыться
 
 export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunkAPI) => {
   return new Promise((resolve, reject) => {
@@ -69,27 +71,38 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
     socket.onclose = event => {
       reject(event);
 
-      clearInterval(ping);
-
       console.log("Socket Closed Connection: ", event);
+
+      error = setInterval(() => {
+        const { app } = <{
+          app: AppReducerInterface
+        }>thunkAPI.getState();
+
+        console.log(app.view);
+
+        if (app.view !== 'error') {
+          thunkAPI.dispatch(changeView('error'));
+        } else {
+          clearInterval(error);
+        }
+      }, 1000);
+
+      clearInterval(ping);
 
       thunkAPI.dispatch(changeProgress(0));
       thunkAPI.dispatch(changeModal(null));
-      thunkAPI.dispatch(changeView('error'));
 
       thunkAPI.dispatch(connectWsFailure(event));
     };
 
     socket.onerror = error => {
-      clearInterval(ping);
-
       console.log("Socket Error: ", error);
     };
   });
 });
 
 export const sendWsMessage = (data: object) => {
-  if (socket.readyState) {
+  if (socket.readyState === 1) {
     return () => socket.send(JSON.stringify(data));
   }
 };

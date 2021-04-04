@@ -14,6 +14,7 @@ import Img1 from 'src/img/levels/1.svg';
 
 import style from "./Levels.scss";
 import {classNames} from "@vkontakte/vkjs";
+import Spacing from "src/components/Spacing";
 
 interface IProps {
   id: string,
@@ -97,6 +98,7 @@ export default class extends React.Component<IProps> {
               </Text>
             </div>
           </Card>
+          <Spacing size={55} />
         </Div>
         {snackbar}
       </Panel>

@@ -31,3 +31,39 @@
     margin-right: 8px;
   }
 }
+
+.levels {
+  .progressWrapper {
+    margin-top: 12px;
+
+    .progress {
+      height: 8px;
+
+      overflow: hidden;
+      border-radius: 4px;
+
+      :global {
+        .Progress__in {
+          background: #78D0B1 !important;
+        }
+      }
+    }
+
+    .numbers {
+      margin-top: 4px;
+
+      display: flex;
+      justify-content: space-between;
+
+      color: #6D7885;
+    }
+  }
+
+  :global {
+    .Text {
+      margin-top: 8px;
+
+      color: #818C99;
+    }
+  }
+}

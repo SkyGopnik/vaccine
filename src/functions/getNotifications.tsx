@@ -62,10 +62,6 @@ const getTime = (_time: Date): string => {
   const now = new Date();
   const time = new Date(_time);
 
-  console.log(_time);
-  console.log(time);
-  console.log('----------');
-
   // Текущая дата в Unixtime
   const nowUnix = (now.getTime() / 1000);
   // Входящая дата в Unixtime

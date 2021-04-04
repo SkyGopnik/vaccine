@@ -3,6 +3,10 @@
 interface CssExports {
   'achievement': string;
   'avatar': string;
+  'levels': string;
+  'numbers': string;
+  'progress': string;
+  'progressWrapper': string;
 }
 export const cssExports: CssExports;
 export default cssExports;
