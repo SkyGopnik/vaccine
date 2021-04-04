@@ -142,16 +142,16 @@ export const appReducer = (state = defaultState, action) => {
     };
 
     case APP_CHANGE_POPOUT:
-      if (!action.payload.isPopstate) {
-        window.history.pushState({
-          view: state.view,
-          panel: state.panel,
-          story: state.story,
-          data: JSON.stringify(state.panelData),
-          modal: state.modal,
-          modalData: JSON.stringify(state.modalData)
-        }, `${state.view}/${state.panel}/${state.story}/${state.modal}`);
-      }
+      // if (!action.payload.isPopstate) {
+      //   window.history.pushState({
+      //     view: state.view,
+      //     panel: state.panel,
+      //     story: state.story,
+      //     data: JSON.stringify(state.panelData),
+      //     modal: state.modal,
+      //     modalData: JSON.stringify(state.modalData)
+      //   }, `${state.view}/${state.panel}/${state.story}/${state.modal}`);
+      // }
 
       console.log(action.payload.popout);
 

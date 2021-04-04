@@ -7,6 +7,7 @@ interface CssExports {
   'buyInfo': string;
   'card': string;
   'content': string;
+  'count': string;
   'header': string;
   'icon': string;
   'list': string;

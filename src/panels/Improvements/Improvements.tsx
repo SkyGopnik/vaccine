@@ -16,7 +16,7 @@ import {
   Snackbar,
   Avatar,
   FixedLayout,
-  Spinner
+  Spinner, Counter, ActionSheet, ActionSheetItem
 } from '@vkontakte/vkui';
 
 import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
@@ -40,6 +40,7 @@ interface IProps {
   changeSnackbar(snackbar: ReactNode | null),
   closeSnackbar(),
   syncUser(data: UserInterface),
+  changePopout(popout: ReactNode | null),
   changeModal(modal: string | null, modalData?: Object)
 }
 
@@ -53,6 +54,7 @@ interface IState {
     }
   },
   type: 'vaccine' | 'scientists' | 'pharmacy',
+  count: number,
   buttons: Array<boolean>,
   loading: boolean,
   firstLoading: boolean
@@ -69,6 +71,7 @@ export default class extends React.Component<IProps, IState> {
     this.state = {
       stat: {},
       type: 'vaccine',
+      count: 1,
       buttons: [],
       loading: false,
       firstLoading: true
@@ -91,7 +94,7 @@ export default class extends React.Component<IProps, IState> {
 
   async buyImprovement(index: number, price: number) {
     const { user, changeSnackbar } = this.props;
-    const { type } = this.state;
+    const { type, count } = this.state;
 
     if (user) {
       // console.log(user.data.balance);
@@ -112,6 +115,7 @@ export default class extends React.Component<IProps, IState> {
 
           const { data } = await axios.post('/improvement/buy', {
             type,
+            count,
             index
           });
 
@@ -183,11 +187,13 @@ export default class extends React.Component<IProps, IState> {
 
   // Подсчёт стоимости улучшения
   calculatePrice(price: number, multiple: number) {
+    const { count } = this.state;
+
     if (multiple !== 0) {
-      return price * (multiple + 1);
+      return price * (multiple + 1) * count;
     }
 
-    return price;
+    return price * count;
   }
 
   // Подсчёт купленых улучшений
@@ -213,13 +219,14 @@ export default class extends React.Component<IProps, IState> {
 
   getBalanceBribeLimit() {
     const { user } = this.props;
-    const { type } = this.state;
+    const { type, count } = this.state;
     const multiplier = 5;
 
-    return user.data[type === 'vaccine' ? 'click' : 'passive'] * multiplier;
+    return user.data[type === 'vaccine' ? 'click' : 'passive'] * multiplier * count;
   }
 
   checkAdsWatch(balance: number, price: number, name: string) {
+
     return (this.getBalanceBribeLimit() + new Decimal(balance).toNumber() - this.calculatePrice(price, this.itemCount(name))) < 0;
   }
 
@@ -246,10 +253,11 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, user, snackbar } = this.props;
+    const { id, user, snackbar, changePopout } = this.props;
     const {
       stat,
       type,
+      count,
       buttons,
       loading,
       firstLoading
@@ -287,6 +295,34 @@ export default class extends React.Component<IProps, IState> {
           onSwipedRight={() => this.swipe('right')}
         >
           <Div className={style.list}>
+            <Button
+              className={style.count}
+              size="m"
+              after={<Counter size="s">x{count}</Counter>}
+              onClick={() => changePopout(
+                <ActionSheet
+                  iosCloseItem={<ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
+                  // @ts-ignore
+                  toggleRef={React.createRef().current}
+                  onClose={() => changePopout(null)}
+                >
+                  {[1, 5, 10].map((number) => (
+                    <ActionSheetItem
+                      key={number}
+                      checked={count === number}
+                      autoclose
+                      selectable
+                      onChange={() => this.setState({ count: number })}
+                    >
+                      x{number}
+                    </ActionSheetItem>
+                  ))}
+                </ActionSheet>
+              )}
+              stretched
+            >
+              Количество
+            </Button>
             {improvements[type].map((item, index) => (
               <Card
                 className={style.card}
@@ -315,7 +351,7 @@ export default class extends React.Component<IProps, IState> {
                       // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                       // item.price * lo.filter - стоимость с множителем
                       disabled={buttons[index] || loading || firstLoading || user && this.checkAdsWatch(user.data.balance, item.price, item.name)}
-                      onClick={(e) => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
+                      onClick={() => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                     >
                       {!firstLoading && !buttons[index] ? (
                         <>

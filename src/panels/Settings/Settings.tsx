@@ -8,7 +8,7 @@ import {
   SimpleCell,
   Switch,
   Snackbar,
-  Avatar, ActionSheetItem, ActionSheet
+  Avatar
 } from "@vkontakte/vkui";
 import {Icon16Done } from "@vkontakte/icons";
 
@@ -46,7 +46,6 @@ export default class extends React.Component<IProps> {
       data,
       snackbar,
       changePanel,
-      changePopout,
       changeSnackbar,
       changeAdditional
     } = this.props;
@@ -127,31 +126,6 @@ export default class extends React.Component<IProps> {
                 Будка бомжа
               </SimpleCell>
             )}
-            <SimpleCell onClick={() => changePopout(
-              <ActionSheet
-                iosCloseItem={<ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
-                // @ts-ignore
-                toggleRef={React.createRef().current}
-              >
-                <ActionSheetItem autoclose>
-                  Сохранить в закладках
-                </ActionSheetItem>
-                <ActionSheetItem autoclose>
-                  Закрепить запись
-                </ActionSheetItem>
-                <ActionSheetItem autoclose>
-                  Выключить комментирование
-                </ActionSheetItem>
-                <ActionSheetItem autoclose>
-                  Закрепить запись
-                </ActionSheetItem>
-                <ActionSheetItem autoclose mode="destructive">
-                  Удалить запись
-                </ActionSheetItem>
-              </ActionSheet>
-            )}>
-              Будка бомжа 2
-            </SimpleCell>
             <SimpleCell
               onClick={() => {
                 changeSnackbar(
