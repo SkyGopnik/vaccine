@@ -203,30 +203,30 @@ export default class extends React.Component<IProps, IState> {
                 }
               />
             )}
-            <Card
-              icon={<img src={Img7} alt="" />}
-              title="Бонусы"
-              actions={
-                <Button
-                  mode="outline"
-                  size="m"
-                  onClick={() => changePanel('levels')}
-                >
-                  Смотреть бонусы
-                </Button>
-              }
-            >
-              <div className={style.levels}>
-                <div className={style.progressWrapper}>
-                  <Progress className={style.progress} value={50} />
-                  <div className={style.numbers}>
-                    <Caption level="3" weight="regular">0</Caption>
-                    <Caption level="3" weight="regular">100 000</Caption>
-                  </div>
-                </div>
-                <Text weight="regular">Осталось разработать <span style={{ fontWeight: 500 }}>67 830</span> вакцины, чтобы получить новый подарок</Text>
-              </div>
-            </Card>
+            {/*<Card*/}
+            {/*  icon={<img src={Img7} alt="" />}*/}
+            {/*  title="Бонусы"*/}
+            {/*  actions={*/}
+            {/*    <Button*/}
+            {/*      mode="outline"*/}
+            {/*      size="m"*/}
+            {/*      onClick={() => changePanel('levels')}*/}
+            {/*    >*/}
+            {/*      Смотреть бонусы*/}
+            {/*    </Button>*/}
+            {/*  }*/}
+            {/*>*/}
+            {/*  <div className={style.levels}>*/}
+            {/*    <div className={style.progressWrapper}>*/}
+            {/*      <Progress className={style.progress} value={50} />*/}
+            {/*      <div className={style.numbers}>*/}
+            {/*        <Caption level="3" weight="regular">0</Caption>*/}
+            {/*        <Caption level="3" weight="regular">100 000</Caption>*/}
+            {/*      </div>*/}
+            {/*    </div>*/}
+            {/*    <Text weight="regular">Осталось разработать <span style={{ fontWeight: 500 }}>67 830</span> вакцины, чтобы получить новый подарок</Text>*/}
+            {/*  </div>*/}
+            {/*</Card>*/}
             {/*<Card*/}
             {/*  icon={<img src={Img4} alt="" />}*/}
             {/*  title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}*/}

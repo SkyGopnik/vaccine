@@ -116,11 +116,11 @@ export default class extends React.Component<IProps> {
             {/*>*/}
             {/*  Сообщество*/}
             {/*</SimpleCell>*/}
-            <SimpleCell
-              onClick={() => changePanel('donate')}
-            >
-              Магазин
-            </SimpleCell>
+            {/*<SimpleCell*/}
+            {/*  onClick={() => changePanel('donate')}*/}
+            {/*>*/}
+            {/*  Магазин*/}
+            {/*</SimpleCell>*/}
             {role === 'admin' && (
               <SimpleCell onClick={() => changePanel('admin')}>
                 Будка бомжа

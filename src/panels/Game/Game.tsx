@@ -5,7 +5,10 @@ import {
   Caption,
   Title,
   Avatar,
-  Snackbar, PanelHeaderButton, PanelHeader, Tooltip
+  Snackbar,
+  PanelHeaderButton,
+  PanelHeader,
+  Tooltip
 } from '@vkontakte/vkui';
 import {Icon28GiftOutline, Icon16Done} from '@vkontakte/icons';
 
@@ -173,24 +176,24 @@ export default class extends React.Component<IProps, IState> {
     return (
       <Panel id={id} className={style.game}>
         <PanelHeader
-          left={
-            <PanelHeaderButton onClick={() => changePanel('tasks')}>
-              <Tooltip
-                isShown={!user.data.additional.giftTooltip}
-                onClose={() => changeAdditional({
-                  giftTooltip: true
-                })}
-                alignX="left"
-                cornerOffset={-10}
-                offsetX={5}
-                offsetY={5}
-                text="Лёгкие задания, помогающие быстрее развиться"
-                header="Бесплатная вакцина"
-              >
-                <Icon28GiftOutline />
-              </Tooltip>
-            </PanelHeaderButton>
-          }
+          // left={
+          //   <PanelHeaderButton onClick={() => changePanel('tasks')}>
+          //     <Tooltip
+          //       isShown={!user.data.additional.giftTooltip}
+          //       onClose={() => changeAdditional({
+          //         giftTooltip: true
+          //       })}
+          //       alignX="left"
+          //       cornerOffset={-10}
+          //       offsetX={5}
+          //       offsetY={5}
+          //       text="Лёгкие задания, помогающие быстрее развиться"
+          //       header="Бесплатная вакцина"
+          //     >
+          //       <Icon28GiftOutline />
+          //     </Tooltip>
+          //   </PanelHeaderButton>
+          // }
           separator={false}
         />
         <EmptyBackground />
