@@ -17,8 +17,17 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
   return new Promise((resolve, reject) => {
     thunkAPI.dispatch(connectWsStarted());
 
+    try {
+      socket.close();
+    } catch (e) {
+      console.log('test');
+    }
+
     socket = new WebSocket(arg + `?user=${document.location.href}`);
     console.log("Attempting Connection WS...");
+
+    clearInterval(error);
+    clearInterval(ping);
 
     thunkAPI.dispatch(changeView('loading'));
 
@@ -59,7 +68,6 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
       console.log("Successfully connected WS");
 
       thunkAPI.dispatch(changeView('main'));
-
       thunkAPI.dispatch(connectWsSuccess());
 
       ping = setInterval(() => {
@@ -82,8 +90,6 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
         if (app.view !== 'error') {
           thunkAPI.dispatch(changeView('error'));
-        } else {
-          clearInterval(error);
         }
       }, 1000);
 

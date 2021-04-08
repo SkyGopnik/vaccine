@@ -131,10 +131,10 @@ export default class extends React.Component<IProps, IState> {
         if (user.id !== String(data.id)) {
           changeModal('transferMoney', {
             backType: 'double',
-            userId: String(data.id),
-            firstName: data.first_name,
-            lastName: data.last_name,
-            photo: data.photo_100,
+            userId: String(data.userId),
+            firstName: data.firstName,
+            lastName: data.lastName,
+            photo: data.photo,
             sex: data.sex
           });
         } else {

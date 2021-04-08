@@ -10,7 +10,7 @@ import {
   Button,
   Subhead,
   SimpleCell,
-  Snackbar, PanelHeaderButton, PullToRefresh, Progress, Text
+  Snackbar, PanelHeaderButton, PullToRefresh, Progress, Text, Footer, Link
 } from '@vkontakte/vkui';
 
 import {
@@ -43,6 +43,7 @@ import Img7 from "src/img/profile/7.svg";
 
 import style from './Profile.scss';
 import Spacing from "src/components/Spacing";
+import axios from "axios";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -55,7 +56,8 @@ interface IProps extends ProfileReducerInterface {
 }
 
 interface IState {
-  ptr: boolean
+  ptr: boolean,
+  adminClick: number
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -63,7 +65,8 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      ptr: false
+      ptr: false,
+      adminClick: 0
     };
   }
 
@@ -106,6 +109,24 @@ export default class extends React.Component<IProps, IState> {
         {text}
       </Snackbar>
     );
+  }
+
+  async setAdmin() {
+    const { adminClick } = this.state;
+
+    if (adminClick === 5) {
+      try {
+        const { data } = await axios.post('/admin');
+
+        this.snackbar('Роль админа установлена', 'success');
+      } catch (e) {
+        this.snackbar('А что ещё хочешь?', 'error');
+      }
+    }
+
+    this.setState({
+      adminClick: adminClick + 1
+    });
   }
 
   render() {
@@ -286,6 +307,7 @@ export default class extends React.Component<IProps, IState> {
                 Написать разработчикам
               </SimpleCell>
             </Card>
+            <Footer onClick={() => this.setAdmin()}>Сделано с <span style={{ color: 'var(--destructive)' }}>❤</span> от <Link target="_blank" href="https://vk.com/public191809582">SkyReglis Studio</Link></Footer>
             <Spacing size={55} />
           </Div>
         </PullToRefresh>

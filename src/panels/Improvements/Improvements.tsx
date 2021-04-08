@@ -65,6 +65,7 @@ const localization = {
 };
 
 export default class extends React.Component<IProps, IState> {
+  private actionSheet: React.RefObject<HTMLDivElement>;
   constructor(props: IProps) {
     super(props);
 
@@ -76,6 +77,8 @@ export default class extends React.Component<IProps, IState> {
       loading: false,
       firstLoading: true
     };
+
+    this.actionSheet = React.createRef();
   }
 
   async componentDidMount() {
@@ -302,8 +305,7 @@ export default class extends React.Component<IProps, IState> {
               onClick={() => changePopout(
                 <ActionSheet
                   iosCloseItem={<ActionSheetItem autoclose mode="cancel">Отменить</ActionSheetItem>}
-                  // @ts-ignore
-                  toggleRef={React.createRef().current}
+                  toggleRef={this.actionSheet.current}
                   onClose={() => changePopout(null)}
                 >
                   {[1, 5, 10].map((number) => (

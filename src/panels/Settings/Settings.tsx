@@ -50,7 +50,7 @@ export default class extends React.Component<IProps> {
       changeAdditional
     } = this.props;
     const { role } = data;
-    const { easyAnimation, showRating } = user.data.additional;
+    const { easyAnimation, showRating, vaccineClickNotification } = user.data.additional;
 
     return (
       <Panel id={id}>
@@ -85,6 +85,24 @@ export default class extends React.Component<IProps> {
             {/*>*/}
             {/*  Оформление*/}
             {/*</SimpleCell>*/}
+          </Card>
+        </Div>
+        <Div className={style.block}>
+          <Header mode="secondary">Оформление</Header>
+          <Card mode="shadow">
+            <SimpleCell
+              after={
+                <Switch
+                  checked={vaccineClickNotification || false}
+                  onChange={() => changeAdditional({
+                    vaccineClickNotification: !vaccineClickNotification
+                  })}
+                />
+              }
+              disabled
+            >
+              Получение вакцины при кликах
+            </SimpleCell>
           </Card>
         </Div>
         <Div className={style.block}>
