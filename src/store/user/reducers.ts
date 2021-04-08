@@ -30,7 +30,10 @@ export interface UserDataInterface {
 export interface UserInterface {
   id: string
   type: string
-  ref: string
+  ref: {
+    ref: string
+    refCode: number
+  }
   platform: string
   info: UserInfoInterface
   data: UserDataInterface

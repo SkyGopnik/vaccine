@@ -15,6 +15,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   changeModal,
+  changePanel,
   getNotifications
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
+import ViewLight from "src/components/ViewLight";
+
 // Панели
 import ErrorPanel from '../panels/Error/ErrorContainer';
-
-import {View} from "@vkontakte/vkui";
 
 interface IProps {
   id: string
@@ -11,11 +11,15 @@ interface IProps {
 
 export default (props: IProps) => {
   return (
-    <View
-      id={props.id}
-      activePanel="main"
-    >
-      <ErrorPanel id="main" />
-    </View>
+    <ViewLight
+      id="error"
+      activePanel="error"
+      panelList={[
+        {
+          id: 'error',
+          component: ErrorPanel
+        }
+      ]}
+    />
   );
 }
