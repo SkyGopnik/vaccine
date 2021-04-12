@@ -1,8 +1,6 @@
 .users {
 
   .card {
-    padding: 0 12px;
-
     .usersItem {
       display: flex;
       align-items: center;
@@ -19,19 +17,7 @@
         .SimpleCell {
           width: 100%;
 
-          padding-right: 0;
-        }
-      }
-
-      @media screen and (max-width: 330px) {
-        .topNumber {
-          display: none;
-        }
-
-        :global {
-          .SimpleCell {
-            padding-left: 0;
-          }
+          padding-right: 0; 
         }
       }
     }

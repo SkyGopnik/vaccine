@@ -5,11 +5,10 @@ import {
   Div,
   Card,
   SimpleCell,
-  Avatar,
-  IconButton,
+  Avatar
 } from '@vkontakte/vkui';
 
-import {Icon28MoneySendOutline} from "@vkontakte/icons";
+import HistoryBackBtn from "src/components/HistoryBackBtn";
 
 import style from './Users.scss';
 
@@ -25,7 +24,7 @@ export default class extends React.Component<IState> {
 
     return (
       <Panel id={id} className={style.users}>
-        <PanelHeader separator={false}>
+        <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Пользователи
         </PanelHeader>
           <Div>
@@ -35,16 +34,12 @@ export default class extends React.Component<IState> {
             >
                 <div className={style.usersItem}>
                   <SimpleCell
+                    disabled
                     target="_blank"
                     //href={`https://vk.com/`} 
                     before={
                       <Avatar
                         size={48}
-                      />
-                    }
-                    after={
-                      <IconButton
-                        icon={<Icon28MoneySendOutline />}
                       />
                     }
                   >
@@ -53,16 +48,12 @@ export default class extends React.Component<IState> {
                 </div>
                 <div className={style.usersItem}>
                   <SimpleCell
+                    disabled
                     target="_blank"
                     //href={`https://vk.com/`} 
                     before={
                       <Avatar
                         size={48}
-                      />
-                    }
-                    after={
-                      <IconButton
-                        icon={<Icon28MoneySendOutline />}
                       />
                     }
                   >
@@ -71,16 +62,12 @@ export default class extends React.Component<IState> {
                 </div>
                 <div className={style.usersItem}>
                   <SimpleCell
+                    disabled
                     target="_blank"
                     //href={`https://vk.com/`} 
                     before={
                       <Avatar
                         size={48}
-                      />
-                    }
-                    after={
-                      <IconButton
-                        icon={<Icon28MoneySendOutline />}
                       />
                     }
                   >

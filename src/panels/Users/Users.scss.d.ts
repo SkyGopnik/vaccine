@@ -2,7 +2,6 @@
 // Please do not change this file!
 interface CssExports {
   'card': string;
-  'topNumber': string;
   'users': string;
   'usersItem': string;
 }
