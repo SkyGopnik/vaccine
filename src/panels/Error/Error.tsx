@@ -30,8 +30,16 @@ export default class extends React.Component<IProps> {
   async reconnect() {
     const { syncUser, connectWs, changeView } = this.props;
 
+    const error = (error: string) => {
+      throw Error(error);
+    };
+
     try {
       const { data } = await axios.get('/user');
+
+      if (data.role === 'user') {
+        error('Block users');
+      }
 
       syncUser(data);
       await connectWs(config.wsUrl);

@@ -16,17 +16,19 @@ export interface UserStat {
   achievements?: number
 }
 
-export interface ProfileReducerInterface {
-  data: {
-    stat: UserStat,
-    ref: {
-      refCode?: number,
-      ref?: number
-    },
-    role: string,
-    additional: any,
-    notification: Notification
+export interface ProfileData {
+  stat: UserStat,
+  ref: {
+    refCode?: number,
+    ref?: number
   },
+  role: string,
+  additional: any,
+  notification: Notification
+}
+
+export interface ProfileReducerInterface {
+  data: ProfileData,
   error: any,
   loading: boolean,
   getProfile(needLoading?: boolean)

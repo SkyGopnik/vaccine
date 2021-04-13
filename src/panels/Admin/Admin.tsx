@@ -51,6 +51,14 @@ export default class extends React.Component<IProps> {
             </SimpleCell>
           </Card>
         </Div>
+        <Div className={style.block}>
+          <Header mode="secondary">Роли</Header>
+          <Card mode="shadow">
+            <SimpleCell onClick={() => changeModal('editRole')}>
+              Изменить
+            </SimpleCell>
+          </Card>
+        </Div>
         {snackbar}
       </Panel>
     );

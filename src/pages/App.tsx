@@ -13,13 +13,13 @@ import {
 } from '@vkontakte/vkui';
 import {isMobile} from "react-device-detect";
 
-import Rating from "src/views/Rating/RatingContainer";
-import Game from 'src/views/Game/GameContainer';
-import Profile from "src/views/Profile/ProfileContainer";
-import Onboard from "src/views/Onboard";
-import Loading from "src/views/Loading";
-import Error from "src/views/Error";
-import WrongOrientation from "src/views/WrongOrientation";
+import RatingView from "src/views/Rating/RatingContainer";
+import GameView from 'src/views/Game/GameContainer';
+import ProfileView from "src/views/Profile/ProfileContainer";
+import OnboardView from "src/views/Onboard";
+import LoadingView from "src/views/Loading";
+import ErrorView from "src/views/Error";
+import WrongOrientationView from "src/views/WrongOrientation";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
 import Modals from "src/components/Modals/ModalsContainer";
@@ -31,8 +31,6 @@ import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
-
-let historyDelay = Number(new Date().getTime() / 1000);
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   getUser(),
@@ -47,8 +45,6 @@ interface IState {
   isHorizontal: boolean,
   lastView: string
 }
-
-let isExit;
 
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -70,8 +66,16 @@ export default class extends React.Component<IProps, IState> {
       syncUser
     } = this.props;
 
+    const error = (error: string) => {
+      throw Error(error);
+    };
+
     try {
       const { data } = await axios.get('/user');
+
+      if (data.role === 'user') {
+        error('Block users');
+      }
 
       syncUser(data);
       await connectWs(config.wsUrl);
@@ -199,14 +203,14 @@ export default class extends React.Component<IProps, IState> {
                 activeStory={story}
                 tabbar={<TabbarLight />}
               >
-                <Rating id="rating" />
-                <Game id="game" />
-                <Profile id="profile" />
+                <RatingView id="rating" />
+                <GameView id="game" />
+                <ProfileView id="profile" />
               </Epic>
-              <Onboard id="onboard" />
-              <Loading id="loading" />
-              <Error id="error" />
-              <WrongOrientation id="wrongOrientation" />
+              <OnboardView id="onboard" />
+              <LoadingView id="loading" />
+              <ErrorView id="error" />
+              <WrongOrientationView id="wrongOrientation" />
             </Root>
           </AppRoot>
         </AdaptivityProvider>

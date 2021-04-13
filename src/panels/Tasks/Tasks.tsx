@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
+import lo from 'lodash';
 import {
   Panel,
   PanelHeader,
@@ -12,54 +13,89 @@ import {
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import Spacing from "src/components/Spacing";
 
-import style from './Tasks.scss';
+import {UserInterface} from "src/store/user/reducers";
+import {ProfileData} from "src/store/profile/reducers";
+
 import Img1 from "src/img/tasks/1.svg";
 import Img2 from "src/img/tasks/2.svg";
 import Img3 from "src/img/tasks/3.svg";
 import Img4 from "src/img/tasks/4.svg";
 import Img5 from "src/img/tasks/5.svg";
 
+import style from './Tasks.scss';
+
 interface IProps {
-  id: string
+  id: string,
+  user: UserInterface | null,
+  snackbar: ReactNode,
+  profile: ProfileData,
+  syncUser(data: UserInterface),
+  changeSnackbar(snackbar: ReactNode | null)
+}
+
+interface IState {
+  disabledTasks: Array<string>
 }
 
 const tasks = [
   {
-    name: "Посмотреть рекламу",
+    name: 'watchAds',
+    title: "Посмотреть рекламу",
     desc: "+500 вакцины",
     icon: Img1
   },
   {
-    name: "Подписаться на нас",
+    name: 'subscribeGroup',
+    title: "Подписаться на нас",
     desc: "+1000 вакцины",
     icon: Img2
   },
   {
-    name: "Включить уведомления",
+    name: 'turnNotifications',
+    title: "Включить уведомления",
     desc: "+1000 вакцины",
     icon: Img3
   },
   {
-    name: "Поделиться приложением",
+    name: 'shareApp',
+    title: "Поделиться приложением",
     desc: "+1000 вакцины",
     icon: Img4
   },
   {
-    name: "Пригласить друзей",
+    name: 'refUsers',
+    title: "Пригласить друзей",
     desc: "+2000 вакцины за одного друга",
     icon: Img5
   }
 ];
 
-export default class extends React.Component<IProps> {
+export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      disabledTasks: []
+    };
+  }
+
+  componentDidMount() {
+    const { profile } = this.props;
+    const { disabledTasks } = this.state;
+    const newTasks = [...disabledTasks];
+
+    if (!profile.ref) {
+      newTasks.push('refUsers');
+    }
+
+    this.setState({
+      disabledTasks: newTasks
+    });
   }
 
   render() {
     const { id } = this.props;
+    const { disabledTasks } = this.state;
 
     return (
       <Panel id={id}>
@@ -67,7 +103,8 @@ export default class extends React.Component<IProps> {
           Задания
         </PanelHeader>
           <Div className={style.list}>
-            {tasks.map((item, index) => (
+            {/*Фильтруем от отключенных заданий*/}
+            {lo.differenceWith(tasks, disabledTasks, (x, y) => x.name === y).map((item, index) => (
               <Card
                 className={style.card}
                 key={index}
@@ -78,7 +115,7 @@ export default class extends React.Component<IProps> {
                 </div>
                 <div className={style.content}>
                   <div className={style.header}>
-                    <Headline weight="medium">{item.name}</Headline>
+                    <Headline weight="medium">{item.title}</Headline>
                   </div>
                   <Text
                     className={style.body}

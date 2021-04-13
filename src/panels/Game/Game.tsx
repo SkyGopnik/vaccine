@@ -180,12 +180,17 @@ export default class extends React.Component<IProps, IState> {
       <Panel id={id} className={style.game}>
         <PanelHeader
           left={
+            // TODO: Баг с закрытием тултипа после онбоардинга, нужно проверять когда был создан аккаунт
+            // и показывать тултипы только после того как прошло 10 минут
             <PanelHeaderButton onClick={() => changePanel('tasks')}>
               <Tooltip
                 isShown={!user.data.additional.giftTooltip}
-                onClose={() => changeAdditional({
-                  giftTooltip: true
-                })}
+                onClose={() => {
+                  console.log('giftTooltip')
+                  changeAdditional({
+                    giftTooltip: true
+                  });
+                }}
                 alignX="left"
                 cornerOffset={-10}
                 offsetX={5}

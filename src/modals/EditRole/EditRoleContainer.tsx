@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import { changeSnackbar } from 'src/store/app/actions';
 
-import AddPromocode from './AddPromocode';
+import EditRole from './EditRole';
 
-const AddPromocodeContainer = (props) => <AddPromocode {...props} />;
+const EditRoleContainer = (props) => <EditRole {...props} />;
 
 const mapStateToProps = () => ({});
 
@@ -13,4 +13,4 @@ const mapDispatchToProps = {
   changeSnackbar
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddPromocodeContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(EditRoleContainer);

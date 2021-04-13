@@ -3,17 +3,13 @@ import axios from "axios";
 import {
   Avatar,
   Button,
-  FormItem,
-  Input,
-  ModalCard,
-  Snackbar
+  FormItem, Input,
+  ModalCard, Snackbar
 } from "@vkontakte/vkui";
-
 import {Icon16Cancel, Icon16Done, Icon28WriteOutline} from "@vkontakte/icons";
 
+import style from "./EditRole.scss";
 import isset from "src/functions/isset";
-
-import style from "./AddPromocode.scss";
 
 interface IProps {
   id: string,
@@ -30,37 +26,23 @@ interface FormItem {
 }
 
 interface IState {
-  code: FormItem,
-  bonus: FormItem,
-  limit: FormItem,
-  expireAt: FormItem,
+  id: FormItem,
+  role: FormItem,
   loading: boolean
 }
 
 const inputs = [
   {
-    title: 'Название',
-    name: 'code',
+    title: 'Цифровой ID',
+    name: 'id',
+    type: 'number',
+    placeholder: '126399522'
+  },
+  {
+    title: 'Роль',
+    name: 'role',
     type: 'text',
-    placeholder: 'FreeVaccine'
-  },
-  {
-    title: 'Бонус',
-    name: 'bonus',
-    type: 'number',
-    placeholder: '0.0005'
-  },
-  {
-    title: 'Лимит',
-    name: 'limit',
-    type: 'number',
-    placeholder: '50'
-  },
-  {
-    title: 'Срок',
-    name: 'expireAt',
-    type: 'date',
-    placeholder: '16.04.2021'
+    placeholder: 'tester'
   }
 ];
 
@@ -69,25 +51,13 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      code: {
+      id: {
         value: '',
         rules: {
           required: true
         }
       },
-      bonus: {
-        value: '',
-        rules: {
-          required: true
-        }
-      },
-      limit: {
-        value: '',
-        rules: {
-          required: true
-        }
-      },
-      expireAt: {
+      role: {
         value: '',
         rules: {
           required: true
@@ -108,10 +78,6 @@ export default class extends React.Component<IProps, IState> {
     if (item.rules) {
       if (value.length === 0 && item.rules.required) {
         error = 'Поле обязательно для заполнения';
-      }
-
-      if (value.length >= item.rules.max) {
-        error = `Название промокода должно быть меньше ${item.rules.max} символов`;
       }
     }
 
@@ -139,7 +105,7 @@ export default class extends React.Component<IProps, IState> {
     return isValid;
   }
 
-  async addPromocode() {
+  async editRole() {
     if (!this.isFormValid()) {
       throw Error('Form isn\'t valid');
     }
@@ -149,14 +115,12 @@ export default class extends React.Component<IProps, IState> {
     });
 
     const { changeSnackbar } = this.props;
-    const { code, bonus, limit, expireAt } = this.state;
+    const { id, role } = this.state;
 
     try {
-      const { data } = await axios.post('/promocode', {
-        code: code.value,
-        bonus: bonus.value,
-        limit: limit.value,
-        expireAt: expireAt.value
+      await axios.post('/admin/role', {
+        id: id.value,
+        role: role.value
       });
 
       changeSnackbar(
@@ -166,7 +130,7 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
-          <div>Промокод с названием {data.id}, бонусом {data.bonus}, лимитом {data.limit} создан и действует до {data.expireAt}</div>
+          <div>Роль пользователя с {id.value} был изменён на {role.value}</div>
         </Snackbar>
       );
     } catch (e) {
@@ -203,16 +167,16 @@ export default class extends React.Component<IProps, IState> {
     return (
       <ModalCard
         className={style.modal}
-        header="Создание промокода"
-        subheader="Для создания собственного промокода, необходимо заполнить все поля"
+        header="Изменение роли"
+        subheader="Для изменения роли, необходимо заполнить все поля"
         actions={
           <Button
             before={!loading && <Icon28WriteOutline width={24} height={24} />}
             size="l"
             disabled={loading || !this.isFormValid()}
-            onClick={() => this.addPromocode()}
+            onClick={() => this.editRole()}
           >
-            Создать
+            Изменить
           </Button>
         }
         onClose={() => window.history.back()}

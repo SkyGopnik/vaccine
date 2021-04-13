@@ -1,0 +1,12 @@
+.modal {
+  :global {
+    .FormItem {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .ModalCard__actions {
+      margin-top: 0;
+    }
+  }
+}
