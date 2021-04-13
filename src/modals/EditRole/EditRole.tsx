@@ -33,9 +33,9 @@ interface IState {
 
 const inputs = [
   {
-    title: 'Цифровой ID',
+    title: 'Цифровой (ые) ID',
     name: 'id',
-    type: 'number',
+    type: 'text',
     placeholder: '126399522'
   },
   {
@@ -119,7 +119,7 @@ export default class extends React.Component<IProps, IState> {
 
     try {
       await axios.post('/admin/role', {
-        id: id.value,
+        id: id.value.split(','),
         role: role.value
       });
 
