@@ -86,8 +86,6 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
           app: AppReducerInterface
         }>thunkAPI.getState();
 
-        console.log(app.view);
-
         if (app.view !== 'error') {
           thunkAPI.dispatch(changeView('error'));
         }

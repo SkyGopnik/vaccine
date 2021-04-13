@@ -88,7 +88,7 @@ export default class extends React.Component<IProps> {
           </Card>
         </Div>
         <Div className={style.block}>
-          <Header mode="secondary">Оформление</Header>
+          <Header mode="secondary">Уведомления</Header>
           <Card mode="shadow">
             <SimpleCell
               after={
@@ -101,7 +101,7 @@ export default class extends React.Component<IProps> {
               }
               disabled
             >
-              Получение вакцины при кликах
+              Получение бонуса при кликах
             </SimpleCell>
           </Card>
         </Div>

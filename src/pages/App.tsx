@@ -151,7 +151,7 @@ export default class extends React.Component<IProps, IState> {
     if (currentView === 'main') {
       // Если история переходов существует
       if (e.state) {
-        const {view, panel, story, modal, modalData} = e.state;
+        const {view, panel, story, modal, data, modalData} = e.state;
         // Отменяем стандартное событие
         e.preventDefault();
 
@@ -170,7 +170,7 @@ export default class extends React.Component<IProps, IState> {
         changePopout(null, true);
 
         // Устанавливаем новые значения для View и Panel
-        changeViewPanelStory(view, panel, story, null, true);
+        changeViewPanelStory(view, panel, story, data ? JSON.parse(data) : null, true);
       } else {
         changeViewPanelStory('main', 'main', 'game', null, true);
       }

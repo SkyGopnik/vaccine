@@ -1,4 +1,5 @@
 import React, {ReactNode} from 'react';
+import axios from "axios";
 
 import {
   Panel,
@@ -24,6 +25,7 @@ import {
 
 import Card from 'src/components/Card/Card';
 import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
+import Spacing from "src/components/Spacing";
 
 import getDate from "src/functions/getDate";
 import declNum from "src/functions/decl_num";
@@ -42,8 +44,6 @@ import Img5 from "src/img/profile/5.svg";
 import Img7 from "src/img/profile/7.svg";
 
 import style from './Profile.scss';
-import Spacing from "src/components/Spacing";
-import axios from "axios";
 
 interface IProps extends ProfileReducerInterface {
   id: string,

@@ -1,9 +1,10 @@
 import React from 'react';
+import axios from "axios";
 import {
   Panel,
   Placeholder,
   Button,
-  Div
+  Div, Link
 } from '@vkontakte/vkui';
 
 import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
@@ -13,7 +14,6 @@ import Error from "src/img/Error.png";
 import { config } from 'src/js/config';
 
 import style from './Error.scss';
-import axios from "axios";
 
 interface IProps {
   id: string,
@@ -41,7 +41,7 @@ export default class extends React.Component<IProps> {
   }
 
   render() {
-    const { id, connectWs } = this.props;
+    const { id } = this.props;
 
     return (
       <Panel id={id}>
@@ -51,7 +51,7 @@ export default class extends React.Component<IProps> {
             icon={<img src={Error} alt=""/>}
             header="Всё пошло к чертям"
           >
-            В лаборатории произошла авария, один из работников допустил грубейшую ошибку. Мы скоро всё починим
+            Похоже, произошла ошибка, попробуйте переподключиться или сообщите об этом нам в <Link href={config.messageGroupUrl} target="_blank">сообщество</Link>
           </Placeholder>
         </div>
         <div className={style.bottom}>

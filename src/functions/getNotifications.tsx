@@ -132,7 +132,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? upperFirstLetter(action) : action} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
+        <span>{!lowText ? upperFirstLetter(action) : action} тебе <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,
@@ -152,7 +152,7 @@ export default function (notification: NotificationInterface, lowText?: boolean)
     return {
       title: `${firstName} ${lastName}`,
       text: (
-        <span>{!lowText ? upperFirstLetter(action) : action} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> {declNum(sum, ['вакцину', 'вакцины', 'вакцины'])}</span>
+        <span>{!lowText ? upperFirstLetter(action) : action} <span style={{ fontWeight: 500 }}>{locale(sum)}</span> вакцины</span>
       ),
       photo,
       isNew: notification.isNew,

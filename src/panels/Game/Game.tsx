@@ -117,17 +117,20 @@ export default class extends React.Component<IProps, IState> {
 
       balancePlus(user.data.click * 5);
 
-      changeSnackbar(
-        <Snackbar
-          className="success-snack"
-          layout="vertical"
-          onClose={() => changeSnackbar(null)}
-          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
-        >
-          <div>Ты получил <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
-          <div>Отличная работа, так держать!</div>
-        </Snackbar>
-      );
+      if (user.data.additional.vaccineClickNotification) {
+        changeSnackbar(
+          <Snackbar
+            className="success-snack"
+            layout="vertical"
+            onClose={() => changeSnackbar(null)}
+            before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14}
+                                                                               height={14}/></Avatar>}
+          >
+            <div>Ты получил <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
+            <div>Отличная работа, так держать!</div>
+          </Snackbar>
+        );
+      }
     }
 
     changeProgress(value < 100 ? value : 0);
@@ -176,24 +179,24 @@ export default class extends React.Component<IProps, IState> {
     return (
       <Panel id={id} className={style.game}>
         <PanelHeader
-          // left={
-          //   <PanelHeaderButton onClick={() => changePanel('tasks')}>
-          //     <Tooltip
-          //       isShown={!user.data.additional.giftTooltip}
-          //       onClose={() => changeAdditional({
-          //         giftTooltip: true
-          //       })}
-          //       alignX="left"
-          //       cornerOffset={-10}
-          //       offsetX={5}
-          //       offsetY={5}
-          //       text="Лёгкие задания, помогающие быстрее развиться"
-          //       header="Бесплатная вакцина"
-          //     >
-          //       <Icon28GiftOutline />
-          //     </Tooltip>
-          //   </PanelHeaderButton>
-          // }
+          left={
+            <PanelHeaderButton onClick={() => changePanel('tasks')}>
+              <Tooltip
+                isShown={!user.data.additional.giftTooltip}
+                onClose={() => changeAdditional({
+                  giftTooltip: true
+                })}
+                alignX="left"
+                cornerOffset={-10}
+                offsetX={5}
+                offsetY={5}
+                text="Лёгкие задания, помогающие быстрее развиться"
+                header="Бесплатная вакцина"
+              >
+                <Icon28GiftOutline />
+              </Tooltip>
+            </PanelHeaderButton>
+          }
           separator={false}
         />
         <EmptyBackground />

@@ -27,27 +27,27 @@ const tasks = [
   {
     name: "Посмотреть рекламу",
     desc: "+500 вакцины",
-    icon: Img1,
+    icon: Img1
   },
   {
     name: "Подписаться на нас",
     desc: "+1000 вакцины",
-    icon: Img2,
+    icon: Img2
   },
   {
     name: "Включить уведомления",
     desc: "+1000 вакцины",
-    icon: Img3,
+    icon: Img3
   },
   {
     name: "Поделиться приложением",
     desc: "+1000 вакцины",
-    icon: Img4,
+    icon: Img4
   },
   {
     name: "Пригласить друзей",
     desc: "+2000 вакцины за одного друга",
-    icon: Img5,
+    icon: Img5
   }
 ];
 

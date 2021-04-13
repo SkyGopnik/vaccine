@@ -185,7 +185,7 @@ export default class extends React.Component<IProps, IState> {
           after={<Avatar src={photo} size={32} />}
         >
           <div>{toName} {declBySex(sex, ['получил (a)', 'получила', 'получил'])}</div>
-          <Text weight="medium">{locale(numValue)} {declNum(numValue, ['вакцину', 'вакцины', 'вакцины'])}</Text>
+          <Text weight="medium">{locale(numValue)} вакцины</Text>
         </Snackbar>
       );
     } catch (e) {
