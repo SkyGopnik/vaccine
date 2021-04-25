@@ -48,7 +48,6 @@ updateHistory('main', defaultState.panel, defaultState.story);
 export const appReducer = (state = defaultState, action) => {
   switch (action.type) {
   case APP_CHANGE_VIEW:
-    console.log(action.payload.view + ' ' + new Date().getMinutes() + ':' + new Date().getSeconds());
     return {
       ...state,
       view: action.payload.view
@@ -152,8 +151,6 @@ export const appReducer = (state = defaultState, action) => {
       //     modalData: JSON.stringify(state.modalData)
       //   }, `${state.view}/${state.panel}/${state.story}/${state.modal}`);
       // }
-
-      console.log(action.payload.popout);
 
       return {
         ...state,

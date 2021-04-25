@@ -228,8 +228,11 @@ export default class extends React.Component<IProps, IState> {
     return user.data[type === 'vaccine' ? 'click' : 'passive'] * multiplier * count;
   }
 
-  checkAdsWatch(balance: number, price: number, name: string) {
+  multipleCount(number: number, multiple: number) {
+    return new Decimal(number).mul(multiple).toNumber();
+  }
 
+  checkAdsWatch(balance: number, price: number, name: string) {
     return (this.getBalanceBribeLimit() + new Decimal(balance).toNumber() - this.calculatePrice(price, this.itemCount(name))) < 0;
   }
 
@@ -337,7 +340,7 @@ export default class extends React.Component<IProps, IState> {
                 <div className={style.content}>
                   <div className={style.header}>
                     <Headline weight="medium">{item.name}</Headline>
-                    <Caption level="1" weight="regular">{item.count}/{item.pref}</Caption>
+                    <Caption level="1" weight="regular">{this.multipleCount(item.count, count)}/{item.pref}</Caption>
                   </div>
                   <Text
                     className={style.body}
