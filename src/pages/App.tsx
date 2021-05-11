@@ -2,13 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {
-  ActionSheet,
-  ActionSheetItem,
   AdaptivityProvider,
   AppRoot,
   ConfigProvider,
   Epic,
-  Platform,
   Root
 } from '@vkontakte/vkui';
 import {isMobile} from "react-device-detect";
@@ -66,16 +63,8 @@ export default class extends React.Component<IProps, IState> {
       syncUser
     } = this.props;
 
-    const error = (error: string) => {
-      throw Error(error);
-    };
-
     try {
       const { data } = await axios.get('/user');
-
-      if (data.role === 'user') {
-        error('Block users');
-      }
 
       syncUser(data);
       await connectWs(config.wsUrl);
