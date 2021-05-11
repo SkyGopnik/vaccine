@@ -56,11 +56,17 @@ export interface AdditionalInterface {
 }
 
 const getTime = (_time: Date): string => {
-  const months = ['Янв' , 'Фев' , 'Мар' , 'Апр' , 'Май' , 'Июнь' , 'Июль' , 'Авг' , 'Сен' , 'Окт' , 'Нояб' , 'Дек'];
+  const months = ['Янв' , 'Фев' , 'Мар' , 'Апр' , 'Мая' , 'Июня' , 'Июля' , 'Авг' , 'Сен' , 'Окт' , 'Нояб' , 'Дек'];
 
   // Промежуточные для форматирования и сравнивания цифр
   const now = new Date();
   const time = new Date(_time);
+
+  // Начало текущего дня в Unixtime
+  const startUnix = Math.round(new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime() / 1000);
+
+  // Окончание текущего дня в Unixtime
+  const endUnix = startUnix + 86400;
 
   // Текущая дата в Unixtime
   const nowUnix = (now.getTime() / 1000);
@@ -102,12 +108,12 @@ const getTime = (_time: Date): string => {
   }
 
   // Сегодня
-  if (time.getDate() === now.getDate()) {
+  if (timeUnix > startUnix && timeUnix < endUnix) {
     return `сегодня в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
   }
 
   // Вчера
-  if ((time.getDate() + 1) === now.getDate()) {
+  if ((timeUnix + 86400) > startUnix && (timeUnix + 86400) < endUnix) {
     return `вчера в ${time.getHours()}:${formatNumber(time.getMinutes())}`;
   }
 
