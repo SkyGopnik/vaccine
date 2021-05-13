@@ -169,12 +169,12 @@ export default class extends React.Component<IProps, IState> {
         }
       }));
 
-      // Синхронизируем другого пользователя если он в игре
-      sendWsMessage({
-        type: 'RefSystem',
-        refId: data.refUserId,
-        sum: data.bonusRef
-      });
+      // // Синхронизируем другого пользователя если он в игре
+      // sendWsMessage({
+      //   type: 'RefSystem',
+      //   refId: data.refUserId,
+      //   sum: data.bonusRef
+      // });
 
       await getProfile(false);
 
