@@ -169,11 +169,11 @@ export default class extends React.Component<IProps, IState> {
       }));
 
       // Синхронизируем другого пользователя если он в игре
-      sendWsMessage({
-        type: 'TransferMoney',
-        toUserId: modalData.userId,
-        sum: numValue
-      });
+      // sendWsMessage({
+      //   type: 'TransferMoney',
+      //   toUserId: modalData.userId,
+      //   sum: numValue
+      // });
 
       // Показываем уведомление
       changeSnackbar(

@@ -2,13 +2,10 @@ import React from 'react';
 import axios from 'axios';
 import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {
-  ActionSheet,
-  ActionSheetItem,
   AdaptivityProvider,
   AppRoot,
   ConfigProvider,
   Epic,
-  Platform,
   Root
 } from '@vkontakte/vkui';
 import {isMobile} from "react-device-detect";
