@@ -30,7 +30,8 @@ interface IProps extends RandomUserReducerInterface {
   id: string,
   snackbar: ReactNode | null,
   panelData: {
-    userId: string
+    userId?: string
+    id: string
   }
 }
 
@@ -48,13 +49,11 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { panelData, data, getRandomUser } = this.props;
-
-    console.log(data);
+    const { panelData, getRandomUser } = this.props;
 
     await getRandomUser({
       loading: true,
-      id: panelData.userId
+      id: panelData.userId || panelData.id
     });
   }
 
@@ -66,7 +65,7 @@ export default class extends React.Component<IProps, IState> {
     setTimeout(async () => {
       await getRandomUser({
         loading: false,
-        id: panelData.userId
+        id: panelData.userId || panelData.id
       });
 
       this.setState({ ptr: false });

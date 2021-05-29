@@ -58,6 +58,8 @@ export default class extends React.Component<IProps, IState> {
   notification(item: Notification, index: number) {
     const { changePanel } = this.props;
 
+    console.log(item);
+
     return (
       <Card
         className={style.card}
