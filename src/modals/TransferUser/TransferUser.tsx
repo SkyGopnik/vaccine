@@ -128,7 +128,7 @@ export default class extends React.Component<IProps, IState> {
       const { data } = await axios.get(`/user/${value}`);
 
       if (data) {
-        if (user.id !== String(data.id)) {
+        if (user.id !== data.userId) {
           changeModal('transferMoney', {
             backType: 'double',
             userId: String(data.userId),
