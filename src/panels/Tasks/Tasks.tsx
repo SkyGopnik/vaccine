@@ -1,5 +1,8 @@
 import React, {ReactNode} from 'react';
 import lo from 'lodash';
+import axios from "axios";
+import Decimal from "decimal.js";
+import bridge from "@vkontakte/vk-bridge";
 import {
   Panel,
   PanelHeader,
@@ -7,8 +10,9 @@ import {
   Card,
   Headline,
   Text,
-  Button,
+  Button, Spinner, Snackbar, Avatar,
 } from '@vkontakte/vkui';
+import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import Spacing from "src/components/Spacing";
@@ -16,13 +20,21 @@ import Spacing from "src/components/Spacing";
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileData} from "src/store/profile/reducers";
 
-import Img1 from "src/img/tasks/1.svg";
-import Img2 from "src/img/tasks/2.svg";
-import Img3 from "src/img/tasks/3.svg";
-import Img4 from "src/img/tasks/4.svg";
-import Img5 from "src/img/tasks/5.svg";
+import declBySex from "src/functions/declBySex";
+import {locale} from "src/functions/balanceFormat";
+
+import {config} from "src/js/config";
 
 import style from './Tasks.scss';
+
+interface Task {
+  multiplier: number,
+  name: string,
+  img: ReactNode,
+  type?: string,
+  history: Array<any>,
+  isRepeatable: boolean
+}
 
 interface IProps {
   id: string,
@@ -34,108 +46,199 @@ interface IProps {
 }
 
 interface IState {
-  disabledTasks: Array<string>
+  disabledTasks: Array<string>,
+  tasks: null | Array<Task>
 }
 
-const tasks = [
-  {
-    name: 'watchAds',
-    title: "Посмотреть рекламу",
-    desc: "+500 вакцины",
-    icon: Img1
-  },
-  {
-    name: 'subscribeGroup',
-    title: "Подписаться на нас",
-    desc: "+1000 вакцины",
-    icon: Img2
-  },
-  {
-    name: 'turnNotifications',
-    title: "Включить уведомления",
-    desc: "+1000 вакцины",
-    icon: Img3
-  },
-  {
-    name: 'shareApp',
-    title: "Поделиться приложением",
-    desc: "+1000 вакцины",
-    icon: Img4
-  },
-  {
-    name: 'refUsers',
-    title: "Пригласить друзей",
-    desc: "+2000 вакцины за одного друга",
-    icon: Img5
-  }
-];
+const tasksIcons: {
+  [key: string]: string
+} = {
+  watchAds: 'src/img/tasks/1.svg',
+  subGroup: 'src/img/tasks/2.svg',
+  enableNotifications: 'src/img/tasks/3.svg',
+  shareApp: 'src/img/tasks/4.svg',
+  // shareStory: Icon28UserAddOutline,
+  // addToFavorites: Icon28UserAddOutline,
+  // addToHomeScreen: Icon28UserAddOutline
+};
 
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
     this.state = {
-      disabledTasks: []
+      disabledTasks: [],
+      tasks: null
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { profile } = this.props;
     const { disabledTasks } = this.state;
-    const newTasks = [...disabledTasks];
+    const newDisabledTasks = [...disabledTasks];
+
+    newDisabledTasks.push('shareStory');
 
     if (!profile.ref) {
-      newTasks.push('refUsers');
+      newDisabledTasks.push('refUsers');
     }
 
+    await this.getTasks();
+
     this.setState({
-      disabledTasks: newTasks
+      disabledTasks: newDisabledTasks,
     });
   }
 
+  async getTasks() {
+    const { data } = await axios.get('/task');
+
+    this.setState({
+      tasks: data
+    });
+  }
+
+  async completeTask(type: string) {
+    const { user, syncUser, changeSnackbar } = this.props;
+
+    new Promise(function(resolve, reject) {
+      switch (type) {
+        case 'watchAds':
+          if (bridge.supports("VKWebAppShowNativeAds")) {
+            bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'reward'})
+              .then((res) => resolve(res))
+              .catch((err) => reject(err));
+          } else {
+            reject()
+          }
+          break;
+
+        case 'subGroup':
+          bridge.send("VKWebAppJoinGroup", {"group_id": 191809582})
+            .then((res) => resolve(res))
+            .catch((err) => reject(err));
+          break;
+
+        case 'enableNotifications':
+          bridge.send("VKWebAppAllowNotifications")
+            .then((res) => resolve(res))
+            .catch((err) => reject(err));
+          break;
+
+        case 'shareApp':
+          bridge.send("VKWebAppShowWallPostBox", {message: 'Я помогаю спасать мир, а ты?', "attachments": config.appUrl})
+            .then((res) => resolve(res))
+            .catch((err) => reject(err));
+          break;
+
+        case 'addToFavorites':
+          bridge.send("VKWebAppAddToFavorites")
+            .then((res) => resolve(res))
+            .catch((err) => reject(err));
+          break;
+
+        case 'addToHomeScreen':
+          if (bridge.supports("VKWebAppAddToHomeScreen")) {
+            bridge.send("VKWebAppAddToHomeScreen")
+              .then((res) => resolve(res))
+              .catch((err) => reject(err));
+          } else {
+            reject()
+          }
+          break;
+      }
+    }).then(async () => {
+      const { data } = await axios.post('/task/complete', {
+        type
+      });
+
+      await this.getTasks();
+
+      syncUser(lo.merge(user, {
+        data: {
+          balance: new Decimal(user.data.balance).add(data.sum)
+        }
+      }))
+
+      changeSnackbar(
+        <Snackbar
+          className="success-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+        >
+          <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])}</div>
+          <Text weight="medium">{locale(data.sum)} вакцины</Text>
+        </Snackbar>
+      );
+    }).catch(() => {
+      changeSnackbar(
+        <Snackbar
+          className="error-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
+        >
+          Произошла ошибка во время выполнения задания
+        </Snackbar>
+      );
+    });
+  }
+
+  checkTask(item) {
+    const now = new Date().getTime() / 1000;
+    const repeat = new Date(item.history[0].repeatAfter).getTime() / 1000;
+
+    return item.history[0].repeatAfter !== null ? (now < repeat) : true;
+  }
+
   render() {
-    const { id } = this.props;
-    const { disabledTasks } = this.state;
+    const { id, snackbar, user } = this.props;
+    const { tasks, disabledTasks } = this.state;
 
     return (
       <Panel id={id}>
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Задания
         </PanelHeader>
-          <Div className={style.list}>
-            {/*Фильтруем от отключенных заданий*/}
-            {lo.differenceWith(tasks, disabledTasks, (x, y) => x.name === y).map((item, index) => (
+        <Div className={style.list}>
+          {tasks ? (
+            lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
               <Card
                 className={style.card}
                 key={index}
                 mode="shadow"
               >
                 <div className={style.icon}>
-                  <img src={item.icon} alt=""/>
+                  <img src={tasksIcons[item.type]} alt="" />
                 </div>
                 <div className={style.content}>
                   <div className={style.header}>
-                    <Headline weight="medium">{item.title}</Headline>
+                    <Headline weight="medium">{item.name}</Headline>
                   </div>
                   <Text
                     className={style.body}
                     weight="regular"
                   >
-                    {item.desc}
+                    {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
                   </Text>
                   <div className={style.button}>
                     <Button
                       mode="outline"
                       size="m"
+                      disabled={item.history.length !== 0 && this.checkTask(item)}
+                      onClick={() => this.completeTask(item.type)}
                     >
                       Выполнить
                     </Button>
                   </div>
                 </div>
               </Card>
-            ))}
-            <Spacing size={70} />
-          </Div>
+            ))
+          ) : <Spinner />}
+          <Spacing size={70} />
+        </Div>
+        {snackbar}
       </Panel>
     );
   }

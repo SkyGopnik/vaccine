@@ -66,16 +66,8 @@ export default class extends React.Component<IProps, IState> {
       syncUser
     } = this.props;
 
-    const error = (error: string) => {
-      throw Error(error);
-    };
-
     try {
       const { data } = await axios.get('/user');
-
-      if (data.role === 'user') {
-        error('Block users');
-      }
 
       syncUser(data);
       await connectWs(config.wsUrl);
