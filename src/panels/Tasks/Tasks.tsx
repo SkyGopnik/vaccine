@@ -107,7 +107,7 @@ export default class extends React.Component<IProps, IState> {
           if (bridge.supports("VKWebAppShowNativeAds")) {
             bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'reward'})
               .then((res) => resolve(res))
-              .catch((err) => reject(err));
+              .catch((err) => resolve(null));
           } else {
             reject()
           }
