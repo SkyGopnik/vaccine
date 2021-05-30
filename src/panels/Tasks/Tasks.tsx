@@ -10,7 +10,7 @@ import {
   Card,
   Headline,
   Text,
-  Button, Spinner, Snackbar, Avatar,
+  Button, Spinner, Snackbar, Avatar, PullToRefresh
 } from '@vkontakte/vkui';
 import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
 
@@ -46,6 +46,7 @@ interface IProps {
 }
 
 interface IState {
+  ptr: boolean,
   disabledTasks: Array<string>,
   tasks: null | Array<Task>
 }
@@ -67,6 +68,7 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
+      ptr: false,
       disabledTasks: [],
       tasks: null
     };
@@ -192,52 +194,64 @@ export default class extends React.Component<IProps, IState> {
     return item.history[0].repeatAfter !== null ? (now < repeat) : true;
   }
 
+  async onRefresh() {
+    this.setState({ ptr: true });
+
+    setTimeout(async () => {
+      await this.getTasks();
+
+      this.setState({ ptr: false })
+    }, 1000);
+  }
+
   render() {
     const { id, snackbar, user } = this.props;
-    const { tasks, disabledTasks } = this.state;
+    const { ptr, tasks, disabledTasks } = this.state;
 
     return (
       <Panel id={id}>
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Задания
         </PanelHeader>
-        <Div className={style.list}>
-          {tasks ? (
-            lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-              <Card
-                className={style.card}
-                key={index}
-                mode="shadow"
-              >
-                <div className={style.icon}>
-                  <img src={tasksIcons[item.type]} alt="" />
-                </div>
-                <div className={style.content}>
-                  <div className={style.header}>
-                    <Headline weight="medium">{item.name}</Headline>
+        <PullToRefresh onRefresh={() => this.onRefresh()} isFetching={ptr}>
+          <Div className={style.list}>
+            {tasks ? (
+              lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
+                <Card
+                  className={style.card}
+                  key={index}
+                  mode="shadow"
+                >
+                  <div className={style.icon}>
+                    <img src={tasksIcons[item.type]} alt="" />
                   </div>
-                  <Text
-                    className={style.body}
-                    weight="regular"
-                  >
-                    {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
-                  </Text>
-                  <div className={style.button}>
-                    <Button
-                      mode="outline"
-                      size="m"
-                      disabled={item.history.length !== 0 && this.checkTask(item)}
-                      onClick={() => this.completeTask(item.type)}
+                  <div className={style.content}>
+                    <div className={style.header}>
+                      <Headline weight="medium">{item.name}</Headline>
+                    </div>
+                    <Text
+                      className={style.body}
+                      weight="regular"
                     >
-                      Выполнить
-                    </Button>
+                      {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
+                    </Text>
+                    <div className={style.button}>
+                      <Button
+                        mode="outline"
+                        size="m"
+                        disabled={item.history.length !== 0 && this.checkTask(item)}
+                        onClick={() => this.completeTask(item.type)}
+                      >
+                        Выполнить
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))
-          ) : <Spinner />}
-          <Spacing size={70} />
-        </Div>
+                </Card>
+              ))
+            ) : <Spinner />}
+            <Spacing size={70} />
+          </Div>
+        </PullToRefresh>
         {snackbar}
       </Panel>
     );

@@ -148,8 +148,7 @@ export default class extends React.Component<IProps, IState> {
       user,
       syncUser,
       getProfile,
-      changeSnackbar,
-      sendWsMessage
+      changeSnackbar
     } = this.props;
     const { value } = this.state;
 
