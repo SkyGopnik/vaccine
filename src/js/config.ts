@@ -3,12 +3,12 @@ export let config;
 if (process.env.localConfig === 'production') {
   config = {
     wsUrl: 'wss://vaccine-wss.skyreglis.studio',
-    apiUrl: 'https://vaccine.skyreglis.studio'
+    apiUrl: 'https://skyreglis.studio/vaccine/api/rest'
   };
 } else {
   config = {
     wsUrl: 'ws://localhost:3245',
-    apiUrl: 'http://127.0.0.1:3244/api/rest'
+    apiUrl: 'http://127.0.0.1:3244/vaccine/api/rest'
   };
 }
 

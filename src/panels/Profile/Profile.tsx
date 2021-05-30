@@ -280,7 +280,7 @@ export default class extends React.Component<IProps, IState> {
                 <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
                 <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
                 <div>· Получено вакцины от друзей: {stat.transfer && locale(stat.transfer) || 0}</div>
-                <div>· Произведено улучшений: {stat.improvements || 0}</div>
+                <div>· Произведено улучшений: {stat.improvements && locale(stat.improvements) || 0}</div>
                 {/*<div>· Достижений: {stat.achievements || 0}</div>*/}
               </Subhead>
             </Card>
