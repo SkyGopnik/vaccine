@@ -23,6 +23,14 @@ import {ProfileData} from "src/store/profile/reducers";
 import declBySex from "src/functions/declBySex";
 import {locale} from "src/functions/balanceFormat";
 
+import Img1 from "src/img/tasks/1.svg";
+import Img2 from "src/img/tasks/2.svg";
+import Img3 from "src/img/tasks/3.svg";
+import Img4 from "src/img/tasks/4.svg";
+import Img5 from "src/img/tasks/5.svg";
+import Img6 from "src/img/tasks/6.svg";
+import Img7 from "src/img/tasks/7.svg";
+
 import {config} from "src/js/config";
 
 import style from './Tasks.scss';
@@ -51,16 +59,40 @@ interface IState {
   tasks: null | Array<Task>
 }
 
-const tasksIcons: {
-  [key: string]: string
+const tasksConfig: {
+  [key: string]: {
+    img: string,
+    vk: string
+  }
 } = {
-  watchAds: 'src/img/tasks/1.svg',
-  subGroup: 'src/img/tasks/2.svg',
-  enableNotifications: 'src/img/tasks/3.svg',
-  shareApp: 'src/img/tasks/4.svg',
-  // shareStory: Icon28UserAddOutline,
-  // addToFavorites: Icon28UserAddOutline,
-  // addToHomeScreen: Icon28UserAddOutline
+  watchAds: {
+    img: Img1,
+    vk: 'VKWebAppShowNativeAds'
+  },
+  subGroup: {
+    img: Img2,
+    vk: 'VKWebAppJoinGroup'
+  },
+  enableNotifications: {
+    img: Img3,
+    vk: 'VKWebAppAllowNotifications'
+  },
+  shareApp: {
+    img: Img4,
+    vk: 'VKWebAppShowWallPostBox'
+  },
+  shareStory: {
+    img: Img1,
+    vk: ''
+  },
+  addToFavorites: {
+    img: Img6,
+    vk: 'VKWebAppAddToFavorites'
+  },
+  addToHomeScreen: {
+    img: Img7,
+    vk: 'VKWebAppAddToHomeScreen'
+  },
 };
 
 export default class extends React.Component<IProps, IState> {
@@ -217,36 +249,38 @@ export default class extends React.Component<IProps, IState> {
           <Div className={style.list}>
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                <Card
-                  className={style.card}
-                  key={index}
-                  mode="shadow"
-                >
-                  <div className={style.icon}>
-                    <img src={tasksIcons[item.type]} alt="" />
-                  </div>
-                  <div className={style.content}>
-                    <div className={style.header}>
-                      <Headline weight="medium">{item.name}</Headline>
+                bridge.supports(tasksConfig[item.type].vk) && (
+                  <Card
+                    className={style.card}
+                    key={index}
+                    mode="shadow"
+                  >
+                    <div className={style.icon}>
+                      <img src={tasksConfig[item.type].img} alt="" />
                     </div>
-                    <Text
-                      className={style.body}
-                      weight="regular"
-                    >
-                      {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
-                    </Text>
-                    <div className={style.button}>
-                      <Button
-                        mode="outline"
-                        size="m"
-                        disabled={item.history.length !== 0 && this.checkTask(item)}
-                        onClick={() => this.completeTask(item.type)}
+                    <div className={style.content}>
+                      <div className={style.header}>
+                        <Headline weight="medium">{item.name}</Headline>
+                      </div>
+                      <Text
+                        className={style.body}
+                        weight="regular"
                       >
-                        Выполнить
-                      </Button>
+                        {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
+                      </Text>
+                      <div className={style.button}>
+                        <Button
+                          mode="outline"
+                          size="m"
+                          disabled={item.history.length !== 0 && this.checkTask(item)}
+                          onClick={() => this.completeTask(item.type)}
+                        >
+                          Выполнить
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                )
               ))
             ) : <Spinner />}
             <Spacing size={70} />
