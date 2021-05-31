@@ -23,6 +23,7 @@ import {UserInterface} from "src/store/user/reducers";
 import balanceFormat, { locale } from "src/functions/balanceFormat";
 
 import style from './Game.scss';
+import declBySex from "src/functions/declBySex";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
@@ -125,7 +126,7 @@ export default class extends React.Component<IProps, IState> {
             onClose={() => changeSnackbar(null)}
             before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
           >
-            <div>Ты получил <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
+            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
             <div>Отличная работа, так держать!</div>
           </Snackbar>
         );
