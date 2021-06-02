@@ -144,23 +144,23 @@ export default class extends React.Component<IProps> {
                 Будка бомжа
               </SimpleCell>
             )}
-            <SimpleCell
-              onClick={() => {
-                changeSnackbar(
-                  <Snackbar
-                    className="success-snack"
-                    layout="vertical"
-                    duration={10000000}
-                    onClose={() => changeSnackbar(null)}
-                    before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
-                  >
-                    Я туточки
-                  </Snackbar>
-                );
-              }}
-            >
-              Бесконечный снекбар
-            </SimpleCell>
+            {/*<SimpleCell*/}
+            {/*  onClick={() => {*/}
+            {/*    changeSnackbar(*/}
+            {/*      <Snackbar*/}
+            {/*        className="success-snack"*/}
+            {/*        layout="vertical"*/}
+            {/*        duration={10000000}*/}
+            {/*        onClose={() => changeSnackbar(null)}*/}
+            {/*        before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}*/}
+            {/*      >*/}
+            {/*        Я туточки*/}
+            {/*      </Snackbar>*/}
+            {/*    );*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  Бесконечный снекбар*/}
+            {/*</SimpleCell>*/}
           </Card>
           <Spacing size={55} />
         </Div>

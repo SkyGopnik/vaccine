@@ -187,7 +187,7 @@ export default class extends React.Component<IProps, IState> {
         }
         onClose={() => window.history.back()}
       >
-        <Card className={style.copy} noPadding>
+        <Card className={style.copy} mode="outline" noPadding>
           <div className={style.header}>
             <Icon24ChevronLeft />
             <Title level="2" weight="heavy">{randomTeam.id}</Title>

@@ -20,6 +20,7 @@ export interface UserInfoInterface {
 export interface UserDataInterface {
   userId?: string
   balance: number
+  record: number
   passive: number
   click: number
   additional: any

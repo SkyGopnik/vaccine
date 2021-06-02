@@ -77,14 +77,6 @@ const tasksConfig: {
     img: Img3,
     vk: 'VKWebAppAllowNotifications'
   },
-  shareApp: {
-    img: Img4,
-    vk: 'VKWebAppShowWallPostBox'
-  },
-  shareStory: {
-    img: Img1,
-    vk: ''
-  },
   addToFavorites: {
     img: Img6,
     vk: 'VKWebAppAddToFavorites'

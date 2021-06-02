@@ -206,7 +206,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, data, snackbar } = this.props;
+    const { id, data, user, snackbar } = this.props;
     const {
       value,
       error,
@@ -248,14 +248,14 @@ export default class extends React.Component<IProps, IState> {
             <FormItem
               className={style.input}
               status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
-              bottom={error ? error : null}
+              bottom={user.data.record < 1 ? 'Необходимо заработать 1 вакцину' : (error ? error : null)}
             >
               <div className={style.code}>
                 <Input
                   value={value}
                   type="text"
                   placeholder="11928"
-                  disabled={loading || additional.code}
+                  disabled={loading || additional.code || user.data.record < 1}
                   onChange={(e) => this.handleInputChange(e.currentTarget.value)}
                 />
                 <Button

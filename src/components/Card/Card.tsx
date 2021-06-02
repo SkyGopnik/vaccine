@@ -17,7 +17,8 @@ interface IProps {
     action: ReactNode,
     info: string | number
   },
-  noPadding?: boolean
+  noPadding?: boolean,
+  mode?: 'shadow' | 'outline'
 }
 
 export default class extends React.Component<IProps> {
@@ -37,13 +38,14 @@ export default class extends React.Component<IProps> {
       children,
       actions,
       actionsInfo,
-      noPadding
+      noPadding,
+      mode
     } = this.props;
 
     return (
       <Card
         className={!className ? style.card : classNames(style.card, className)}
-        mode="shadow"
+        mode={!mode ? 'shadow' : mode}
         style={noPadding && { padding: '0' }}
       >
         {title && (
