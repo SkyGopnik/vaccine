@@ -20,26 +20,37 @@ export const changeView = (view: string) => {
 };
 
 export const changePanel = (panel: string, panelData: Object = null) => {
+  const { user } = store.getState();
+  const { snackbarTabNotification } = user.data.data.additional;
+
   return {
     type: APP_CHANGE_PANEL,
     payload: {
       panel,
-      panelData
+      panelData,
+      snackbarTabNotification
     }
   };
 };
 
 export const changeStory = (story: string, panelData: Object = null) => {
+  const { user } = store.getState();
+  const { snackbarTabNotification } = user.data.data.additional;
+
   return {
     type: APP_CHANGE_STORY,
     payload: {
       story,
-      panelData
+      panelData,
+      snackbarTabNotification
     }
   };
 };
 
 export const changeViewPanelStory = (view: string, panel: string, story: string = null, panelData: Object = null, isPopstate?: boolean) => {
+  const { user } = store.getState();
+  const { snackbarTabNotification } = user.data.data.additional;
+
   return {
     type: APP_CHANGE_VIEW_PANEL_STORY,
     payload: {
@@ -47,7 +58,8 @@ export const changeViewPanelStory = (view: string, panel: string, story: string 
       panel,
       story,
       panelData,
-      isPopstate
+      isPopstate,
+      snackbarTabNotification
     }
   };
 };

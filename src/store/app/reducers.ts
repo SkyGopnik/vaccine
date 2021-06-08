@@ -9,6 +9,7 @@ import {
   updateHistory
 } from './actions';
 import {ReactNode} from "react";
+import {store} from "src/js";
 
 let modalTime = new Date().getTime();
 
@@ -53,7 +54,7 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view
     };
 
-  case APP_CHANGE_PANEL:
+    case APP_CHANGE_PANEL:
     updateHistory(state.view, action.payload.panel, state.story, action.payload.panelData);
 
     try {
@@ -66,7 +67,8 @@ export const appReducer = (state = defaultState, action) => {
       ...state,
       modal: null,
       panel: action.payload.panel,
-      panelData: action.payload.panelData
+      panelData: action.payload.panelData,
+      snackbar: !action.payload.snackbarTabNotification ? state.snackbar : null
     };
 
   case APP_CHANGE_STORY:
@@ -96,7 +98,8 @@ export const appReducer = (state = defaultState, action) => {
       panel: 'main',
       panelData: action.payload.panelData,
       modal: null,
-      popout: null
+      popout: null,
+      snackbar: !action.payload.snackbarTabNotification ? state.snackbar : null
     };
 
   case APP_CHANGE_VIEW_PANEL_STORY:
@@ -107,7 +110,8 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,
-      panelData: action.payload.panelData
+      panelData: action.payload.panelData,
+      snackbar: !action.payload.snackbarTabNotification ? state.snackbar : null
     };
 
   case APP_CHANGE_MODAL:

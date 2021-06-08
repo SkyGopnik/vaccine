@@ -47,7 +47,7 @@ export default class extends React.Component<IProps> {
       changeAdditional
     } = this.props;
     const { role } = data;
-    const { easyAnimation, showRating, vaccineClickNotification } = user.data.additional;
+    const { easyAnimation, showRating, snackbarTabNotification, vaccineClickNotification } = user.data.additional;
 
     return (
       <Panel id={id}>
@@ -99,6 +99,20 @@ export default class extends React.Component<IProps> {
               disabled
             >
               Получение бонуса при кликах
+            </SimpleCell>
+            <SimpleCell
+              after={
+                <Switch
+                  checked={snackbarTabNotification || false}
+                  onChange={() => changeAdditional({
+                    snackbarTabNotification: !snackbarTabNotification
+                  })}
+                />
+              }
+              multiline
+              disabled
+            >
+              Скрыть уведомления при переходах
             </SimpleCell>
           </Card>
         </Div>
