@@ -52,6 +52,14 @@ export default class extends React.Component<IProps> {
           </Card>
         </Div>
         <Div className={style.block}>
+          <Header mode="secondary">Пользователи</Header>
+          <Card mode="shadow">
+            <SimpleCell onClick={() => changeModal('banUser')}>
+              Заблокировать
+            </SimpleCell>
+          </Card>
+        </Div>
+        <Div className={style.block}>
           <Header mode="secondary">Роли</Header>
           <Card mode="shadow">
             <SimpleCell onClick={() => changeModal('editRole')}>

@@ -111,6 +111,8 @@ export default class extends React.Component<IProps, IState> {
     } = this.props;
     const value = clickProgress + 2;
 
+    console.log(value);
+
     if (value === 100) {
       for (let i = 0; i < 4; i++) {
         this.renderEffect();

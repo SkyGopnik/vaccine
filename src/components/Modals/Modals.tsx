@@ -7,7 +7,8 @@ import {
   TransferMoney,
   TransferUser,
   AddPromocode,
-  EditRole
+  EditRole,
+  BanUser
 } from "src/modals";
 
 import {AppReducerInterface} from "src/store/app/reducers";
@@ -25,6 +26,7 @@ export default (props: IProps) => {
       <TransferUser id="transferUser" />
       <AddPromocode id="addPromocode" />
       <EditRole id="editRole" />
+      <BanUser id="banUser" />
     </ModalRoot>
   );
 };

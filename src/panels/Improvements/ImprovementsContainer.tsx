@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { syncUser } from "src/store/user/actions";
+import { syncUser, changeAdditional } from "src/store/user/actions";
 import { changeModal, changeSnackbar, changePopout } from "src/store/app/actions";
 import Improvements from './Improvements';
 
@@ -16,7 +16,8 @@ const mapDispatchToProps = {
   syncUser,
   changeModal,
   changePopout,
-  changeSnackbar
+  changeSnackbar,
+  changeAdditional
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImprovementsContainer);

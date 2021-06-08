@@ -6,11 +6,8 @@ import {
   Card,
   Div,
   SimpleCell,
-  Switch,
-  Snackbar,
-  Avatar
+  Switch
 } from "@vkontakte/vkui";
-import {Icon16Done } from "@vkontakte/icons";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import Spacing from "src/components/Spacing";

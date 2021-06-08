@@ -41,7 +41,8 @@ interface IProps {
   closeSnackbar(),
   syncUser(data: UserInterface),
   changePopout(popout: ReactNode | null),
-  changeModal(modal: string | null, modalData?: Object)
+  changeModal(modal: string | null, modalData?: Object),
+  changeAdditional(data: object)
 }
 
 interface IState {
@@ -82,7 +83,11 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    const { user } = this.props;
     const { type } = this.state;
+
+    const count = user.data.additional.improvementsCount ? user.data.additional.improvementsCount : 1;
+
     const { data } = await axios.get('/improvement/');
     const buttons = [];
 
@@ -91,7 +96,8 @@ export default class extends React.Component<IProps, IState> {
     this.setState({
       stat: data,
       firstLoading: false,
-      buttons
+      buttons,
+      count
     });
   }
 
@@ -258,6 +264,16 @@ export default class extends React.Component<IProps, IState> {
     }
   }
 
+  changeCount(count: number) {
+    const { changeAdditional } = this.props;
+
+    changeAdditional({
+      improvementsCount: count
+    });
+
+    this.setState({ count });
+  }
+
   render() {
     const { id, user, snackbar, changePopout } = this.props;
     const {
@@ -317,7 +333,7 @@ export default class extends React.Component<IProps, IState> {
                       checked={count === number}
                       autoclose
                       selectable
-                      onChange={() => this.setState({ count: number })}
+                      onChange={() => this.changeCount(number)}
                     >
                       x{number}
                     </ActionSheetItem>
