@@ -9,6 +9,8 @@ import {UserStat} from "src/store/profile/reducers";
 
 export interface RandomUserReducerInterface {
   data: {
+    id: string,
+    type: string,
     stat: UserStat,
     data: UserDataInterface
   },

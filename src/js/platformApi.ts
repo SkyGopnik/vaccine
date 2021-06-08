@@ -83,4 +83,11 @@ export default class platformApi {
       ).then((res) => cb && cb(res)).catch((err) => cb && cb(err));
     }
   }
+
+  public static getHref(type: string, id: string) {
+    switch (type) {
+      case 'vk':
+        return 'https://vk.com/id' + id;
+    }
+  }
 }

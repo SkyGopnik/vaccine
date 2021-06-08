@@ -17,6 +17,8 @@ export interface UserStat {
 }
 
 export interface ProfileData {
+  id: string,
+  type: string,
   stat: UserStat,
   ref: {
     refCode?: number,

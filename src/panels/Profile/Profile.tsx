@@ -44,6 +44,7 @@ import Img5 from "src/img/profile/5.svg";
 import Img7 from "src/img/profile/7.svg";
 
 import style from './Profile.scss';
+import platformApi from "src/js/platformApi";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -160,7 +161,9 @@ export default class extends React.Component<IProps, IState> {
         </PanelHeader>
         <PullToRefresh onRefresh={() => this.onRefresh()} isFetching={ptr}>
           <Div className={style.avatar}>
-            <Avatar src={photo} size={72} />
+            <a href={platformApi.getHref(data.type, data.id)} target="_blank">
+              <Avatar src={photo} size={72} />
+            </a>
             <Title level="3" weight="medium">{firstName} {lastName}</Title>
             {stat.ratingPosition ? (
               <Caption level="1" weight="regular">{stat.ratingPosition.toLocaleString()} место в рейтинге</Caption>

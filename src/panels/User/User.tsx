@@ -25,6 +25,7 @@ import Img5 from "src/img/profile/5.svg";
 import Img6 from "src/img/profile/6.svg";
 
 import style from './User.scss';
+import platformApi from "src/js/platformApi";
 
 interface IProps extends RandomUserReducerInterface {
   id: string,
@@ -93,7 +94,9 @@ export default class extends React.Component<IProps, IState> {
           {!loading ? (
             <>
               <Div className={style.avatar}>
-                <Avatar src={photo} size={72} />
+                <a href={platformApi.getHref(user.type, user.id)} target="_blank">
+                  <Avatar src={photo} size={72} />
+                </a>
                 <Title level="3" weight="medium">{firstName} {lastName}</Title>
                 {stat ? (
                   <Caption level="1" weight="regular">{stat.ratingPosition} место в рейтинге</Caption>
