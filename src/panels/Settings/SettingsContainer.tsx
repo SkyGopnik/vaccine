@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { changeAdditional } from "src/store/user/actions";
-import { changePanel, changeSnackbar, changePopout } from "src/store/app/actions";
+import { changePanel, changeSnackbar, changePopout, changeModal } from "src/store/app/actions";
 
 import Settings from './Settings';
 
@@ -18,7 +18,8 @@ const mapDispatchToProps = {
   changeAdditional,
   changePanel,
   changeSnackbar,
-  changePopout
+  changePopout,
+  changeModal
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnboardContainer);

@@ -188,7 +188,9 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     } catch (e) {
-      console.log(e);
+      const localization = {
+        'User reach limit': 'Пользователь достиг лимита на переводы, попробуйте меньшую сумму'
+      };
 
       changeSnackbar(
         <Snackbar
@@ -197,7 +199,7 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
         >
-          Очень много заражённых, давай попробуем позже
+          {localization[e.response.data.message] ? localization[e.response.data.message] : 'Очень много заражённых, давай попробуем позже'}
         </Snackbar>
       );
     }

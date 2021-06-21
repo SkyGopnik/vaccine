@@ -48,7 +48,7 @@ const inputs = [
     title: 'Бонус',
     name: 'bonus',
     type: 'number',
-    placeholder: '0.0005'
+    placeholder: '10'
   },
   {
     title: 'Лимит',

@@ -21,6 +21,7 @@ export interface UserDataInterface {
   userId?: string
   balance: number
   record: number
+  level: number
   passive: number
   click: number
   additional: any
@@ -38,6 +39,12 @@ export interface UserInterface {
   platform: string
   info: UserInfoInterface
   data: UserDataInterface
+  logs: Array<{
+    id: number
+    type: string
+    text: string
+    user?: UserInterface
+  }>
 }
 
 const defaultState = {

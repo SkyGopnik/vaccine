@@ -167,17 +167,6 @@ export default class extends React.Component<IProps, IState> {
             </Snackbar>
           );
         }
-      } else if (new Decimal(user.data.balance).add(this.getBalanceBribeLimit()).minus(price).toNumber() >= 0) {
-        // Если доступен просмотр рекламы
-        const { changeModal } = this.props;
-
-        console.log(price - new Decimal(user.data.balance).toNumber());
-
-        changeModal('needMoney', {
-          need: price - new Decimal(user.data.balance).toNumber() // Сумма которой не хватает
-        });
-
-        console.log('watch ads ' + (price - user.data.balance));
       }
     }
   }
@@ -226,20 +215,8 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  getBalanceBribeLimit() {
-    const { user } = this.props;
-    const { type, count } = this.state;
-    const multiplier = 5;
-
-    return user.data[type === 'vaccine' ? 'click' : 'passive'] * multiplier * count;
-  }
-
   multipleCount(number: number, multiple: number) {
     return new Decimal(number).mul(multiple).toNumber();
-  }
-
-  checkAdsWatch(balance: number, price: number, name: string) {
-    return (this.getBalanceBribeLimit() + new Decimal(balance).toNumber() - this.calculatePrice(price, this.itemCount(name))) < 0;
   }
 
   swipe(motion: 'left' | 'right') {
@@ -366,12 +343,11 @@ export default class extends React.Component<IProps, IState> {
                   </Text>
                   <div className={style.button}>
                     <Button
-                      className={(!this.checkAdsWatch(user.data.balance, item.price, item.name) && new Decimal(user.data.balance).toNumber() < this.calculatePrice(item.price, this.itemCount(item.name))) ? style.watchAds : '123'}
                       mode="outline"
                       size="m"
                       // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
                       // item.price * lo.filter - стоимость с множителем
-                      disabled={buttons[index] || loading || firstLoading || user && this.checkAdsWatch(user.data.balance, item.price, item.name)}
+                      disabled={buttons[index] || loading || firstLoading || this.calculatePrice(item.price, this.itemCount(item.name)) > user.data.balance}
                       onClick={() => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
                     >
                       {!firstLoading && !buttons[index] ? (

@@ -4,4 +4,5 @@ export { default as TransferMoney } from "src/modals/TransferMoney/TransferMoney
 export { default as TransferUser } from "src/modals/TransferUser/TransferUserContainer";
 export { default as AddPromocode } from "src/modals/AddPromocode/AddPromocodeContainer";
 export { default as EditRole } from "src/modals/EditRole/EditRoleContainer";
-export { default as BanUser } from "src/modals/BanUser/BanUserContainer";
+export { default as EditUserBan } from "src/modals/EditUserBan/EditUserBanContainer";
+export { default as DropProgress } from "src/modals/DropProgress/DropProgressContainer";

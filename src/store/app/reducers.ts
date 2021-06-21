@@ -110,8 +110,7 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view,
       panel: action.payload.panel,
       story: action.payload.story,
-      panelData: action.payload.panelData,
-      snackbar: !action.payload.snackbarTabNotification ? state.snackbar : null
+      panelData: action.payload.panelData
     };
 
   case APP_CHANGE_MODAL:

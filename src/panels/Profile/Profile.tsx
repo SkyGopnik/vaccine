@@ -45,6 +45,7 @@ import Img7 from "src/img/profile/7.svg";
 
 import style from './Profile.scss';
 import platformApi from "src/js/platformApi";
+import Decimal from "decimal.js";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -227,30 +228,25 @@ export default class extends React.Component<IProps, IState> {
                 }
               />
             )}
-            {/*<Card*/}
-            {/*  icon={<img src={Img7} alt="" />}*/}
-            {/*  title="Бонусы"*/}
-            {/*  actions={*/}
-            {/*    <Button*/}
-            {/*      mode="outline"*/}
-            {/*      size="m"*/}
-            {/*      onClick={() => changePanel('levels')}*/}
-            {/*    >*/}
-            {/*      Смотреть бонусы*/}
-            {/*    </Button>*/}
-            {/*  }*/}
-            {/*>*/}
-            {/*  <div className={style.levels}>*/}
-            {/*    <div className={style.progressWrapper}>*/}
-            {/*      <Progress className={style.progress} value={50} />*/}
-            {/*      <div className={style.numbers}>*/}
-            {/*        <Caption level="3" weight="regular">0</Caption>*/}
-            {/*        <Caption level="3" weight="regular">100 000</Caption>*/}
-            {/*      </div>*/}
-            {/*    </div>*/}
-            {/*    <Text weight="regular">Осталось разработать <span style={{ fontWeight: 500 }}>67 830</span> вакцины, чтобы получить новый подарок</Text>*/}
-            {/*  </div>*/}
-            {/*</Card>*/}
+            <Card
+              icon={<img src={Img7} alt="" />}
+              title={`Уровень ${stat.level}`}
+            >
+              <div className={style.levels}>
+                <div className={style.progressWrapper}>
+                  {stat.level && (
+                    <>
+                      <Progress className={style.progress} value={100 - (Math.pow(3, stat.level) - new Decimal(user.data.record).toNumber()) / Math.pow(3, stat.level) * 100} />
+                      <div className={style.numbers}>
+                        <Caption level="3" weight="regular">{locale(Math.pow(3, stat.level - 1))}</Caption>
+                        <Caption level="3" weight="regular">{locale(Math.pow(3, stat.level))}</Caption>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <Text weight="regular">Осталось разработать <span style={{ fontWeight: 500 }}>{locale(new Decimal(Math.pow(3, stat.level)).minus(new Decimal(user.data.record).toNumber()).toNumber())}</span> вакцины, чтобы получить следующий уровень</Text>
+              </div>
+            </Card>
             {/*<Card*/}
             {/*  icon={<img src={Img4} alt="" />}*/}
             {/*  title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}*/}
@@ -280,6 +276,8 @@ export default class extends React.Component<IProps, IState> {
               title="Статистика"
             >
               <Subhead weight="regular">
+                <div>· Уровень: {stat.level ? locale(stat.level) : 0}</div>
+                {stat.level <= 5 && <div>· Дневной лимит: {stat.level ? locale(Math.pow(3, stat.level)) : 0}</div>}
                 <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
                 <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
                 <div>· Получено вакцины: {stat.transfer && locale(stat.transfer) || 0}</div>

@@ -34,6 +34,7 @@ import Img7 from "src/img/tasks/7.svg";
 import {config} from "src/js/config";
 
 import style from './Tasks.scss';
+import Promocode from "src/components/Promocode/PromocodeContainer";
 
 interface Task {
   multiplier: number,
@@ -239,6 +240,9 @@ export default class extends React.Component<IProps, IState> {
         </PanelHeader>
         <PullToRefresh onRefresh={() => this.onRefresh()} isFetching={ptr}>
           <Div className={style.list}>
+            <Card mode="shadow">
+              <Promocode />
+            </Card>
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
                 bridge.supports(tasksConfig[item.type].vk) && (

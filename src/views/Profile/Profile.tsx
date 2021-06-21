@@ -11,6 +11,8 @@ import LinkedGroupPanel from "src/panels/LinkedGroup/LinkedGroup";
 import DonatePanel from "src/panels/Donate/Donate";
 import LevelsPanel from "src/panels/Levels/LevelsContainer";
 import UsersPanel from "src/panels/Users/UsersContainer";
+import AdminRatingPanel from "src/panels/AdminRating/AdminRatingContainer";
+import ReportsPanel from "src/panels/Reports/ReportsContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -81,6 +83,14 @@ export default class extends React.Component<IProps> {
           {
             id: 'users',
             component: UsersPanel
+          },
+          {
+            id: 'adminRating',
+            component: AdminRatingPanel
+          },
+          {
+            id: 'reports',
+            component: ReportsPanel
           }
         ]}
       />

@@ -24,6 +24,7 @@ import balanceFormat, { locale } from "src/functions/balanceFormat";
 
 import style from './Game.scss';
 import declBySex from "src/functions/declBySex";
+import axios from "axios";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
@@ -40,40 +41,16 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 
 interface IState {
   effects: Array<number>,
-  antiClick: {
-    cheatCount: number,
-    click: {
-      count: number,
-      x: number,
-      y: number,
-    },
-    interval: {
-      time: number,
-      last: number,
-      count: number
-    }
-  },
   lastClick: {
     time: number | null,
     count: number
+  },
+  lastInterval: {
+    time: number | null,
+    interval: number,
+    count: number
   }
 }
-
-const antiClickDefault = {
-  cheatCount: 0,
-  click: {
-    count: 0,
-    x: 0,
-    y: 0,
-  },
-  interval: {
-    time: 0,
-    last: 0,
-    count: 0
-  }
-};
-
-let isAdsShown = false;
 
 export default class extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -81,9 +58,13 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       effects: [],
-      antiClick: antiClickDefault,
       lastClick: {
         time: null,
+        count: 0
+      },
+      lastInterval: {
+        time: null,
+        interval: 0,
         count: 0
       }
     };
@@ -111,8 +92,6 @@ export default class extends React.Component<IProps, IState> {
     } = this.props;
     const value = clickProgress + 2;
 
-    console.log(value);
-
     if (value === 100) {
       for (let i = 0; i < 4; i++) {
         this.renderEffect();
@@ -138,23 +117,31 @@ export default class extends React.Component<IProps, IState> {
     changeProgress(value < 100 ? value : 0);
   }
 
-  iconClick() {
+  async iconClick() {
     const {
       user,
       balancePlus,
       sendWsMessage
     } = this.props;
-    const { lastClick } = this.state;
-    const { time, count } = lastClick;
+    const { lastClick, lastInterval } = this.state;
+
+    const newInterval = new Date().getTime() - lastInterval.time;
 
     this.setState({
       lastClick: {
         time: Math.round(new Date().getTime() / 1000),
-        count: Math.round(new Date().getTime()  / 1000) === time ? (count + 1) : 0
+        count: Math.round(new Date().getTime() / 1000) === lastClick.time ? (lastClick.count + 1) : 0
+      },
+      lastInterval: {
+        time: new Date().getTime(),
+        interval: new Date().getTime() - lastInterval.time,
+        count: (newInterval - 25) < lastInterval.interval && lastInterval.interval < (newInterval + 25) ? (lastInterval.count + 1) : 0
       }
     });
 
-    if (count < 7) {
+    const reportUser = (type: string, text: string) => axios.post('/user/report',  { userId: user.id, type, text });
+
+    if (lastClick.count < 7) {
       balancePlus(user.data.click);
 
       sendWsMessage({type: 'ClickUser'});
@@ -164,6 +151,24 @@ export default class extends React.Component<IProps, IState> {
       }
 
       this.changeProgress();
+    }
+
+    if (lastClick.count === 30) {
+      await reportUser('cpsLimit','Пользователь достиг больше 30 CPS');
+    } else if (lastClick.count === 40) {
+      await reportUser('cpsLimit','Пользователь достиг больше 40 CPS');
+    } else if (lastClick.count === 50) {
+      await reportUser('cpsLimit','Пользователь достиг больше 50 CPS');
+    }
+
+    if (lastInterval.count === 100) {
+      await reportUser('intervalLimit','Пользователь достиг больше 100 Interval');
+    } else if (lastInterval.count === 150) {
+      await reportUser('intervalLimit','Пользователь достиг больше 150 Interval');
+    } else if (lastInterval.count === 200) {
+      await reportUser('intervalLimit','Пользователь достиг больше 200 Interval');
+    } else if (lastInterval.count === 300) {
+      await reportUser('intervalLimit','Пользователь достиг больше 300 Interval');
     }
   }
 
@@ -182,11 +187,9 @@ export default class extends React.Component<IProps, IState> {
       <Panel id={id} className={style.game}>
         <PanelHeader
           left={
-            // TODO: Баг с закрытием тултипа после онбоардинга, нужно проверять когда был создан аккаунт
-            // и показывать тултипы только после того как прошло 10 минут
             <PanelHeaderButton onClick={() => changePanel('tasks')}>
               <Tooltip
-                isShown={!user.data.additional.giftTooltip}
+                isShown={!user.data.additional.giftTooltip && user.data.level > 1}
                 onClose={() => {
                   console.log('giftTooltip')
                   changeAdditional({

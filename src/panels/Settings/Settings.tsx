@@ -44,6 +44,7 @@ export default class extends React.Component<IProps> {
       snackbar,
       changePanel,
       changeSnackbar,
+      changeModal,
       changeAdditional
     } = this.props;
     const { role } = data;
@@ -137,6 +138,9 @@ export default class extends React.Component<IProps> {
               disabled
             >
               Отображение в рейтинге
+            </SimpleCell>
+            <SimpleCell onClick={() => changeModal('dropProgress')}>
+              Сбросить прогресс
             </SimpleCell>
             {/*<SimpleCell*/}
             {/*  expandable*/}

@@ -6,14 +6,15 @@ import {
   FormItem, Input,
   ModalCard, Snackbar
 } from "@vkontakte/vkui";
-import {Icon16Cancel, Icon16Done, Icon28WriteOutline} from "@vkontakte/icons";
+import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
 
 import isset from "src/functions/isset";
 
-import style from "./BanUser.scss";
+import style from "./EditUserBan.scss";
 
 interface IProps {
   id: string,
+  modalData: any,
   changeSnackbar(snackbar: ReactNode | null)
 }
 
@@ -93,7 +94,9 @@ export default class extends React.Component<IProps, IState> {
     return isValid;
   }
 
-  async banUser() {
+  async editUserBan() {
+    const { modalData } = this.props;
+
     if (!this.isFormValid()) {
       throw Error('Form isn\'t valid');
     }
@@ -106,7 +109,7 @@ export default class extends React.Component<IProps, IState> {
     const { id } = this.state;
 
     try {
-      await axios.post('/admin/ban', {
+      await axios.post(`/admin/${modalData}`, {
         id: id.value
       });
 
@@ -117,7 +120,7 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
-          <div>Роль пользователя с id {id.value} был заблокирован</div>
+          <div>Пользователь с id {id.value} был заблокирован</div>
         </Snackbar>
       );
     } catch (e) {
@@ -141,6 +144,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
+    const { modalData } = this.props;
     const { loading } = this.state;
 
     const value = (name: string) => {
@@ -155,14 +159,14 @@ export default class extends React.Component<IProps, IState> {
       <ModalCard
         className={style.modal}
         header="Изменение роли"
-        subheader="Для блокировка пользователя, необходимо заполнить все поля"
+        subheader={modalData === 'ban' ? 'Для блокировка пользователя, необходимо заполнить все поля' : 'Для разблокировки пользователя, необходимо заполнить все поля'}
         actions={
           <Button
             size="l"
             disabled={loading || !this.isFormValid()}
-            onClick={() => this.banUser()}
+            onClick={() => this.editUserBan()}
           >
-            Заблокировать
+            {modalData === 'ban' ? 'Заблокировать' : 'Разблокировать'}
           </Button>
         }
         onClose={() => window.history.back()}

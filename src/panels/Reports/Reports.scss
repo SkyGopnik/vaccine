@@ -1,0 +1,65 @@
+.block {
+  :global {
+    .Header {
+      .Header__in {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.rating {
+  :global {
+    .Snackbar {
+      padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 65px) !important;
+    }
+  }
+
+  .card {
+    padding: 0 12px;
+
+    .userItem {
+      display: flex;
+      align-items: center;
+
+      &:first-child {
+        padding-top: 12px;
+      }
+
+      &:last-child {
+        padding-bottom: 12px;
+      }
+
+      :global {
+        .SimpleCell {
+          width: 100%;
+
+          padding-right: 0;
+        }
+      }
+
+      @media screen and (max-width: 330px) {
+        .topNumber {
+          display: none;
+        }
+
+        :global {
+          .SimpleCell {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+
+      :global {
+        .Button {
+          margin: 20px;
+        }
+      }
+    }
+  }
+}

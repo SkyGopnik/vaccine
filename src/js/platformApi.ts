@@ -90,4 +90,8 @@ export default class platformApi {
         return 'https://vk.com/id' + id;
     }
   }
+
+  public static scrollToTop() {
+    // функция
+  }
 }

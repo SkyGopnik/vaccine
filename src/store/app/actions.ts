@@ -48,9 +48,6 @@ export const changeStory = (story: string, panelData: Object = null) => {
 };
 
 export const changeViewPanelStory = (view: string, panel: string, story: string = null, panelData: Object = null, isPopstate?: boolean) => {
-  const { user } = store.getState();
-  const { snackbarTabNotification } = user.data.data.additional;
-
   return {
     type: APP_CHANGE_VIEW_PANEL_STORY,
     payload: {
@@ -58,8 +55,7 @@ export const changeViewPanelStory = (view: string, panel: string, story: string 
       panel,
       story,
       panelData,
-      isPopstate,
-      snackbarTabNotification
+      isPopstate
     }
   };
 };

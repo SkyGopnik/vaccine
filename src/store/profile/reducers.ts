@@ -7,6 +7,7 @@ import {
 import {Notification} from "src/store/notifications/reducers";
 
 export interface UserStat {
+  level?: number,
   ratingPosition?: number,
   startAt?: Date,
   record?: number,
