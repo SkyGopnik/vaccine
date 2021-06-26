@@ -144,7 +144,9 @@ export default class extends React.Component<IProps, IState> {
     if (lastClick.count < 7) {
       balancePlus(user.data.click);
 
-      sendWsMessage({type: 'ClickUser'});
+      const time = new Date().getTime()
+  
+      sendWsMessage({type: 'ClickUser', time: time, hash: btoa(time.toString()), randomString: Math.random().toString(36).substring(7)});
 
       if (!user.data.additional.easyAnimation) {
         this.renderEffect();
