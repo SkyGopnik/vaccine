@@ -67,11 +67,11 @@ export default class extends React.Component<IProps, IState> {
           Репорты
         </PanelHeader>
         {data ? (
-          data.map((item, index) => (
+          Object.keys(data).map((key, index) => (
             <Div className={style.block} key={index}>
-              <Header mode="secondary">ID: {item.id}</Header>
+              <Header mode="secondary">ID: {key}</Header>
                 <Card className={style.card} mode="shadow">
-                  {item.logs.map((logItem, logIndex) => (
+                  {data[key].map((logItem, logIndex) => (
                     <div className={style.userItem} key={logIndex}>
                       <RichCell
                         target="_blank"
@@ -79,7 +79,7 @@ export default class extends React.Component<IProps, IState> {
                           <Avatar
                             size={48}
                             src={logItem.user.info.photo}
-                            onClick={() => changePanel('user', item)}
+                            onClick={() => changePanel('user', logItem.user)}
                           />
                         }
                         text={logItem.text}
@@ -92,8 +92,8 @@ export default class extends React.Component<IProps, IState> {
                     </div>
                   ))}
                   <div className={style.button}>
-                    <Button mode="destructive" onClick={() => this.changeReport(item.id,'reject')}>Отклонить</Button>
-                    <Button mode="commerce" onClick={() => this.changeReport(item.id,'accept')}>Принять</Button>
+                    <Button mode="destructive" onClick={() => this.changeReport(key,'reject')}>Отклонить</Button>
+                    <Button mode="commerce" onClick={() => this.changeReport(key,'accept')}>Принять</Button>
                   </div>
                 </Card>
             </Div>

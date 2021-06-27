@@ -5,8 +5,10 @@
   "main": "index.jsx",
   "scripts": {
     "start": "webpack-dev-server --mode development --define process.env.localConfig='\"development\"' --config webpack.config.dev.js --port 10888 --open --hot",
+    "start:test": "webpack-dev-server --mode development --define process.env.localConfig='\"test\"' --config webpack.config.dev.js --port 10888 --open --hot",
     "start:prod": "webpack-dev-server --mode development --define process.env.localConfig='\"production\"' --config webpack.config.dev.js --port 10888 --open --hot",
-    "build": "webpack -p --mode production --define process.env.localConfig='\"production\"' --config webpack.config.js"
+    "build": "webpack -p --mode production --define process.env.localConfig='\"production\"' --config webpack.config.js",
+    "build:test": "webpack -p --mode production --define process.env.localConfig='\"test\"' --config webpack.config.js"
   },
   "keywords": [],
   "author": "",

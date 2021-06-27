@@ -277,7 +277,7 @@ export default class extends React.Component<IProps, IState> {
             >
               <Subhead weight="regular">
                 <div>· Уровень: {stat.level ? locale(stat.level) : 0}</div>
-                {stat.level <= 5 && <div>· Дневной лимит: {stat.level ? locale(Math.pow(3, stat.level)) : 0}</div>}
+                {stat.level <= 5 && <div>· Дневной лимит: {stat.level ? locale(Math.pow(2, stat.level)) : 0}</div>}
                 <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
                 <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
                 <div>· Получено вакцины: {stat.transfer && locale(stat.transfer) || 0}</div>

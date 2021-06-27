@@ -8,7 +8,6 @@ import {
   Epic,
   Root
 } from '@vkontakte/vkui';
-import {isMobile} from "react-device-detect";
 
 import RatingView from "src/views/Rating/RatingContainer";
 import GameView from 'src/views/Game/GameContainer';
@@ -39,7 +38,6 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 
 interface IState {
   scheme: AppearanceSchemeType,
-  isHorizontal: boolean,
   lastView: string
 }
 
@@ -49,7 +47,6 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       scheme: 'bright_light',
-      isHorizontal: false,
       lastView: 'main'
     };
 
@@ -73,14 +70,6 @@ export default class extends React.Component<IProps, IState> {
     }
 
     platformApi.changeViewSettings('dark', '#ffffff');
-
-    if (window.matchMedia("(orientation: landscape)").matches && isMobile) {
-      changeView('wrongOrientation');
-
-      this.setState({
-        isHorizontal: true
-      });
-    }
 
     // Навешиваем обработчик кнопку вперёд/назад
     window.addEventListener('popstate', (e) => {
@@ -107,29 +96,6 @@ export default class extends React.Component<IProps, IState> {
 
     document.documentElement.style.setProperty('--background_content', '#F8FCFE');
     document.documentElement.style.setProperty('--header_background', '#F8FCFE');
-
-    window.addEventListener("orientationchange", (e) => {
-      const { view } = this.props;
-      const { isHorizontal, lastView } = this.state;
-
-      this.setState({
-        lastView: view
-      });
-
-      if (!isHorizontal) {
-        // Поворот в горизонтальный режим
-        console.log('Поворот в горизонтальный режим');
-        changeView('wrongOrientation');
-      } else {
-        // Возврат в вертикальный
-        console.log('Возврат в вертикальный');
-        changeView(lastView);
-      }
-
-      this.setState({
-        isHorizontal: !isHorizontal
-      });
-    }, false);
   }
 
   menu = (e) => {

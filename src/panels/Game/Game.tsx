@@ -25,6 +25,7 @@ import balanceFormat, { locale } from "src/functions/balanceFormat";
 import style from './Game.scss';
 import declBySex from "src/functions/declBySex";
 import axios from "axios";
+import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
@@ -49,7 +50,8 @@ interface IState {
     time: number | null,
     interval: number,
     count: number
-  }
+  },
+  showAds: Date | null
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -66,7 +68,8 @@ export default class extends React.Component<IProps, IState> {
         time: null,
         interval: 0,
         count: 0
-      }
+      },
+      showAds: null
     };
   }
 
@@ -123,7 +126,7 @@ export default class extends React.Component<IProps, IState> {
       balancePlus,
       sendWsMessage
     } = this.props;
-    const { lastClick, lastInterval } = this.state;
+    const { lastClick, lastInterval, showAds } = this.state;
 
     const newInterval = new Date().getTime() - lastInterval.time;
 
@@ -136,10 +139,23 @@ export default class extends React.Component<IProps, IState> {
         time: new Date().getTime(),
         interval: new Date().getTime() - lastInterval.time,
         count: (newInterval - 25) < lastInterval.interval && lastInterval.interval < (newInterval + 25) ? (lastInterval.count + 1) : 0
-      }
+      },
+      showAds: new Date()
     });
 
-    const reportUser = (type: string, text: string) => axios.post('/user/report',  { userId: user.id, type, text });
+    const reportUser = async (type: string, text: string) => {
+      await axios.post('/user/report',  { userId: user.id, type, text });
+
+      if (!showAds || showAds && ((new Date().getMinutes() - showAds.getMinutes()) > 5)) {
+        bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'preloader'})
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+
+        this.setState({
+          showAds: new Date()
+        });
+      }
+    };
 
     if (lastClick.count < 7) {
       balancePlus(user.data.click);

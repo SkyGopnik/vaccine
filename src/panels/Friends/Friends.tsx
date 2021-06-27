@@ -1,6 +1,7 @@
 import React, {ReactNode} from "react";
 import axios from "axios";
 import bridge from '@vkontakte/vk-bridge';
+import {config} from 'src/js/config';
 import {
   Card,
   Div,
@@ -49,7 +50,7 @@ export default class extends React.Component<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const { access_token } = await bridge.send("VKWebAppGetAuthToken", {"app_id": 7704696, "scope": "friends"});
+      const { access_token } = await bridge.send("VKWebAppGetAuthToken", {"app_id": config.appId, "scope": "friends"});
       const { response } = await bridge.send("VKWebAppCallAPIMethod", {"method": "friends.get", "params": {"fields": "photo_200,sex", "v":"5.130", "access_token": access_token}});
       const { data } = await axios.post('/user/list/check', {
         users: response.items.map((item) => String(item.id))
