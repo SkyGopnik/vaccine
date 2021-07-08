@@ -24,5 +24,5 @@ config = {
   ...config,
   appUrl: 'https://vk.com/app7704696',
   chatUrl: 'https://vk.me/join/AJQ1d/E8nBabv9DfXT9Pmnhs',
-  messageGroupUrl: 'https://vk.me/skreglis'
+  messageGroupUrl: 'https://vk.me/skyreglis'
 };
