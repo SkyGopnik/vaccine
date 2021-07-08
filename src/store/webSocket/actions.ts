@@ -3,6 +3,7 @@ import {changeProgress, syncUser, balancePlus} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {passiveOfflineBonus, transferGet, newFriend} from "src/functions/getSnackbar";
 import {AppReducerInterface} from "src/store/app/reducers";
+
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
 export const CONNECT_WS_SUCCESS = 'CONNECT_WS_SUCCESS';
@@ -19,7 +20,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
     try {
       socket.close();
     } catch (e) {
-      console.log('test');
+      console.log(e);
     }
 
     socket = new WebSocket(arg + `?user=${document.location.href}`);
@@ -106,8 +107,7 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
 export const sendWsMessage = (data: object) => {
   if (socket.readyState === 1) {
-    let binaryData = new TextEncoder().encode(JSON.stringify(data))
-   // alert(JSON.stringify(data))
+    const binaryData = new TextEncoder().encode(JSON.stringify(data));
     return () => socket.send(binaryData);
   }
 };

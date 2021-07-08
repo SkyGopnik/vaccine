@@ -16,7 +16,7 @@ if (process.env.localConfig === 'production') {
   config = {
     appId: 7704696,
     wsUrl: 'ws://localhost:3245',
-    apiUrl: 'http://127.0.0.1:3244/vaccine/api/rest'
+    apiUrl: 'http://127.0.0.1:3244'
   };
 }
 

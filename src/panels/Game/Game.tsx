@@ -71,6 +71,8 @@ export default class extends React.Component<IProps, IState> {
       },
       showAds: null
     };
+
+    this.iconClick = this.iconClick.bind(this);
   }
 
   renderEffect() {
@@ -120,7 +122,7 @@ export default class extends React.Component<IProps, IState> {
     changeProgress(value < 100 ? value : 0);
   }
 
-  async iconClick() {
+  async iconClick(e) {
     const {
       user,
       balancePlus,
@@ -160,9 +162,19 @@ export default class extends React.Component<IProps, IState> {
     if (lastClick.count < 7) {
       balancePlus(user.data.click);
 
-      const time = new Date().getTime()
-  
-      sendWsMessage({type: 'ClickUser', time: time, hash: btoa(time.toString()), randomString: Math.random().toString(36).substring(7)});
+      const time = new Date().getTime();
+
+      console.log(e);
+      console.log(e.pageX);
+      console.log(e.pageY);
+
+      sendWsMessage({
+        type: 'ClickUser',
+        time,
+        x: e.pageX,
+        y: e.pageY,
+        hash: btoa(time.toString() + e.pageX + e.pageY)
+      });
 
       if (!user.data.additional.easyAnimation) {
         this.renderEffect();
@@ -268,7 +280,7 @@ export default class extends React.Component<IProps, IState> {
           ))}
           <MainIcon
             className={style.icon}
-            onClick={() => this.iconClick()}
+            onClick={this.iconClick}
           />
           <Progress className={style.progress} value={clickProgress} />
         </div>

@@ -131,13 +131,30 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
+  getLevel() {
+    const { stat } = this.props.data;
+
+    const lvlStart = (stat.level - 1) !== 0 ? Math.pow(3, stat.level - 1) : 0;
+    const lvlEnd = Math.pow(3, stat.level);
+
+    return {
+      start: lvlStart,
+      end: lvlEnd
+    };
+  }
+
+  getDifference() {
+    const { data, user } = this.props;
+    const { stat } = data;
+
+    return new Decimal(Math.pow(3, stat.level)).minus(new Decimal(user.data.record).toNumber()).toNumber();
+  }
+
   render() {
     const {
       id,
       user,
       data,
-      loading,
-      error,
       snackbar,
       changeModal,
       changePanel
@@ -236,10 +253,11 @@ export default class extends React.Component<IProps, IState> {
                 <div className={style.progressWrapper}>
                   {stat.level && (
                     <>
-                      <Progress className={style.progress} value={100 - (Math.pow(3, stat.level) - new Decimal(user.data.record).toNumber()) / Math.pow(3, stat.level) * 100} />
+                      <Progress className={style.progress} value={100 - 100 / ((this.getLevel().end - this.getLevel().start) / this.getDifference())} />
+                      {((this.getLevel().end - this.getLevel().start) - this.getDifference())}
                       <div className={style.numbers}>
-                        <Caption level="3" weight="regular">{locale(Math.pow(3, stat.level - 1))}</Caption>
-                        <Caption level="3" weight="regular">{locale(Math.pow(3, stat.level))}</Caption>
+                        <Caption level="3" weight="regular">{locale(this.getLevel().start)}</Caption>
+                        <Caption level="3" weight="regular">{locale(this.getLevel().end)}</Caption>
                       </div>
                     </>
                   )}

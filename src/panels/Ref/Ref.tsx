@@ -248,7 +248,7 @@ export default class extends React.Component<IProps, IState> {
             <FormItem
               className={style.input}
               status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
-              bottom={user.data.level <= 1 ? 'Необходимо достигнуть 1 уровень' : (error ? error : null)}
+              bottom={user.data.level <= 1 ? 'Необходимо достигнуть 2 уровень' : (error ? error : null)}
             >
               <div className={style.code}>
                 <Input
