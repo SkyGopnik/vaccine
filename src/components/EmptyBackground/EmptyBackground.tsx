@@ -1,6 +1,6 @@
 import React from "react";
 
-import Img5 from "src/img/No-virus.png";
+import Img5 from "src/img/No-virus.svg";
 import Img1 from "src/img/Cylinder.png";
 import Img3 from "src/img/Genetics.png";
 import Img2 from "src/img/Dish.png";

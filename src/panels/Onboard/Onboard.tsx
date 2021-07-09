@@ -11,9 +11,9 @@ import EmptyBackground from "src/components/EmptyBackground/EmptyBackground";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 
-import Img1 from 'src/img/No-virus.png';
-import Img2 from 'src/img/MainIcon.png';
-import Img3 from 'src/img/Friends.png';
+import Img1 from 'src/img/No-virus.svg';
+import Img2 from 'src/img/MainIcon.svg';
+import Img3 from 'src/img/Friends.svg';
 
 import style from './Onboard.scss';
 
