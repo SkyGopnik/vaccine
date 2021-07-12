@@ -17,7 +17,6 @@ import {UserInterface} from "src/store/user/reducers";
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
   user: UserInterface | null,
-  panel: string,
   syncUser(data: UserInterface)
 }
 

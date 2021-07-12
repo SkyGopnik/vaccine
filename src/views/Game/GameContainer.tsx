@@ -13,16 +13,13 @@ import Game from './Game';
 
 const GameContainer = (props) => <Game {...props} />;
 
-const mapStateToProps = (state) => {
-  const props = {
+const mapStateToProps = (state) => ({
     view: state.app.view,
+    story: state.app.story,
     panel: state.app.panel,
     modal: state.app.modal,
     user: state.user.data
-  };
-
-  return props;
-};
+  });
 
 const mapDispatchToProps = {
   changeView,

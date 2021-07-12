@@ -164,10 +164,6 @@ export default class extends React.Component<IProps, IState> {
 
       const time = new Date().getTime();
 
-      console.log(e);
-      console.log(e.pageX);
-      console.log(e.pageY);
-
       sendWsMessage({
         type: 'ClickUser',
         time,

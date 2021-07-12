@@ -254,7 +254,6 @@ export default class extends React.Component<IProps, IState> {
                   {stat.level && (
                     <>
                       <Progress className={style.progress} value={100 - 100 / ((this.getLevel().end - this.getLevel().start) / this.getDifference())} />
-                      {((this.getLevel().end - this.getLevel().start) - this.getDifference())}
                       <div className={style.numbers}>
                         <Caption level="3" weight="regular">{locale(this.getLevel().start)}</Caption>
                         <Caption level="3" weight="regular">{locale(this.getLevel().end)}</Caption>

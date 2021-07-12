@@ -19,16 +19,15 @@ import {
 
 import TabbarItemLight from '../TabbarItemLight.jsx';
 
-import declNum from "src/functions/decl_num";
 import { locale } from "src/functions/balanceFormat";
 
 import platformApi from "src/js/platformApi";
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+import {RandomUserReducerInterface} from "src/store/randomUser/reducers";
 
 import style from './TabbarLight.scss';
-import {RandomUserReducerInterface} from "src/store/randomUser/reducers";
 
 interface IProps extends AppReducerInterface {
   user: UserInterface,
@@ -76,10 +75,8 @@ export default class extends React.Component<IProps, IState> {
     const {
       panel,
       story,
-      user,
       profile,
       ratingUser,
-      ratingLoading,
       randomUser,
       changeStory,
       changePanel,
@@ -88,7 +85,7 @@ export default class extends React.Component<IProps, IState> {
     const { tabbarItems } = this.state;
 
     return (
-      <Tabbar>
+      <Tabbar id="tabbar">
         {(story === 'rating' && panel === 'main') && ratingUser && (
           <div className={style.userItem}>
             <div className={style.topNumber}>{ratingUser.position.toFixed(0)}.</div>

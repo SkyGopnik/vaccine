@@ -1,10 +1,4 @@
 .user {
-  :global {
-    .Snackbar {
-      padding-bottom: calc(var(--tabbar_height) + var(--safe-area-inset-bottom) + 50px) !important;
-    }
-  }
-
   .avatar {
     display: flex;
     align-items: center;

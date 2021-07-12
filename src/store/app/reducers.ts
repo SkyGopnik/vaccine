@@ -9,7 +9,6 @@ import {
   updateHistory
 } from './actions';
 import {ReactNode} from "react";
-import {store} from "src/js";
 
 let modalTime = new Date().getTime();
 
@@ -54,7 +53,7 @@ export const appReducer = (state = defaultState, action) => {
       view: action.payload.view
     };
 
-    case APP_CHANGE_PANEL:
+  case APP_CHANGE_PANEL:
     updateHistory(state.view, action.payload.panel, state.story, action.payload.panelData);
 
     try {
