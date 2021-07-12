@@ -1,12 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import {AppearanceSchemeType} from '@vkontakte/vk-bridge';
 import {
   AdaptivityProvider,
   AppRoot,
   ConfigProvider,
   Epic,
-  Root
+  Root, Scheme
 } from '@vkontakte/vkui';
 
 import RatingView from "src/views/Rating/RatingContainer";
@@ -37,7 +36,6 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  scheme: AppearanceSchemeType,
   lastView: string
 }
 
@@ -46,7 +44,6 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      scheme: 'bright_light',
       lastView: 'main'
     };
 
@@ -160,17 +157,19 @@ export default class extends React.Component<IProps, IState> {
     const snackbar = document.querySelector<HTMLElement>('.Snackbar');
     const tabbar = document.getElementById("tabbar");
 
+    if (!snackbar) {
+      return;
+    }
+
     snackbar.style.paddingBottom = `calc(${tabbar.offsetHeight}px + var(--safe-area-inset-bottom))`;
   }
 
   render() {
     const { view, story, popout } = this.props;
-    const { scheme } = this.state;
 
-    // @ts-ignore
     return (
       <ConfigProvider
-        scheme={scheme}
+        scheme={Scheme.BRIGHT_LIGHT}
         transitionMotionEnabled={false}
       >
         <AdaptivityProvider>
