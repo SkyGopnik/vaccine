@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import eruda from 'eruda';
 import {
   AdaptivityProvider,
   AppRoot,
@@ -79,6 +80,8 @@ export default class extends React.Component<IProps, IState> {
     this.updateTheme();
 
     this.updateSnackbarPadding();
+
+    eruda.init();
   }
 
   componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {

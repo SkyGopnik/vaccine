@@ -51,7 +51,7 @@ export default class extends React.Component<IProps> {
             icon={<img src={Error} alt=""/>}
             header="Всё пошло к чертям"
           >
-            Похоже, произошла ошибка, попробуйте переподключиться или сообщите об этом нам в <Link href={config.messageGroupUrl} target="_blank">сообщество</Link>
+            Похоже, произошла ошибка, попробуйте переподключиться или сообщите об этом нам в <Link href={config.messageGroupUrl} target="_blank">сообщество</Link> 1
           </Placeholder>
         </div>
         <div className={style.bottom}>

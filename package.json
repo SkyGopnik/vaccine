@@ -59,6 +59,7 @@
     "css-loader": "^1.0.0",
     "decimal": "0.0.2",
     "decimal.js": "^10.2.1",
+    "eruda": "^2.4.1",
     "lodash": "^4.17.20",
     "postcss-csso": "^4.0.0",
     "postcss-flexbugs-fixes": "^4.2.1",
