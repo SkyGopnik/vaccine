@@ -5,6 +5,7 @@ import bridge from '@vkontakte/vk-bridge';
 import { createStore, applyMiddleware  } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import queryGet from 'src/functions/query_get';
 
 import { config } from 'src/js/config';
 
@@ -33,7 +34,7 @@ if (document.location.href) {
   axios.defaults.headers.common.user = document.location.href;
 }
 
-axios.defaults.baseURL = config.apiUrl;
+axios.defaults.baseURL = queryGet('odr_enabled') === "1" ? config.apiUrl.replace("https") : config.apiUrl;
 axios.defaults.responseType = 'json';
 
 if (platformApi.currentType() === 'vk') {

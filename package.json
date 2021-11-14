@@ -8,6 +8,7 @@
     "start:test": "webpack-dev-server --mode development --define process.env.localConfig='\"test\"' --config webpack.config.dev.js --port 10888 --open --hot",
     "start:prod": "webpack-dev-server --mode development --define process.env.localConfig='\"production\"' --config webpack.config.dev.js --port 10888 --open --hot",
     "build": "webpack -p --mode production --define process.env.localConfig='\"production\"' --config webpack.config.js",
+    "build:dev": "webpack -p --mode production --define process.env.localConfig='\"development\"' --config webpack.config.js",
     "build:test": "webpack -p --mode production --define process.env.localConfig='\"test\"' --config webpack.config.js"
   },
   "keywords": [],
@@ -49,7 +50,7 @@
     "@babel/plugin-transform-runtime": "^7.10.4",
     "@babel/runtime": "^7.9.6",
     "@reduxjs/toolkit": "^1.5.0",
-    "@vkontakte/icons": "^1.83.0",
+    "@vkontakte/icons": "^1.134.0",
     "@vkontakte/mvk-mini-apps-scroll-helper": "^1.2.0",
     "@vkontakte/vk-bridge": "^2.4.1",
     "@vkontakte/vkjs": "^0.20.0",
