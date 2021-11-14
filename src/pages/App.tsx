@@ -77,20 +77,20 @@ export default class extends React.Component<IProps, IState> {
     });
 
     this.updateTheme();
-
     this.updateSnackbarPadding();
   }
 
   componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
-    const { panel, story } = this.props;
+    const { snackbar, story, panel } = this.props;
 
     // Если меняется история
     // или если меняется панель
+    // или если меняется сам снекбар
     if (
-      prevProps.story !== story
+      prevProps.snackbar !== snackbar
+      || prevProps.story !== story
       || prevProps.story === story && prevProps.panel !== panel
     ) {
-      // Задержка чтобы дерево успело отрендерится после изменения состояния
       setTimeout(() => this.updateSnackbarPadding(), 100);
     }
   }
@@ -154,7 +154,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   updateSnackbarPadding() {
-    const snackbar = document.querySelector<HTMLElement>('.Snackbar');
+    const snackbar = document.querySelector<HTMLElement>('.vkuiSnackbar');
     const tabbar = document.getElementById("tabbar");
 
     if (!snackbar) {
