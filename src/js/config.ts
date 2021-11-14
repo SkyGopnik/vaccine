@@ -2,9 +2,9 @@ export let config;
 
 if (process.env.localConfig === 'production') {
   config = {
-    appId: 7704696,
+    appId: 7999835,
     wsUrl: 'wss://vaccine-wss.skyreglis.studio',
-    apiUrl: 'https://skyreglis.studio/vaccine/api/rest'
+    apiUrl: 'https://vaccine-api.skyreglis.studio'
   };
 } else if (process.env.localConfig === 'test') {
   config = {
