@@ -8,7 +8,6 @@ import {changeSnackbar} from "src/store/app/actions";
 import {UserInterface} from "src/store/user/reducers";
 
 import {locale} from "src/functions/balanceFormat";
-import declNum from "src/functions/decl_num";
 
 interface transferGet {
   data: UserInterface,

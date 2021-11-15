@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import lo from 'lodash';
 import axios from "axios";
 import Decimal from "decimal.js";
-import bridge from "@vkontakte/vk-bridge";
+import bridge, {AnyRequestMethodName} from "@vkontakte/vk-bridge";
 import {
   Panel,
   PanelHeader,
@@ -152,12 +152,6 @@ export default class extends React.Component<IProps, IState> {
             .catch((err) => reject(err));
           break;
 
-        case 'shareApp':
-          bridge.send("VKWebAppShowWallPostBox", {message: 'Я помогаю спасать мир, а ты?', "attachments": config.appUrl})
-            .then((res) => resolve(res))
-            .catch((err) => reject(err));
-          break;
-
         case 'addToFavorites':
           bridge.send("VKWebAppAddToFavorites")
             .then((res) => resolve(res))
@@ -245,7 +239,7 @@ export default class extends React.Component<IProps, IState> {
             </Card>
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                bridge.supports(tasksConfig[item.type].vk as any) && (
+                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
                   <Card
                     className={style.card}
                     key={index}
