@@ -154,12 +154,16 @@ export default class extends React.Component<IProps, IState> {
   }
 
   updateSnackbarPadding() {
-    const snackbar = document.querySelector<HTMLElement>('.vkuiSnackbar');
+    const snackbar = document.querySelector<HTMLElement>('.vkuiSnackbar,.Snackbar');
     const tabbar = document.getElementById("tabbar");
+
+    console.log(snackbar);
 
     if (!snackbar) {
       return;
     }
+
+    console.log(snackbar);
 
     snackbar.style.paddingBottom = `calc(${tabbar.offsetHeight}px + var(--safe-area-inset-bottom))`;
   }
