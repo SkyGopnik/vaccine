@@ -168,27 +168,32 @@ export default class extends React.Component<IProps, IState> {
     const { view, story, popout } = this.props;
 
     return (
-      <AppRoot>
-        <Root
-          activeView={view}
-          modal={<Modals />}
-          popout={popout}
-        >
-          <Epic
-            id="main"
-            activeStory={story}
-            tabbar={<TabbarLight />}
+      <ConfigProvider
+        scheme={Scheme.BRIGHT_LIGHT}
+        transitionMotionEnabled={false}
+      >
+        <AppRoot>
+          <Root
+            activeView={view}
+            modal={<Modals />}
+            popout={popout}
           >
-            <RatingView id="rating" />
-            <GameView id="game" />
-            <ProfileView id="profile" />
-          </Epic>
-          <OnboardView id="onboard" />
-          <LoadingView id="loading" />
-          <ErrorView id="error" />
-          <WrongOrientationView id="wrongOrientation" />
-        </Root>
-      </AppRoot>
+            <Epic
+              id="main"
+              activeStory={story}
+              tabbar={<TabbarLight />}
+            >
+              <RatingView id="rating" />
+              <GameView id="game" />
+              <ProfileView id="profile" />
+            </Epic>
+            <OnboardView id="onboard" />
+            <LoadingView id="loading" />
+            <ErrorView id="error" />
+            <WrongOrientationView id="wrongOrientation" />
+          </Root>
+        </AppRoot>
+      </ConfigProvider>
     );
   }
 }
