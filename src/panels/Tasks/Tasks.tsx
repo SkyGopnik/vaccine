@@ -239,36 +239,38 @@ export default class extends React.Component<IProps, IState> {
             </Card>
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                <Card
-                  className={style.card}
-                  key={index}
-                  mode="shadow"
-                >
-                  <div className={style.icon}>
-                    <img src={tasksConfig[item.type].img} alt="" />
-                  </div>
-                  <div className={style.content}>
-                    <div className={style.header}>
-                      <Headline weight="medium">{item.name}</Headline>
+                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
+                  <Card
+                    className={style.card}
+                    key={index}
+                    mode="shadow"
+                  >
+                    <div className={style.icon}>
+                      <img src={tasksConfig[item.type].img} alt="" />
                     </div>
-                    <Text
-                      className={style.body}
-                      weight="regular"
-                    >
-                      {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
-                    </Text>
-                    <div className={style.button}>
-                      <Button
-                        mode="outline"
-                        size="m"
-                        disabled={item.history.length !== 0 && this.checkTask(item)}
-                        onClick={() => this.completeTask(item.type)}
+                    <div className={style.content}>
+                      <div className={style.header}>
+                        <Headline weight="medium">{item.name}</Headline>
+                      </div>
+                      <Text
+                        className={style.body}
+                        weight="regular"
                       >
-                        Выполнить
-                      </Button>
+                        {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
+                      </Text>
+                      <div className={style.button}>
+                        <Button
+                          mode="outline"
+                          size="m"
+                          disabled={item.history.length !== 0 && this.checkTask(item)}
+                          onClick={() => this.completeTask(item.type)}
+                        >
+                          Выполнить
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                )
               ))
             ) : <Spinner />}
             <Spacing size={70} />
