@@ -102,7 +102,7 @@ export default class extends React.Component<IProps, IState> {
         this.renderEffect();
       }
 
-      balancePlus(user.data.click * 5);
+      balancePlus(user.data.clickUser * 5);
 
       if (user.data.additional.vaccineClickNotification) {
         changeSnackbar(
@@ -112,7 +112,7 @@ export default class extends React.Component<IProps, IState> {
             onClose={() => changeSnackbar(null)}
             before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
           >
-            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
+            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(user.data.clickUser * 5)}</span> вакцины</div>
             <div>Отличная работа, так держать!</div>
           </Snackbar>
         );
@@ -160,7 +160,7 @@ export default class extends React.Component<IProps, IState> {
     };
 
     if (lastClick.count < 7) {
-      balancePlus(user.data.click);
+      balancePlus(user.data.clickUser);
 
       const time = new Date().getTime();
 
@@ -259,13 +259,13 @@ export default class extends React.Component<IProps, IState> {
                 level="1"
                 weight="semibold"
               >
-                + {balanceFormat(user.data.passive)}/сек
+                + {balanceFormat(user.data.clickPassive)}/сек
               </Caption>
               <Caption
                 level="1"
                 weight="semibold"
               >
-                + {balanceFormat(user.data.click)}/клик
+                + {balanceFormat(user.data.clickUser)}/клик
               </Caption>
             </div>
           </div>

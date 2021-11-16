@@ -46,12 +46,12 @@ export default class extends React.Component<IProps, IState> {
       const { user, panel, syncUser } = this.props;
       const { refUsed } = this.state;
 
-      if (panel === 'main' && user && user.data.passive !== 0) {
+      if (panel === 'main' && user && user.data.clickPassive !== 0) {
         sendWsMessage({ type: 'ClickPassive' });
 
         syncUser(lo.merge(user, {
           data: {
-            balance: new Decimal(user.data.balance).add(user.data.passive)
+            balance: new Decimal(user.data.balance).add(user.data.clickPassive)
           }
         }));
       }

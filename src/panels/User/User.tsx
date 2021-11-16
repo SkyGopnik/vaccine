@@ -79,7 +79,7 @@ export default class extends React.Component<IProps, IState> {
     const user = this.props.data;
 
     const { data, stat } = user || {};
-    const { click, passive } = data || {};
+    const { clickUser, clickPassive } = data || {};
     const { firstName, lastName, photo } = data.user && data.user.info || {};
 
     return (
@@ -110,8 +110,8 @@ export default class extends React.Component<IProps, IState> {
                   title="Улучшения"
                 >
                   <Subhead className={style.improvements} weight="regular">
-                    <div>· {balanceFormat(click || 0)}/клик</div>
-                    <div>· {balanceFormat(passive || 0)}/сек</div>
+                    <div>· {balanceFormat(clickUser || 0)}/клик</div>
+                    <div>· {balanceFormat(clickPassive || 0)}/сек</div>
                   </Subhead>
                 </Card>
                 <Card

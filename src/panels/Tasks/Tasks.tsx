@@ -256,7 +256,7 @@ export default class extends React.Component<IProps, IState> {
                         className={style.body}
                         weight="regular"
                       >
-                        {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
+                        {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
                       </Text>
                       <div className={style.button}>
                         <Button
