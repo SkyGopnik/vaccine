@@ -221,7 +221,8 @@ export default class extends React.Component<IProps, IState> {
           Спасение друзей
         </PanelHeader>
         <Div className={style.block}>
-          <Text weight="regular">Скопируй код и отправь его другу. За каждое приглашение ты и твой друг получите бонусную вакцину. Спаси своих друзей!</Text>
+          <Header mode="secondary">Хочу бонус за друга</Header>
+          <Text weight="regular">Для того чтобы твой друг получил бонус, ему необходимо самостоятельно достигнуть 2 уровня в игре, после чего он сможет активировать твой код и вы вместе получите бонус! Не тормози, спаси своих друзей!</Text>
           <Card>
             <div className={style.refCode} onClick={this.copyCode}>
               <Title level="1" weight="semibold">{refCode || 0}</Title>
@@ -239,8 +240,12 @@ export default class extends React.Component<IProps, IState> {
           </Card>
         </Div>
         <Div className={style.block}>
-          <Header mode="secondary">У меня есть код приглашения</Header>
-          <Text weight="regular">Есть код? Ура — ты спасён. Осталось лишь ввести этот код от друга сюда. За это ты получишь подарок.</Text>
+          <Header mode="secondary">У меня есть код</Header>
+          {user.data.level <= 1 ? (
+            <Text weight="regular">К сожалению, сначала ты должен достигнуть 2 уровня в игре, чтобы активировать код.</Text>
+          ) : (
+            <Text weight="regular">Есть код? Ура — ты спасён. Осталось лишь ввести этот код от друга сюда. За это ты получишь подарок.</Text>
+          )}
           <Card
             icon={<img src={Img6} alt="" />}
             title="Ввести код"
@@ -248,7 +253,7 @@ export default class extends React.Component<IProps, IState> {
             <FormItem
               className={style.input}
               status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
-              bottom={user.data.level <= 1 ? 'Для того чтобы активировать код и получить подарок, тебе необходимо достигнуть 2 уровня' : (error ? error : null)}
+              bottom={error ? error : null}
             >
               <div className={style.code}>
                 <Input
