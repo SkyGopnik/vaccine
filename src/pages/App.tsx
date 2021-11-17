@@ -60,6 +60,9 @@ export default class extends React.Component<IProps, IState> {
     try {
       const { data } = await axios.get('/user');
 
+      console.log(data);
+      console.log(JSON.stringify(data));
+
       syncUser(data);
       await connectWs(config.wsUrl);
     } catch (e) {
