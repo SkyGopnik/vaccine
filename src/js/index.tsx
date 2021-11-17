@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import eruda from "eruda";
 
 import queryGet from 'src/functions/query_get';
 
@@ -62,6 +63,14 @@ Sentry.init({
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
+});
+
+let el = document.createElement('div');
+document.body.appendChild(el);
+
+eruda.init({
+  container: el,
+  tool: ['console', 'elements']
 });
 
 ReactDOM.render(
