@@ -5,6 +5,9 @@ import bridge from '@vkontakte/vk-bridge';
 import { createStore, applyMiddleware  } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
+
 import queryGet from 'src/functions/query_get';
 
 import { config } from 'src/js/config';
@@ -50,6 +53,16 @@ if (platformApi.currentType() === 'vk') {
   // Init VK Mini App
   bridge.send('VKWebAppInit');
 }
+
+Sentry.init({
+  dsn: "https://27a11231e78d42c081e57b4697453cb1@o1071656.ingest.sentry.io/6069191",
+  integrations: [new Integrations.BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <Provider store={store}>
