@@ -212,7 +212,7 @@ export default class extends React.Component<IProps, IState> {
     return (
       <Panel id={id} className={style.game}>
         <PanelHeader
-          left={
+          left={user.data && (
             <PanelHeaderButton onClick={() => changePanel('tasks')}>
               <Tooltip
                 isShown={!user.data.additional.giftTooltip && user.data.level > 1}
@@ -232,7 +232,7 @@ export default class extends React.Component<IProps, IState> {
                 <Icon28GiftOutline />
               </Tooltip>
             </PanelHeaderButton>
-          }
+          )}
           separator={false}
         />
         <EmptyBackground />
