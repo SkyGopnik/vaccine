@@ -76,7 +76,7 @@ export default class extends React.Component<IProps, IState> {
           <div className={style.middle}>
             <div><img src={Logo} alt="" /></div>
             <div>
-              <Title level="3" weight="semibold">12345123451234512345 Загружаемся{dots}</Title>
+              <Title level="3" weight="semibold">1234 Загружаемся{dots}</Title>
             </div>
           </div>
           <div className={style.top}>
