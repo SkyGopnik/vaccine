@@ -38,7 +38,7 @@ if (document.location.href) {
   axios.defaults.headers.common.user = document.location.href;
 }
 
-axios.defaults.baseURL = queryGet('odr_enabled') === "1" ? config.apiUrl.replace("https", "vkcors") : config.apiUrl;
+axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
 if (platformApi.currentType() === 'vk') {
