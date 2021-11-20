@@ -87,7 +87,7 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  changeProgress() {
+  async changeProgress() {
     const {
       user,
       balancePlus,
@@ -95,9 +95,14 @@ export default class extends React.Component<IProps, IState> {
       changeProgress,
       changeSnackbar
     } = this.props;
+
     const value = clickProgress + 2;
 
-    if (value === 100) {
+    await changeProgress(value < 100 ? value : 0);
+
+    console.log(this.props.clickProgress);
+
+    if (this.props.clickProgress === 0) {
       for (let i = 0; i < 4; i++) {
         this.renderEffect();
       }
@@ -118,8 +123,6 @@ export default class extends React.Component<IProps, IState> {
         );
       }
     }
-
-    changeProgress(value < 100 ? value : 0);
   }
 
   async iconClick(e) {
