@@ -6,13 +6,13 @@ if (process.env.localConfig === 'production') {
     wsUrl: 'wss://vaccine-wss.skyreglis.studio',
     apiUrl: 'https://vaccine-api.skyreglis.studio'
   };
-} else if (process.env.localConfig === 'test') {
+} else if (process.env.localConfig === 'development') {
   config = {
     appId: 7888384,
-    wsUrl: 'wss://vaccine-test-wss.skyreglis.studio',
-    apiUrl: 'https://skyreglis.studio/vaccine_test/api/rest'
+    wsUrl: 'wss://vaccine-development-wss.skyreglis.studio',
+    apiUrl: 'https://vaccine-development-api.skyreglis.studio'
   };
-} else {
+} else if (process.env.localConfig === 'local') {
   config = {
     appId: 7704696,
     wsUrl: 'ws://localhost:3245',
