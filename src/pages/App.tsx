@@ -76,7 +76,6 @@ export default class extends React.Component<IProps, IState> {
       this.menu(e);
     });
 
-    this.updateTheme();
     this.updateSnackbarPadding();
   }
 
@@ -131,27 +130,6 @@ export default class extends React.Component<IProps, IState> {
         changeViewPanelStory('main', 'main', 'game', null, true);
       }
     }
-  }
-
-  updateTheme() {
-    console.log('updateTheme');
-    // Тема приложения
-    const vars = [
-      '--button_secondary_foreground',
-      '--accent',
-      '--tabbar_active_icon',
-      '--header_tint',
-      '--button_primary_background',
-      '--action_sheet_action_foreground',
-      '--button_outline_border',
-      '--button_outline_foreground'
-    ];
-    const color = '#6A9EE5';
-
-    vars.forEach((name) => document.documentElement.style.setProperty(name, color));
-
-    document.documentElement.style.setProperty('--background_content', '#F8FCFE');
-    document.documentElement.style.setProperty('--header_background', '#F8FCFE');
   }
 
   updateSnackbarPadding() {
