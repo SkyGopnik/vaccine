@@ -1,14 +1,16 @@
-:root {
-  --button_secondary_foreground: #6A9EE5 !important;
-  --accent: #6A9EE5 !important;
-  --tabbar_active_icon: #6A9EE5 !important;
-  --header_tint: #6A9EE5 !important;
-  --button_primary_background: #6A9EE5 !important;
-  --action_sheet_action_foreground: #6A9EE5 !important;
-  --button_outline_border: #6A9EE5 !important;
-  --button_outline_foreground: #6A9EE5 !important;
-  --background_content: #F8FCFE !important;
-  --header_background: #F8FCFE !important;
+:global {
+  html.vkui {
+    --button_secondary_foreground: #6A9EE5 !important;
+    --accent: #6A9EE5 !important;
+    --tabbar_active_icon: #6A9EE5 !important;
+    --header_tint: #6A9EE5 !important;
+    --button_primary_background: #6A9EE5 !important;
+    --action_sheet_action_foreground: #6A9EE5 !important;
+    --button_outline_border: #6A9EE5 !important;
+    --button_outline_foreground: #6A9EE5 !important;
+    --background_content: #F8FCFE !important;
+    --header_background: #F8FCFE !important;
+  }
 }
 
 #main {
