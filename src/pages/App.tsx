@@ -134,6 +134,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   updateTheme() {
+    console.log('updateTheme');
     // Тема приложения
     const vars = [
       '--button_secondary_foreground',
