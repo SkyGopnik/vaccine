@@ -177,7 +177,7 @@ export default class extends React.Component<IProps, IState> {
 
       syncUser(lo.merge(user, {
         data: {
-          balance: new Decimal(user.data.balance).add(data.sum)
+          balance: new Decimal(user.data.balance).add(data.bonus)
         }
       }))
 
@@ -189,7 +189,7 @@ export default class extends React.Component<IProps, IState> {
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
           <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])}</div>
-          <Text weight="medium">{locale(data.sum)} вакцины</Text>
+          <Text weight="medium">{locale(data.bonus)} вакцины</Text>
         </Snackbar>
       );
     }).catch(() => {
@@ -237,6 +237,7 @@ export default class extends React.Component<IProps, IState> {
             <Card mode="shadow">
               <Promocode />
             </Card>
+            <Spacing size={12} />
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
                 bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
