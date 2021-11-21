@@ -100,8 +100,6 @@ export default class extends React.Component<IProps, IState> {
 
     await changeProgress(value < 100 ? value : 0);
 
-    console.log(this.props.clickProgress);
-
     if (this.props.clickProgress === 0) {
       for (let i = 0; i < 4; i++) {
         this.renderEffect();
