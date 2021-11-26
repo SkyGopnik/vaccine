@@ -46,6 +46,8 @@ export default class extends React.Component<IProps, IState> {
       error: undefined,
       loading: false
     };
+
+    this.activatePromocode = this.activatePromocode.bind(this);
   }
 
   handleInputChange(value: string) {
@@ -77,13 +79,16 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  async activatePromocode() {
+  async activatePromocode(e) {
     const {
       user,
       syncUser,
       changeSnackbar,
     } = this.props;
     const { value } = this.state;
+
+    e.preventDefault();
+    e.stopPropagation();
 
     this.setState({
       loading: true
@@ -139,28 +144,30 @@ export default class extends React.Component<IProps, IState> {
     } = this.state;
 
     return (
-      <FormItem
-        className={style.input}
-        status={error ? 'error' : 'default'}
-        bottom={error ? error : null}
-      >
-        <div className={style.code}>
-          <Input
-            value={value}
-            type="text"
-            placeholder="freeVaccine"
-            disabled={loading}
-            onChange={(e) => this.handleInputChange(e.currentTarget.value)}
-          />
-          <Button
-            disabled={loading || (isset(error) ? (error !== '') : true)}
-            onClick={() => this.activatePromocode()}
-            stretched
-          >
-            {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
-          </Button>
-        </div>
-      </FormItem>
+      <form onSubmit={this.activatePromocode}>
+        <FormItem
+          className={style.input}
+          status={error ? 'error' : 'default'}
+          bottom={error ? error : null}
+        >
+          <div className={style.code}>
+            <Input
+              value={value}
+              type="text"
+              placeholder="freeVaccine"
+              disabled={loading}
+              onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+            />
+            <Button
+              disabled={loading || (isset(error) ? (error !== '') : true)}
+              onClick={this.activatePromocode}
+              stretched
+            >
+              {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
+            </Button>
+          </div>
+        </FormItem>
+      </form>
     );
   }
 }
