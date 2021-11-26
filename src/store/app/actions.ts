@@ -66,7 +66,7 @@ export const changeModal = (modal: null | string, modalData?: Object, isPopstate
   if (app.view === 'main') {
     // Блокировка и разблокировка скрола при открытии модалки
     const body = document.getElementsByTagName('body')[0];
-    body.style.overflowY = modal ? 'hidden' : 'scroll';
+    body.style.overflowY = modal ? 'hidden' : 'auto';
 
     return {
       type: APP_CHANGE_MODAL,
@@ -85,7 +85,7 @@ export const changePopout = (popout: null | string, isPopstate?: boolean) => {
   if (app.view === 'main') {
     // Блокировка и разблокировка скрола при открытии модалки
     const body = document.getElementsByTagName('body')[0];
-    body.style.overflowY = popout ? 'hidden' : 'scroll';
+    body.style.overflowY = popout ? 'hidden' : 'auto';
 
     return {
       type: APP_CHANGE_POPOUT,
