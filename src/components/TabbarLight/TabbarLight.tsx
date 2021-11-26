@@ -98,7 +98,12 @@ export default class extends React.Component<IProps, IState> {
                   onClick={() => changeStory('profile')}
                 />
               }
-              after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${locale(ratingUser.balance)} вакцины`)} />}
+              after={
+                <IconButton
+                  icon={<Icon28ShareOutline />}
+                  onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${locale(ratingUser.balance)} вакцины`)}
+                />
+              }
               description={locale(ratingUser.balance)}
               multiline
               disabled
