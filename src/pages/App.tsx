@@ -1,12 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {
-  AdaptivityProvider,
-  AppRoot,
-  ConfigProvider,
-  Epic,
-  Root, Scheme
-} from '@vkontakte/vkui';
+import {Appearance, AppRoot, ConfigProvider, Epic, Root, Scheme} from '@vkontakte/vkui';
 
 import RatingView from "src/views/Rating/RatingContainer";
 import GameView from 'src/views/Game/GameContainer';
@@ -26,6 +20,7 @@ import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
+import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   getUser(),
@@ -36,7 +31,8 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  lastView: string
+  lastView: string,
+  scheme: Scheme
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -44,7 +40,8 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      lastView: 'main'
+      lastView: 'main',
+      scheme: Scheme.BRIGHT_LIGHT
     };
 
     this.menu = this.menu.bind(this);
@@ -57,6 +54,9 @@ export default class extends React.Component<IProps, IState> {
       syncUser
     } = this.props;
 
+    // Subscribe on events
+    this.subscribe();
+
     try {
       const { data } = await axios.get('/user');
 
@@ -65,8 +65,6 @@ export default class extends React.Component<IProps, IState> {
     } catch (e) {
       changeView('error');
     }
-
-    platformApi.changeViewSettings('dark', '#ffffff');
 
     // Навешиваем обработчик кнопку вперёд/назад
     window.addEventListener('popstate', (e) => {
@@ -92,6 +90,41 @@ export default class extends React.Component<IProps, IState> {
     ) {
       setTimeout(() => this.updateSnackbarPadding(), 100);
     }
+  }
+
+  subscribe() {
+    bridge.subscribe(async (e: any) => {
+      if (!e.detail) {
+        return;
+      }
+
+      const { type, data } = e.detail;
+
+      if (type === 'VKWebAppUpdateConfig') {
+        let scheme = Scheme.BRIGHT_LIGHT;
+
+        if (data.scheme === 'client_dark' || data.scheme === 'space_gray') {
+          scheme = Scheme.SPACE_GRAY;
+        }
+
+        const appearance = {
+          [Scheme.BRIGHT_LIGHT]: {
+            status: Appearance.DARK,
+            color: '#ffffff'
+          },
+          [Scheme.SPACE_GRAY]: {
+            status: Appearance.LIGHT,
+            color: '#19191a'
+          }
+        };
+
+        platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
+
+        this.setState({
+          scheme
+        });
+      }
+    });
   }
 
   menu(e) {
@@ -145,10 +178,11 @@ export default class extends React.Component<IProps, IState> {
 
   render() {
     const { view, story, popout } = this.props;
+    const { scheme } = this.state;
 
     return (
       <ConfigProvider
-        scheme={Scheme.BRIGHT_LIGHT}
+        scheme={scheme}
         transitionMotionEnabled={false}
       >
         <AppRoot>

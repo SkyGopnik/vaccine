@@ -35,6 +35,10 @@
     color: var(--header_tint);
   }
 
+  .icon {
+    color: var(--icon_color);
+  }
+
   :global {
     .SimpleCell {
       width: 100%;

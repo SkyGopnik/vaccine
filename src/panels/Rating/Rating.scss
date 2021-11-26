@@ -27,6 +27,10 @@
         cursor: pointer;
       }
 
+      .transferIcon {
+        color: var(--icon_color);
+      }
+
       :global {
         .SimpleCell {
           width: 100%;

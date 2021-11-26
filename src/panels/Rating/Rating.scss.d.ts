@@ -6,6 +6,7 @@ interface CssExports {
   'name': string;
   'rating': string;
   'topNumber': string;
+  'transferIcon': string;
   'userItem': string;
 }
 export const cssExports: CssExports;

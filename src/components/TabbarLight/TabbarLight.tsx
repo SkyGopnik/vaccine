@@ -100,6 +100,7 @@ export default class extends React.Component<IProps, IState> {
               }
               after={
                 <IconButton
+                  className={style.icon}
                   icon={<Icon28ShareOutline />}
                   onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${locale(ratingUser.balance)} вакцины`)}
                 />

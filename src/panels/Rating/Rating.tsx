@@ -132,6 +132,7 @@ export default class extends React.Component<IProps, IState> {
                     }
                     after={(item.userId !== list.user.userId) && (
                       <IconButton
+                        className={style.transferIcon}
                         icon={<Icon28MoneySendOutline />}
                         onClick={() => changeModal('transferMoney', item.user.info)}
                       />
