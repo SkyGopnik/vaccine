@@ -21,7 +21,6 @@ import balanceFormat, {locale} from "src/functions/balanceFormat";
 import Utility from "src/utility";
 
 import style from './TransferMoney.scss';
-import declNum from "src/functions/decl_num";
 
 interface IProps {
   modalData: {
@@ -257,7 +256,7 @@ export default class extends React.Component<IProps, IState> {
         >
           <Input
             value={value}
-            type="text"
+            type="number"
             placeholder={balanceFormat(user.data.balance, false)}
             disabled={new Decimal(user.data.balance).toNumber() === 0 || loading}
             onChange={(e) => this.handleInputChange(e.currentTarget.value)}
