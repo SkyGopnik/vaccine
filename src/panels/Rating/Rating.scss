@@ -23,6 +23,10 @@
         color: var(--header_tint);
       }
 
+      .avatar, .name {
+        cursor: pointer;
+      }
+
       :global {
         .SimpleCell {
           width: 100%;

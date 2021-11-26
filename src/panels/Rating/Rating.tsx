@@ -124,6 +124,7 @@ export default class extends React.Component<IProps, IState> {
                   <SimpleCell
                     before={
                       <Avatar
+                        className={style.avatar}
                         size={48}
                         src={item.user.info.photo}
                         onClick={() => this.openProfile(item)}
@@ -139,7 +140,7 @@ export default class extends React.Component<IProps, IState> {
                     multiline
                     disabled
                   >
-                    <div onClick={() => this.openProfile(item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
+                    <div className={style.name} onClick={() => this.openProfile(item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
                   </SimpleCell>
                 </div>
               )) : (
