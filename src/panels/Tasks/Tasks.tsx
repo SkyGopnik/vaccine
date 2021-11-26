@@ -206,11 +206,31 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  checkTask(item) {
+  taskDisabled(item) {
+    if (item.history.length === 0) {
+      return;
+    }
+
     const now = new Date().getTime() / 1000;
     const repeat = new Date(item.history[0].repeatAfter).getTime() / 1000;
 
     return item.history[0].repeatAfter !== null ? (now < repeat) : true;
+  }
+
+  taskButton(item) {
+    const disabled = this.taskDisabled(item);
+    const onClick = () => this.completeTask(item.type);
+
+    return (
+      <Button
+        mode="outline"
+        size="m"
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {!disabled ? 'Выполнить' : 'Выполнено'}
+      </Button>
+    );
   }
 
   async onRefresh() {
@@ -240,38 +260,29 @@ export default class extends React.Component<IProps, IState> {
             <Spacing size={12} />
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
-                  <Card
-                    className={style.card}
-                    key={index}
-                    mode="shadow"
-                  >
-                    <div className={style.icon}>
-                      <img src={tasksConfig[item.type].img} alt="" />
+                <Card
+                  className={style.card}
+                  key={index}
+                  mode="shadow"
+                >
+                  <div className={style.icon}>
+                    <img src={tasksConfig[item.type].img} alt="" />
+                  </div>
+                  <div className={style.content}>
+                    <div className={style.header}>
+                      <Headline weight="medium">{item.name}</Headline>
                     </div>
-                    <div className={style.content}>
-                      <div className={style.header}>
-                        <Headline weight="medium">{item.name}</Headline>
-                      </div>
-                      <Text
-                        className={style.body}
-                        weight="regular"
-                      >
-                        {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
-                      </Text>
-                      <div className={style.button}>
-                        <Button
-                          mode="outline"
-                          size="m"
-                          disabled={item.history.length !== 0 && this.checkTask(item)}
-                          onClick={() => this.completeTask(item.type)}
-                        >
-                          Выполнить
-                        </Button>
-                      </div>
+                    <Text
+                      className={style.body}
+                      weight="regular"
+                    >
+                      {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
+                    </Text>
+                    <div className={style.button}>
+                      {this.taskButton(item)}
                     </div>
-                  </Card>
-                )
+                  </div>
+                </Card>
               ))
             ) : <Spinner />}
             <Spacing size={70} />
