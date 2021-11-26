@@ -141,7 +141,7 @@ export default class extends React.Component<IProps, IState> {
     return (
       <FormItem
         className={style.input}
-        status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
+        status={error ? 'error' : 'default'}
         bottom={error ? error : null}
       >
         <div className={style.code}>
