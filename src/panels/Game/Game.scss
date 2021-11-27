@@ -17,6 +17,10 @@
 
     text-align: center;
 
+    @media screen and (max-height: 500px) {
+      top: calc(var(--safe-area-inset-top) + 24px);
+    }
+
     .balance {
       :global {
         .Caption {
@@ -47,13 +51,11 @@
   }
 
   .iconWithProgress {
-    position: absolute;
-    top: calc(var(--safe-area-inset-top) + 50px);
-
     width: 100%;
     height: calc(100vh - calc(var(--safe-area-inset-top) + 64px));
 
-    //background-color: gainsboro;
+    position: absolute;
+    top: calc(var(--safe-area-inset-top) + 50px);
 
     display: flex;
     flex-direction: column;
@@ -76,6 +78,12 @@
 
       overflow: hidden;
       border-radius: 4px;
+
+      @media screen and (max-height: 500px) {
+        width: 120px;
+
+        margin-top: 12px;
+      }
 
       :global {
         .Progress__in {
@@ -107,6 +115,15 @@
         svg {
           width: 180px;
           height: 180px;
+        }
+      }
+    }
+
+    @media screen and (max-height: 500px) {
+      .icon {
+        svg {
+          width: 160px;
+          height: 160px;
         }
       }
     }
