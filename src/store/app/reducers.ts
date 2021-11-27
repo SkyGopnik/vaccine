@@ -50,7 +50,10 @@ export const appReducer = (state = defaultState, action) => {
   case APP_CHANGE_VIEW:
     return {
       ...state,
-      view: action.payload.view
+      view: action.payload.view,
+      modal: null,
+      popout: null,
+      snackbar: null
     };
 
   case APP_CHANGE_PANEL:
