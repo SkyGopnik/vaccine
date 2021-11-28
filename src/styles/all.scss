@@ -84,6 +84,10 @@
     }
   }
 
+  .Snackbar {
+    transition: .3s ease;
+  }
+
   @media screen and (max-width: 450px) {
     .ModalCard--android, .ModalCard--ios {
       .ModalCard__in {
