@@ -88,7 +88,7 @@ export default class extends React.Component<IProps, IState> {
       || prevProps.story !== story
       || prevProps.story === story && prevProps.panel !== panel
     ) {
-      setTimeout(() => this.updateSnackbarPadding(), 100);
+      setTimeout(() => this.updateSnackbarPadding(), 250);
     }
   }
 
