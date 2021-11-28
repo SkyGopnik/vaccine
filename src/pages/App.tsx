@@ -100,6 +100,8 @@ export default class extends React.Component<IProps, IState> {
 
       const { type, data } = e.detail;
 
+      console.log(type, data);
+
       if (type === 'VKWebAppUpdateConfig') {
         let scheme = Scheme.BRIGHT_LIGHT;
 
