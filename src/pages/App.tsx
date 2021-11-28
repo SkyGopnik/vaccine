@@ -112,7 +112,7 @@ export default class extends React.Component<IProps, IState> {
         const appearance = {
           [Scheme.BRIGHT_LIGHT]: {
             status: Appearance.DARK,
-            color: '#ffffff'
+            color: '#6A9EE5'
           },
           [Scheme.SPACE_GRAY]: {
             status: Appearance.LIGHT,
