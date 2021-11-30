@@ -8,6 +8,7 @@ import ProfileView from "src/views/Profile/ProfileContainer";
 import OnboardView from "src/views/Onboard";
 import LoadingView from "src/views/Loading";
 import ErrorView from "src/views/Error";
+import CaptchaView from "src/views/Captcha";
 import WrongOrientationView from "src/views/WrongOrientation";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
@@ -205,6 +206,7 @@ export default class extends React.Component<IProps, IState> {
             <OnboardView id="onboard" />
             <LoadingView id="loading" />
             <ErrorView id="error" />
+            <CaptchaView id="captcha" />
             <WrongOrientationView id="wrongOrientation" />
           </Root>
         </AppRoot>

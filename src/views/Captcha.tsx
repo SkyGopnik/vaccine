@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LoadingPanel from '../panels/Loading/Loading';
+import CaptchaPanel from 'src/panels/Captcha';
 
 import {View} from "@vkontakte/vkui";
 
@@ -14,7 +14,7 @@ export default (props: IProps) => {
       id={props.id}
       activePanel="main"
     >
-      <LoadingPanel id="main" />
+      <CaptchaPanel id="main" />
     </View>
   );
 }

@@ -10,11 +10,12 @@ export const APP_CHANGE_POPOUT = 'APP_CHANGE_POPOUT';
 export const APP_CHANGE_STORY = 'APP_CHANGE_STORY';
 export const APP_CHANGE_SNACKBAR = 'APP_CHANGE_SNACKBAR';
 
-export const changeView = (view: string) => {
+export const changeView = (view: string, viewData: Object = null) => {
   return {
     type: APP_CHANGE_VIEW,
     payload: {
-      view
+      view,
+      viewData
     }
   };
 };

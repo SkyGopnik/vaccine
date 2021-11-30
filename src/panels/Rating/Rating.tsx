@@ -86,9 +86,7 @@ export default class extends React.Component<IProps, IState> {
       user,
       list,
       snackbar,
-      changeModal,
-      changePanel,
-      changeStory
+      changeModal
     } = this.props;
     const { ptr } = this.state;
 
@@ -106,13 +104,13 @@ export default class extends React.Component<IProps, IState> {
           {/*    Больницы*/}
           {/*  </TabsItem>*/}
           {/*</Tabs>*/}
-          {!list.loading && (new Decimal(user.data.balance).toNumber() !== (list.user && new Decimal(list.user.balance).toNumber())) && (
-            <FormItem>
-              <FormStatus header="Данные отличаются" mode="error">
-                Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить
-              </FormStatus>
-            </FormItem>
-          )}
+          {/*{!list.loading && (new Decimal(user.data.balance).toNumber() !== (list.user && new Decimal(list.user.balance).toNumber())) && (*/}
+          {/*  <FormItem>*/}
+          {/*    <FormStatus header="Данные отличаются" mode="error">*/}
+          {/*      Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить*/}
+          {/*    </FormStatus>*/}
+          {/*  </FormItem>*/}
+          {/*)}*/}
           <Div>
             <Card
               className={style.card}
@@ -130,7 +128,7 @@ export default class extends React.Component<IProps, IState> {
                         onClick={() => this.openProfile(item)}
                       />
                     }
-                    after={(item.userId !== list.user.userId) && (
+                    after={(item.userId !== user.id) && (
                       <IconButton
                         className={style.transferIcon}
                         icon={<Icon28MoneySendOutline />}

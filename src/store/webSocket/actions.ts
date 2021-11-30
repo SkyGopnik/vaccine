@@ -3,6 +3,7 @@ import {changeProgress, syncUser, balancePlus} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {passiveOfflineBonus, transferGet, newFriend} from "src/functions/getSnackbar";
 import {AppReducerInterface} from "src/store/app/reducers";
+import bridge, {AnyRequestMethodName} from "@vkontakte/vk-bridge";
 
 export const CONNECT_WS_STARTED = 'CONNECT_WS_STARTED';
 export const CONNECT_WS_MESSAGE = 'CONNECT_WS_MESSAGE';
@@ -55,6 +56,10 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
           thunkAPI.dispatch(changeSnackbar(newFriend(ref)));
         }
+      }
+
+      if (type === 'CaptchaNeeded') {
+        thunkAPI.dispatch(changeView('captcha', data));
       }
 
       thunkAPI.dispatch(connectWsMessage(msg.data));

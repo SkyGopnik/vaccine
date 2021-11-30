@@ -13,22 +13,23 @@ import {ReactNode} from "react";
 let modalTime = new Date().getTime();
 
 export interface AppReducerInterface {
-  view: string,
-  panel: string,
-  story: string,
-  panelData: any,
-  modal: string,
-  modalData: any,
-  popout: string,
-  snackbar: ReactNode | null,
-  changeView(view: string),
-  changePanel(panel: string, panelData?: any),
-  changeViewPanelStory(view: string, panel: string, story?: string, panelData?: any, isPopstate?: boolean),
-  changeModal(modal: null | string, modalData?: any, isPopstate?: boolean),
-  changePopout(popout: ReactNode | null, isPopstate?: boolean),
-  changeStory(story: string, panelData?: any),
-  changeSnackbar(snackbar: ReactNode | null),
-  updateHistory(view: string, panel: string, story: string, history?: any)
+  view?: string,
+  viewData?: any,
+  panel?: string,
+  panelData?: any,
+  story?: string,
+  modal?: string,
+  modalData?: any,
+  popout?: string,
+  snackbar?: ReactNode | null,
+  changeView?(view: string, viewData?: any),
+  changePanel?(panel: string, panelData?: any),
+  changeViewPanelStory?(view: string, panel: string, story?: string, panelData?: any, isPopstate?: boolean),
+  changeModal?(modal: null | string, modalData?: any, isPopstate?: boolean),
+  changePopout?(popout: ReactNode | null, isPopstate?: boolean),
+  changeStory?(story: string, panelData?: any),
+  changeSnackbar?(snackbar: ReactNode | null),
+  updateHistory?(view: string, panel: string, story: string, history?: any)
 }
 
 const defaultState = {
@@ -36,6 +37,7 @@ const defaultState = {
   panel: 'main',
   story: 'game',
   panelData: null,
+  viewData: null,
   modal: null,
   modalData: null,
   popout: null,
@@ -51,6 +53,7 @@ export const appReducer = (state = defaultState, action) => {
     return {
       ...state,
       view: action.payload.view,
+      viewData: action.payload.viewData,
       modal: null,
       popout: null,
       snackbar: null

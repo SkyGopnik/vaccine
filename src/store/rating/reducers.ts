@@ -10,7 +10,7 @@ export interface RatingReducerInterface {
   list: {
     loading: boolean,
     data: Array<UserDataInterface> | null,
-    user: UserDataInterface | null,
+    position: number,
     error: any
   },
   getRating(needLoading?: boolean)
@@ -20,7 +20,7 @@ const defaultState = {
   list: {
     loading: false,
     data: null,
-    user: null,
+    position: null,
     error: null
   }
 };
@@ -42,7 +42,7 @@ export const ratingReducer = (state = defaultState, { type, payload }) => {
         loading: false,
         error: null,
         data: payload.list,
-        user: payload.user
+        position: payload.position
       }
     };
   case GET_RATING_FAILURE:
