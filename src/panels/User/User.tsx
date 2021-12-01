@@ -121,7 +121,7 @@ export default class extends React.Component<IProps, IState> {
                   <Subhead weight="regular">
                     <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
                     <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
-                    <div>· Спасено друзей: {stat.saveFriends && stat.saveFriends || 0}</div>
+                    <div>· Спасено друзей: {stat.savedFriends && stat.savedFriends || 0}</div>
                     <div>· Получено вакцины: {stat.transfer && locale(stat.transfer) || 0}</div>
                     <div>· Произведено улучшений: {stat.improvements && locale(stat.improvements) || 0}</div>
                     {/*<div>· Достижений: {stat.achievements || 0}</div>*/}

@@ -225,7 +225,7 @@ export default class extends React.Component<IProps, IState> {
                     Пригласить
                   </Button>
                 ),
-                info: stat.saveFriends && stat.saveFriends !== 0 ? `${stat.saveFriends} ${declNum(stat.saveFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
+                info: stat.savedFriends && stat.savedFriends !== 0 ? `${stat.savedFriends} ${declNum(stat.savedFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
               }}
             />
             {notification && (

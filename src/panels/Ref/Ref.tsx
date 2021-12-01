@@ -237,7 +237,7 @@ export default class extends React.Component<IProps, IState> {
             title="Статистика"
           >
             <Subhead weight="regular">
-              <div>· Спасено друзей: {stat.saveFriends || 0}</div>
+              <div>· Спасено друзей: {stat.savedFriends || 0}</div>
               <div>· Получено вакцины за друзей: {ref && locale(ref) || 0}</div>
             </Subhead>
           </Card>
