@@ -190,6 +190,12 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     }).catch((err) => {
+      let error = "Произошла ошибка во время выполнения задания";
+
+      if (err) {
+        error = task[type][err.error_data.error_code];
+      }
+
       changeSnackbar(
         <Snackbar
           className="error-snack"
@@ -197,7 +203,7 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
         >
-          {err && err.error_data ? task[type][err.error_data.error_code] : "Произошла ошибка во время выполнения задания"}
+          {error}
         </Snackbar>
       );
     });
