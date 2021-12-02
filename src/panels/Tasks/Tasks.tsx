@@ -190,6 +190,10 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     }).catch((err) => {
+      console.log(type);
+      console.log(err);
+      console.log(task);
+
       changeSnackbar(
         <Snackbar
           className="error-snack"
