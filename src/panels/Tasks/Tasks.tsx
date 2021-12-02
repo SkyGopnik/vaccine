@@ -188,7 +188,9 @@ export default class extends React.Component<IProps, IState> {
           <Text weight="medium">{locale(data.bonus)} вакцины</Text>
         </Snackbar>
       );
-    }).catch(() => {
+    }).catch((err) => {
+      console.log(err);
+
       changeSnackbar(
         <Snackbar
           className="error-snack"
