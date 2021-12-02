@@ -146,7 +146,7 @@ export default class extends React.Component<IProps, IState> {
 
     // Передаем деньги
     try {
-      await axios.post('/user/transfer/money', {
+      await axios.post('/transfer', {
         sum: numValue,
         toUserId: modalData.userId
       });
