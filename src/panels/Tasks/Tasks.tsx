@@ -35,6 +35,7 @@ import {config} from "src/js/config";
 
 import style from './Tasks.scss';
 import Promocode from "src/components/Promocode/PromocodeContainer";
+import task from "src/errors/task";
 
 interface Task {
   multiplier: number,
@@ -189,8 +190,6 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     }).catch((err) => {
-      console.log(JSON.stringify(err));
-
       changeSnackbar(
         <Snackbar
           className="error-snack"
@@ -198,7 +197,7 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
         >
-          Произошла ошибка во время выполнения задания
+          {err && err.error_data ? task[err.error_data.error_code] : "Произошла ошибка во время выполнения задания"}
         </Snackbar>
       );
     });
