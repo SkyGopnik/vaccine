@@ -189,7 +189,7 @@ export default class extends React.Component<IProps, IState> {
         </Snackbar>
       );
     }).catch((err) => {
-      console.log(err);
+      console.log(JSON.stringify(err));
 
       changeSnackbar(
         <Snackbar
