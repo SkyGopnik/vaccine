@@ -9,7 +9,7 @@ if (process.env.localConfig === 'production') {
   };
 } else if (process.env.localConfig === 'development') {
   config = {
-    appId: 7888384,
+    appId: 8006453,
     wsUrl: 'wss://vaccine-development-wss.skyreglis.studio',
     apiUrl: 'https://vaccine-development-api.skyreglis.studio',
     appUrl: 'https://vk.com/app8006453'
