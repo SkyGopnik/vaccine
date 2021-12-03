@@ -263,29 +263,31 @@ export default class extends React.Component<IProps, IState> {
             <Spacing size={12} />
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                <Card
-                  className={style.card}
-                  key={index}
-                  mode="shadow"
-                >
-                  <div className={style.icon}>
-                    <img src={tasksConfig[item.type].img} alt="" />
-                  </div>
-                  <div className={style.content}>
-                    <div className={style.header}>
-                      <Headline weight="medium">{item.name}</Headline>
+                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
+                  <Card
+                    className={style.card}
+                    key={index}
+                    mode="shadow"
+                  >
+                    <div className={style.icon}>
+                      <img src={tasksConfig[item.type].img} alt="" />
                     </div>
-                    <Text
-                      className={style.body}
-                      weight="regular"
-                    >
-                      {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
-                    </Text>
-                    <div className={style.button}>
-                      {this.taskButton(item)}
+                    <div className={style.content}>
+                      <div className={style.header}>
+                        <Headline weight="medium">{item.name}</Headline>
+                      </div>
+                      <Text
+                        className={style.body}
+                        weight="regular"
+                      >
+                        {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
+                      </Text>
+                      <div className={style.button}>
+                        {this.taskButton(item)}
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                  </Card>
+                )
               ))
             ) : <Spinner />}
             <Spacing size={70} />
