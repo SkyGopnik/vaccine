@@ -35,6 +35,7 @@ import {config} from "src/js/config";
 
 import style from './Tasks.scss';
 import Promocode from "src/components/Promocode/PromocodeContainer";
+import task from "src/errors/task";
 
 interface Task {
   multiplier: number,
@@ -131,13 +132,9 @@ export default class extends React.Component<IProps, IState> {
     new Promise(function(resolve, reject) {
       switch (type) {
         case 'watchAds':
-          if (bridge.supports("VKWebAppShowNativeAds")) {
-            bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'reward'})
-              .then((res) => resolve(res))
-              .catch((err) => resolve(null));
-          } else {
-            reject()
-          }
+          bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'reward'})
+            .then((res) => resolve(res))
+            .catch((err) => reject(err));
           break;
 
         case 'subGroup':
@@ -177,7 +174,7 @@ export default class extends React.Component<IProps, IState> {
 
       syncUser(lo.merge(user, {
         data: {
-          balance: new Decimal(user.data.balance).add(data.sum)
+          balance: new Decimal(user.data.balance).add(data.bonus)
         }
       }))
 
@@ -189,10 +186,16 @@ export default class extends React.Component<IProps, IState> {
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
           <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])}</div>
-          <Text weight="medium">{locale(data.sum)} вакцины</Text>
+          <Text weight="medium">{locale(data.bonus)} вакцины</Text>
         </Snackbar>
       );
-    }).catch(() => {
+    }).catch((err) => {
+      let error = "Произошла ошибка во время выполнения задания";
+
+      if (err) {
+        error = task[type][err.error_data.error_code];
+      }
+
       changeSnackbar(
         <Snackbar
           className="error-snack"
@@ -200,17 +203,37 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
         >
-          Произошла ошибка во время выполнения задания
+          {error}
         </Snackbar>
       );
     });
   }
 
-  checkTask(item) {
+  taskDisabled(item) {
+    if (item.history.length === 0) {
+      return;
+    }
+
     const now = new Date().getTime() / 1000;
     const repeat = new Date(item.history[0].repeatAfter).getTime() / 1000;
 
     return item.history[0].repeatAfter !== null ? (now < repeat) : true;
+  }
+
+  taskButton(item) {
+    const disabled = this.taskDisabled(item);
+    const onClick = () => this.completeTask(item.type);
+
+    return (
+      <Button
+        mode="outline"
+        size="m"
+        disabled={disabled}
+        onClick={onClick}
+      >
+        {!disabled ? 'Выполнить' : 'Выполнено'}
+      </Button>
+    );
   }
 
   async onRefresh() {
@@ -237,40 +260,32 @@ export default class extends React.Component<IProps, IState> {
             <Card mode="shadow">
               <Promocode />
             </Card>
+            <Spacing size={12} />
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
-                  <Card
-                    className={style.card}
-                    key={index}
-                    mode="shadow"
-                  >
-                    <div className={style.icon}>
-                      <img src={tasksConfig[item.type].img} alt="" />
+                <Card
+                  className={style.card}
+                  key={index}
+                  mode="shadow"
+                >
+                  <div className={style.icon}>
+                    <img src={tasksConfig[item.type].img} alt="" />
+                  </div>
+                  <div className={style.content}>
+                    <div className={style.header}>
+                      <Headline weight="medium">{item.name}</Headline>
                     </div>
-                    <div className={style.content}>
-                      <div className={style.header}>
-                        <Headline weight="medium">{item.name}</Headline>
-                      </div>
-                      <Text
-                        className={style.body}
-                        weight="regular"
-                      >
-                        {locale(new Decimal((user.data.click ? user.data.click : 1) * item.multiplier).toNumber())} вакцины
-                      </Text>
-                      <div className={style.button}>
-                        <Button
-                          mode="outline"
-                          size="m"
-                          disabled={item.history.length !== 0 && this.checkTask(item)}
-                          onClick={() => this.completeTask(item.type)}
-                        >
-                          Выполнить
-                        </Button>
-                      </div>
+                    <Text
+                      className={style.body}
+                      weight="regular"
+                    >
+                      {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
+                    </Text>
+                    <div className={style.button}>
+                      {this.taskButton(item)}
                     </div>
-                  </Card>
-                )
+                  </div>
+                </Card>
               ))
             ) : <Spinner />}
             <Spacing size={70} />

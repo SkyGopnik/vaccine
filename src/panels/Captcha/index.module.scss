@@ -1,0 +1,42 @@
+.captcha {
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    .item {
+      width: 80px;
+      height: 80px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+
+      &Active {
+        outline: 1px solid #78D0B1;
+      }
+
+      .crop {
+        width: 50px;
+        height: 50px;
+
+        position: relative;
+
+        overflow: hidden;
+
+        img {
+          position: absolute;
+          top: calc(50% - 55px / 2);
+          left: calc(50% - 55px / 2);
+        }
+      }
+    }
+  }
+
+  .checkBtn {
+    margin-top: 12px;
+  }
+}

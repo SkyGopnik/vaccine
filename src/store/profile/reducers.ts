@@ -11,7 +11,7 @@ export interface UserStat {
   ratingPosition?: number,
   startAt?: Date,
   record?: number,
-  saveFriends?: number,
+  savedFriends?: number,
   transfer?: number,
   improvements?: number,
   achievements?: number

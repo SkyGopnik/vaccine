@@ -31,7 +31,7 @@ import style from './TabbarLight.scss';
 
 interface IProps extends AppReducerInterface {
   user: UserInterface,
-  ratingUser: UserDataInterface | null,
+  ratingUserPosition: number,
   ratingLoading: boolean,
   profile: {
     ref: {
@@ -75,8 +75,8 @@ export default class extends React.Component<IProps, IState> {
     const {
       panel,
       story,
-      profile,
-      ratingUser,
+      user,
+      ratingUserPosition,
       randomUser,
       changeStory,
       changePanel,
@@ -86,24 +86,30 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Tabbar id="tabbar">
-        {(story === 'rating' && panel === 'main') && ratingUser && (
+        {(story === 'rating' && panel === 'main') && user && ratingUserPosition && (
           <div className={style.userItem}>
-            <div className={style.topNumber}>{ratingUser.position.toFixed(0)}.</div>
+            <div className={style.topNumber}>{ratingUserPosition.toFixed(0)}.</div>
             <SimpleCell
               target="_blank"
               before={
                 <Avatar
                   size={48}
-                  src={ratingUser.user.info.photo}
+                  src={user.info.photo}
                   onClick={() => changeStory('profile')}
                 />
               }
-              after={<IconButton icon={<Icon28ShareOutline />} onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUser.position} месте и уже накопил ${locale(ratingUser.balance)} вакцины`)} />}
-              description={locale(ratingUser.balance)}
+              after={
+                <IconButton
+                  className={style.icon}
+                  icon={<Icon28ShareOutline />}
+                  onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUserPosition} месте и уже накопил ${locale(user.data.balance)} вакцины`)}
+                />
+              }
+              description={locale(user.data.balance)}
               multiline
               disabled
             >
-              {ratingUser.user.info.firstName} {ratingUser.user.info.lastName}
+              {user.info.firstName} {user.info.lastName}
             </SimpleCell>
           </div>
         )}

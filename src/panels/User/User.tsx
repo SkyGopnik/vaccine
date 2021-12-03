@@ -79,7 +79,7 @@ export default class extends React.Component<IProps, IState> {
     const user = this.props.data;
 
     const { data, stat } = user || {};
-    const { click, passive } = data || {};
+    const { clickUser, clickPassive } = data || {};
     const { firstName, lastName, photo } = data.user && data.user.info || {};
 
     return (
@@ -110,8 +110,8 @@ export default class extends React.Component<IProps, IState> {
                   title="Улучшения"
                 >
                   <Subhead className={style.improvements} weight="regular">
-                    <div>· {balanceFormat(click || 0)}/клик</div>
-                    <div>· {balanceFormat(passive || 0)}/сек</div>
+                    <div>· {balanceFormat(clickUser || 0)}/клик</div>
+                    <div>· {balanceFormat(clickPassive || 0)}/сек</div>
                   </Subhead>
                 </Card>
                 <Card
@@ -121,7 +121,7 @@ export default class extends React.Component<IProps, IState> {
                   <Subhead weight="regular">
                     <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
                     <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
-                    <div>· Спасено друзей: {stat.saveFriends && stat.saveFriends || 0}</div>
+                    <div>· Спасено друзей: {stat.savedFriends && stat.savedFriends || 0}</div>
                     <div>· Получено вакцины: {stat.transfer && locale(stat.transfer) || 0}</div>
                     <div>· Произведено улучшений: {stat.improvements && locale(stat.improvements) || 0}</div>
                     {/*<div>· Достижений: {stat.achievements || 0}</div>*/}

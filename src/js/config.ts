@@ -4,15 +4,17 @@ if (process.env.localConfig === 'production') {
   config = {
     appId: 7999835,
     wsUrl: 'wss://vaccine-wss.skyreglis.studio',
-    apiUrl: 'https://vaccine-api.skyreglis.studio'
+    apiUrl: 'https://vaccine-api.skyreglis.studio',
+    appUrl: 'https://vk.com/app7999835'
   };
-} else if (process.env.localConfig === 'test') {
+} else if (process.env.localConfig === 'development') {
   config = {
-    appId: 7888384,
-    wsUrl: 'wss://vaccine-test-wss.skyreglis.studio',
-    apiUrl: 'https://skyreglis.studio/vaccine_test/api/rest'
+    appId: 8006453,
+    wsUrl: 'wss://vaccine-development-wss.skyreglis.studio',
+    apiUrl: 'https://vaccine-development-api.skyreglis.studio',
+    appUrl: 'https://vk.com/app8006453'
   };
-} else {
+} else if (process.env.localConfig === 'local') {
   config = {
     appId: 7704696,
     wsUrl: 'ws://localhost:3245',
@@ -22,7 +24,6 @@ if (process.env.localConfig === 'production') {
 
 config = {
   ...config,
-  appUrl: 'https://vk.com/app7704696',
   chatUrl: 'https://vk.me/join/AJQ1d/E8nBabv9DfXT9Pmnhs',
   messageGroupUrl: 'https://vk.me/skyreglis'
 };

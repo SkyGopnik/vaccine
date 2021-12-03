@@ -1,10 +1,37 @@
+:root {
+  --icon_color: #3f8ae0;
+
+  --empty_background_blur: 12px;
+  --empty_background_color: rgba(248, 252, 254, 0.72);
+}
+
+:global {
+  body[scheme=bright_light] {
+    --button_secondary_foreground: #6A9EE5 !important;
+    --accent: #6A9EE5 !important;
+    --tabbar_active_icon: #6A9EE5 !important;
+    --header_tint: #6A9EE5 !important;
+    --button_primary_background: #6A9EE5 !important;
+    --action_sheet_action_foreground: #6A9EE5 !important;
+    --button_outline_border: #6A9EE5 !important;
+    --button_outline_foreground: #6A9EE5 !important;
+    --background_content: #F8FCFE !important;
+    --header_background: #F8FCFE !important;
+  }
+
+  body[scheme=space_gray] {
+    --icon_color: #fff;
+
+    --empty_background_blur: 18px;
+    --empty_background_color: rgba(#2c2d2e, 0.8);
+  }
+}
+
 #main {
   .Panel__in {
     //background-color: gray !important;
   }
 }
-
-//6A9EE5
 
 :global {
   body {
@@ -55,6 +82,10 @@
     .SimpleCell__description {
       line-height: 18px;
     }
+  }
+
+  .Snackbar {
+    transition: .3s ease;
   }
 
   @media screen and (max-width: 450px) {

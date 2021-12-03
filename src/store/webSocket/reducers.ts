@@ -6,11 +6,11 @@ import {
 } from './actions';
 
 export interface WebSocketReducerInterface {
-  loading: boolean,
-  data: object | null,
-  error: any,
-  connectWs(socketUrl: string),
-  sendWsMessage(data: object)
+  loading?: boolean,
+  data?: object | null,
+  error?: any,
+  connectWs?(socketUrl: string),
+  sendWsMessage?(data: object)
 }
 
 const defaultState = {

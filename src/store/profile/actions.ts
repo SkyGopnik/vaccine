@@ -13,7 +13,7 @@ export const getProfile = createAsyncThunk('getProfile', async (arg: boolean = t
   }
 
   try {
-    const { data } = await axios.get('/user/profile/');
+    const { data } = await axios.get('/profile');
 
     const { notification } = data;
 

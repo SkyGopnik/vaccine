@@ -15,12 +15,20 @@
       }
 
       .topNumber {
-        min-width: 35px;
+        min-width: 40px;
         text-align: center;
 
         font-weight: bold;
 
         color: var(--header_tint);
+      }
+
+      .avatar, .name {
+        cursor: pointer;
+      }
+
+      .transferIcon {
+        color: var(--icon_color);
       }
 
       :global {

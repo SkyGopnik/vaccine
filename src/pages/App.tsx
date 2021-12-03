@@ -1,12 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import {
-  AdaptivityProvider,
-  AppRoot,
-  ConfigProvider,
-  Epic,
-  Root, Scheme
-} from '@vkontakte/vkui';
+import {Appearance, AppRoot, ConfigProvider, Epic, Root, Scheme} from '@vkontakte/vkui';
 
 import RatingView from "src/views/Rating/RatingContainer";
 import GameView from 'src/views/Game/GameContainer';
@@ -14,6 +8,7 @@ import ProfileView from "src/views/Profile/ProfileContainer";
 import OnboardView from "src/views/Onboard";
 import LoadingView from "src/views/Loading";
 import ErrorView from "src/views/Error";
+import CaptchaView from "src/views/Captcha";
 import WrongOrientationView from "src/views/WrongOrientation";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
@@ -26,6 +21,7 @@ import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
+import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   getUser(),
@@ -36,7 +32,8 @@ interface IProps extends AppReducerInterface, WebSocketReducerInterface {
 }
 
 interface IState {
-  lastView: string
+  lastView: string,
+  scheme: Scheme
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -44,7 +41,8 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      lastView: 'main'
+      lastView: 'main',
+      scheme: Scheme.BRIGHT_LIGHT
     };
 
     this.menu = this.menu.bind(this);
@@ -56,6 +54,9 @@ export default class extends React.Component<IProps, IState> {
       connectWs,
       syncUser
     } = this.props;
+
+    // Subscribe on events
+    this.subscribe();
 
     try {
       const { data } = await axios.get('/user');
@@ -69,8 +70,6 @@ export default class extends React.Component<IProps, IState> {
       changeView('error');
     }
 
-    platformApi.changeViewSettings('dark', '#ffffff');
-
     // Навешиваем обработчик кнопку вперёд/назад
     window.addEventListener('popstate', (e) => {
       // Отменяем стандартное событие
@@ -79,7 +78,6 @@ export default class extends React.Component<IProps, IState> {
       this.menu(e);
     });
 
-    this.updateTheme();
     this.updateSnackbarPadding();
   }
 
@@ -94,8 +92,45 @@ export default class extends React.Component<IProps, IState> {
       || prevProps.story !== story
       || prevProps.story === story && prevProps.panel !== panel
     ) {
-      setTimeout(() => this.updateSnackbarPadding(), 100);
+      setTimeout(() => this.updateSnackbarPadding(), 250);
     }
+  }
+
+  subscribe() {
+    bridge.subscribe(async (e: any) => {
+      if (!e.detail) {
+        return;
+      }
+
+      const { type, data } = e.detail;
+
+      console.log(type, data);
+
+      if (type === 'VKWebAppUpdateConfig') {
+        let scheme = Scheme.BRIGHT_LIGHT;
+
+        if (data.scheme === 'client_dark' || data.scheme === 'space_gray') {
+          scheme = Scheme.SPACE_GRAY;
+        }
+
+        const appearance = {
+          [Scheme.BRIGHT_LIGHT]: {
+            status: Appearance.DARK,
+            color: '#6A9EE5'
+          },
+          [Scheme.SPACE_GRAY]: {
+            status: Appearance.LIGHT,
+            color: '#19191a'
+          }
+        };
+
+        platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
+
+        this.setState({
+          scheme
+        });
+      }
+    });
   }
 
   menu(e) {
@@ -136,26 +171,6 @@ export default class extends React.Component<IProps, IState> {
     }
   }
 
-  updateTheme() {
-    // Тема приложения
-    const vars = [
-      '--button_secondary_foreground',
-      '--accent',
-      '--tabbar_active_icon',
-      '--header_tint',
-      '--button_primary_background',
-      '--action_sheet_action_foreground',
-      '--button_outline_border',
-      '--button_outline_foreground'
-    ];
-    const color = '#6A9EE5';
-
-    vars.forEach((name) => document.documentElement.style.setProperty(name, color));
-
-    document.documentElement.style.setProperty('--background_content', '#F8FCFE');
-    document.documentElement.style.setProperty('--header_background', '#F8FCFE');
-  }
-
   updateSnackbarPadding() {
     const snackbar = document.querySelector<HTMLElement>('.vkuiSnackbar,.Snackbar');
     const tabbar = document.getElementById("tabbar");
@@ -169,10 +184,11 @@ export default class extends React.Component<IProps, IState> {
 
   render() {
     const { view, story, popout } = this.props;
+    const { scheme } = this.state;
 
     return (
       <ConfigProvider
-        scheme={Scheme.BRIGHT_LIGHT}
+        scheme={scheme}
         transitionMotionEnabled={false}
       >
         <AppRoot>
@@ -193,6 +209,7 @@ export default class extends React.Component<IProps, IState> {
             <OnboardView id="onboard" />
             <LoadingView id="loading" />
             <ErrorView id="error" />
+            <CaptchaView id="captcha" />
             <WrongOrientationView id="wrongOrientation" />
           </Root>
         </AppRoot>

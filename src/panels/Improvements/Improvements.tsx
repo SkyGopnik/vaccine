@@ -102,73 +102,64 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async buyImprovement(index: number, price: number) {
-    const { user, changeSnackbar } = this.props;
+    const { user, syncUser, changeSnackbar } = this.props;
     const { type, count } = this.state;
 
-    if (user) {
-      // console.log(user.data.balance);
-      // console.log(price);
-      // console.log(this.getBalanceBribeLimit());
-      //
-      // console.log(this.getBalanceBribeLimit() + user.data.balance - price)
-
-      if (new Decimal(user.data.balance).minus(price).toNumber() >= 0) {
-        const { syncUser } = this.props;
-
-        this.setState({
-          loading: true
-        });
-
-        try {
-          this.changeButtonType(index, true);
-
-          const { data } = await axios.post('/improvement/buy', {
-            type,
-            count,
-            index
-          });
-
-          this.setState({
-            stat: lo.pick(data.stat, ['vaccine', 'scientists']),
-            loading: false
-          });
-
-          this.changeButtonType(index, false);
-
-          console.log(lo.pick(data.stat, ['vaccine', 'scientists']));
-
-          syncUser(data);
-
-          changeSnackbar(
-            <Snackbar
-              className="success-snack"
-              layout="vertical"
-              onClose={() => changeSnackbar(null)}
-              before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
-            >
-              <div>Улучшение куплено</div>
-              <Text weight="medium">Осталось {locale(new Decimal(user.data.balance).minus(price).toNumber())} вакцины</Text>
-            </Snackbar>
-          );
-        } catch (e) {
-          this.setState({
-            loading: false
-          });
-
-          this.changeButtonType(index, false);
-
-          changeSnackbar(
-            <Snackbar
-              layout="vertical"
-              onClose={() => changeSnackbar(null)}
-              before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
-            >
-              {localization[e.response.data.message] ? localization[e.response.data.message] : e.response.data.message}
-            </Snackbar>
-          );
-        }
-      }
+    if (!user) {
+      return;
     }
+
+    if (new Decimal(user.data.balance).minus(price).toNumber() < 0) {
+      return;
+    }
+
+    this.setState({
+      loading: true
+    });
+
+    try {
+      this.changeButtonType(index, true);
+
+      const { data } = await axios.post('/improvement/buy', {
+        type,
+        count,
+        index
+      });
+
+      syncUser(data);
+
+      this.setState({
+        stat: lo.pick(data.stat, ['vaccine', 'scientists'])
+      });
+
+      changeSnackbar(
+        <Snackbar
+          className="success-snack"
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+        >
+          <div>Улучшение куплено</div>
+          <Text weight="medium">Осталось {locale(new Decimal(user.data.balance).minus(price).toNumber())} вакцины</Text>
+        </Snackbar>
+      );
+    } catch (e) {
+      changeSnackbar(
+        <Snackbar
+          layout="vertical"
+          onClose={() => changeSnackbar(null)}
+          before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
+        >
+          {localization[e.response.data.message] ? localization[e.response.data.message] : e.response.data.message}
+        </Snackbar>
+      );
+    }
+
+    this.changeButtonType(index, false);
+
+    this.setState({
+      loading: false
+    });
   }
 
   // Изменение типа кнопки

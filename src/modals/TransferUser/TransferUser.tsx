@@ -10,7 +10,9 @@ import {
   Title,
   RichCell,
   Avatar, Caption, Subhead,
-  HorizontalScroll
+  HorizontalScroll,
+  Text,
+  Div
 } from "@vkontakte/vkui";
 import { Icon28MoneySendOutline, Icon24ChevronLeft, Icon24MoreHorizontal } from "@vkontakte/icons";
 
@@ -85,7 +87,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get('/user/transfer/recent');
+    const { data } = await axios.get('/transfer/recent');
 
     this.setState({
       recentTransfer: data.map((item) => item.additional.user)
@@ -174,7 +176,7 @@ export default class extends React.Component<IProps, IState> {
       <ModalCard
         className={style.modal}
         header="Передача вакцины"
-        subheader="Чтобы скопировать ID, зажмите адрес пользователя"
+        subheader="Чтобы получить ID, зажмите адрес пользователя в его профиле, как это можно сделать мы показали ниже"
         actions={
           <Button
             before={!loading && <Icon28MoneySendOutline width={24} height={24} />}
@@ -208,6 +210,7 @@ export default class extends React.Component<IProps, IState> {
           >
             {randomTeam.name}
           </RichCell>
+          <Separator />
         </Card>
         <FormItem
           status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}

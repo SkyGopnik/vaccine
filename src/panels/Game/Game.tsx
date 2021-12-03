@@ -87,7 +87,7 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
-  changeProgress() {
+  async changeProgress() {
     const {
       user,
       balancePlus,
@@ -95,14 +95,17 @@ export default class extends React.Component<IProps, IState> {
       changeProgress,
       changeSnackbar
     } = this.props;
+
     const value = clickProgress + 2;
 
-    if (value === 100) {
+    await changeProgress(value < 100 ? value : 0);
+
+    if (this.props.clickProgress === 0) {
       for (let i = 0; i < 4; i++) {
         this.renderEffect();
       }
 
-      balancePlus(user.data.click * 5);
+      balancePlus(user.data.clickUser * 5);
 
       if (user.data.additional.vaccineClickNotification) {
         changeSnackbar(
@@ -112,14 +115,12 @@ export default class extends React.Component<IProps, IState> {
             onClose={() => changeSnackbar(null)}
             before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
           >
-            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(user.data.click * 5)}</span> вакцины</div>
+            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(user.data.clickUser * 5)}</span> вакцины</div>
             <div>Отличная работа, так держать!</div>
           </Snackbar>
         );
       }
     }
-
-    changeProgress(value < 100 ? value : 0);
   }
 
   async iconClick(e) {
@@ -129,6 +130,8 @@ export default class extends React.Component<IProps, IState> {
       sendWsMessage
     } = this.props;
     const { lastClick, lastInterval, showAds } = this.state;
+
+    console.log('click');
 
     const newInterval = new Date().getTime() - lastInterval.time;
 
@@ -145,57 +148,45 @@ export default class extends React.Component<IProps, IState> {
       showAds: new Date()
     });
 
-    const reportUser = async (type: string, text: string) => {
-      await axios.post('/user/report',  { userId: user.id, type, text });
-
-      if (!showAds || showAds && ((new Date().getMinutes() - showAds.getMinutes()) > 5)) {
-        bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'preloader'})
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-
-        this.setState({
-          showAds: new Date()
-        });
-      }
-    };
-
-    if (lastClick.count < 7) {
-      balancePlus(user.data.click);
-
+    if (lastClick.count <= 10) {
       const time = new Date().getTime();
+      const x = e.pageX;
+      const y = e.pageY;
+
+      balancePlus(user.data.clickUser);
 
       sendWsMessage({
         type: 'ClickUser',
         time,
-        x: e.pageX,
-        y: e.pageY,
-        hash: btoa(time.toString() + e.pageX + e.pageY)
+        x,
+        y,
+        hash: time + x + y
       });
 
       if (!user.data.additional.easyAnimation) {
         this.renderEffect();
       }
 
-      this.changeProgress();
+      await this.changeProgress();
     }
 
-    if (lastClick.count === 30) {
-      await reportUser('cpsLimit','Пользователь достиг больше 30 CPS');
-    } else if (lastClick.count === 40) {
-      await reportUser('cpsLimit','Пользователь достиг больше 40 CPS');
-    } else if (lastClick.count === 50) {
-      await reportUser('cpsLimit','Пользователь достиг больше 50 CPS');
-    }
-
-    if (lastInterval.count === 100) {
-      await reportUser('intervalLimit','Пользователь достиг больше 100 Interval');
-    } else if (lastInterval.count === 150) {
-      await reportUser('intervalLimit','Пользователь достиг больше 150 Interval');
-    } else if (lastInterval.count === 200) {
-      await reportUser('intervalLimit','Пользователь достиг больше 200 Interval');
-    } else if (lastInterval.count === 300) {
-      await reportUser('intervalLimit','Пользователь достиг больше 300 Interval');
-    }
+    // if (lastClick.count === 30) {
+    //   await reportUser('cpsLimit','Пользователь достиг больше 30 CPS');
+    // } else if (lastClick.count === 40) {
+    //   await reportUser('cpsLimit','Пользователь достиг больше 40 CPS');
+    // } else if (lastClick.count === 50) {
+    //   await reportUser('cpsLimit','Пользователь достиг больше 50 CPS');
+    // }
+    //
+    // if (lastInterval.count === 100) {
+    //   await reportUser('intervalLimit','Пользователь достиг больше 100 Interval');
+    // } else if (lastInterval.count === 150) {
+    //   await reportUser('intervalLimit','Пользователь достиг больше 150 Interval');
+    // } else if (lastInterval.count === 200) {
+    //   await reportUser('intervalLimit','Пользователь достиг больше 200 Interval');
+    // } else if (lastInterval.count === 300) {
+    //   await reportUser('intervalLimit','Пользователь достиг больше 300 Interval');
+    // }
   }
 
   render() {
@@ -259,13 +250,13 @@ export default class extends React.Component<IProps, IState> {
                 level="1"
                 weight="semibold"
               >
-                + {balanceFormat(user.data.passive)}/сек
+                + {balanceFormat(user.data.clickPassive)}/сек
               </Caption>
               <Caption
                 level="1"
                 weight="semibold"
               >
-                + {balanceFormat(user.data.click)}/клик
+                + {balanceFormat(user.data.clickUser)}/клик
               </Caption>
             </div>
           </div>

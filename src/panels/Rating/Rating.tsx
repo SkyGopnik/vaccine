@@ -19,7 +19,7 @@ import {Icon28MoneySendOutline} from "@vkontakte/icons";
 import Spacing from "src/components/Spacing";
 
 import {RatingReducerInterface} from "src/store/rating/reducers";
-import {UserInterface} from "src/store/user/reducers";
+import {UserDataInterface, UserInterface} from "src/store/user/reducers";
 
 import { locale } from "src/functions/balanceFormat";
 
@@ -70,15 +70,23 @@ export default class extends React.Component<IProps, IState> {
     }, 1000);
   }
 
+  openProfile(item: UserDataInterface) {
+    const { user, changeStory, changePanel } = this.props;
+
+    if (user.id !== item.userId) {
+      changePanel('user', item);
+    } else {
+      changeStory('profile')
+    }
+  }
+
   render() {
     const {
       id,
       user,
       list,
       snackbar,
-      changeModal,
-      changePanel,
-      changeStory
+      changeModal
     } = this.props;
     const { ptr } = this.state;
 
@@ -96,13 +104,13 @@ export default class extends React.Component<IProps, IState> {
           {/*    Больницы*/}
           {/*  </TabsItem>*/}
           {/*</Tabs>*/}
-          {!list.loading && (new Decimal(user.data.balance).toNumber() !== (list.user && new Decimal(list.user.balance).toNumber())) && (
-            <FormItem>
-              <FormStatus header="Данные отличаются" mode="error">
-                Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить
-              </FormStatus>
-            </FormItem>
-          )}
+          {/*{!list.loading && (new Decimal(user.data.balance).toNumber() !== (list.user && new Decimal(list.user.balance).toNumber())) && (*/}
+          {/*  <FormItem>*/}
+          {/*    <FormStatus header="Данные отличаются" mode="error">*/}
+          {/*      Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить*/}
+          {/*    </FormStatus>*/}
+          {/*  </FormItem>*/}
+          {/*)}*/}
           <Div>
             <Card
               className={style.card}
@@ -112,17 +120,17 @@ export default class extends React.Component<IProps, IState> {
                 <div className={style.userItem} key={index}>
                   <div className={style.topNumber}>{index + 1}.</div>
                   <SimpleCell
-                    target="_blank"
-                    // href={`https://vk.com/skgopnik`}
                     before={
                       <Avatar
+                        className={style.avatar}
                         size={48}
                         src={item.user.info.photo}
-                        onClick={() => user.id !== item.userId ? changePanel('user', item) : changeStory('profile')}
+                        onClick={() => this.openProfile(item)}
                       />
                     }
-                    after={(item.userId !== list.user.userId) && (
+                    after={(item.userId !== user.id) && (
                       <IconButton
+                        className={style.transferIcon}
                         icon={<Icon28MoneySendOutline />}
                         onClick={() => changeModal('transferMoney', item.user.info)}
                       />
@@ -131,7 +139,7 @@ export default class extends React.Component<IProps, IState> {
                     multiline
                     disabled
                   >
-                    {item.user.info.firstName} {item.user.info.lastName}
+                    <div className={style.name} onClick={() => this.openProfile(item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
                   </SimpleCell>
                 </div>
               )) : (

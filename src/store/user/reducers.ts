@@ -22,8 +22,8 @@ export interface UserDataInterface {
   balance: number
   record: number
   level: number
-  passive: number
-  click: number
+  clickPassive: number
+  clickUser: number
   additional: any
   position?: number
   user?: UserInterface

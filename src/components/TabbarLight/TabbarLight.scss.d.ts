@@ -3,6 +3,7 @@
 interface CssExports {
   'balance': string;
   'button': string;
+  'icon': string;
   'items': string;
   'topNumber': string;
   'userItem': string;

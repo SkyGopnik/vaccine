@@ -213,7 +213,7 @@ export default class extends React.Component<IProps, IState> {
             <Card
               icon={<img src={Img1} alt="" />}
               title="Спасение друзей"
-              description="За каждое приглашение друга в игру вы получите вакцину на свой счёт"
+              description="За каждого приглашенного друга в игру, вы получите вакцину на свой счёт"
               actionsInfo={{
                 action: (
                   <Button
@@ -225,7 +225,7 @@ export default class extends React.Component<IProps, IState> {
                     Пригласить
                   </Button>
                 ),
-                info: stat.saveFriends && stat.saveFriends !== 0 ? `${stat.saveFriends} ${declNum(stat.saveFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
+                info: stat.savedFriends && stat.savedFriends !== 0 ? `${stat.savedFriends} ${declNum(stat.savedFriends, ['друг', 'друга', 'друзей'])} в игре` : ''
               }}
             />
             {notification && (

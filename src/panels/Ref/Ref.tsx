@@ -70,6 +70,7 @@ export default class extends React.Component<IProps, IState> {
     };
 
     this.copyCode = this.copyCode.bind(this);
+    this.activateRef = this.activateRef.bind(this);
   }
 
   componentDidMount() {
@@ -157,7 +158,7 @@ export default class extends React.Component<IProps, IState> {
     });
 
     try {
-      const { data } = await axios.post('/user/ref', {
+      const { data } = await axios.post('/ref', {
         code: value
       });
 
@@ -167,13 +168,6 @@ export default class extends React.Component<IProps, IState> {
           balance: new Decimal(user.data.balance).plus(data.bonusUser)
         }
       }));
-
-      // // Синхронизируем другого пользователя если он в игре
-      // sendWsMessage({
-      //   type: 'RefSystem',
-      //   refId: data.refUserId,
-      //   sum: data.bonusRef
-      // });
 
       await getProfile(false);
 
@@ -215,6 +209,8 @@ export default class extends React.Component<IProps, IState> {
     const { stat, additional } = data;
     const { ref, refCode } = data.ref;
 
+    const refDisabled = loading || additional.code || user.data.level <= 1;
+
     return (
       <Panel id={id} className={style.ref}>
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
@@ -234,7 +230,7 @@ export default class extends React.Component<IProps, IState> {
             title="Статистика"
           >
             <Subhead weight="regular">
-              <div>· Спасено друзей: {stat.saveFriends || 0}</div>
+              <div>· Спасено друзей: {stat.savedFriends || 0}</div>
               <div>· Получено вакцины за друзей: {ref && locale(ref) || 0}</div>
             </Subhead>
           </Card>
@@ -258,15 +254,15 @@ export default class extends React.Component<IProps, IState> {
               <div className={style.code}>
                 <Input
                   value={value}
-                  type="text"
+                  type="number"
                   placeholder="11928"
-                  disabled={loading || additional.code || user.data.level <= 1}
+                  disabled={refDisabled}
                   onChange={(e) => this.handleInputChange(e.currentTarget.value)}
                 />
                 <Button
-                  disabled={loading || (isset(error) ? (error !== '') : true) || additional.code}
-                  onClick={() => this.activateRef()}
+                  disabled={refDisabled}
                   stretched
+                  onClick={this.activateRef}
                 >
                   {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
                 </Button>
