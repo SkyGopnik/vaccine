@@ -25,7 +25,7 @@ export const changeProgress = (progress) => ({
   payload: progress
 });
 
-export const changeAdditional = createAsyncThunk('changeAdditional', (arg, thunkAPI) => {
+export const changeAdditional = createAsyncThunk('changeAdditional', async (arg, thunkAPI) => {
   const state = <{
     user: {
       data: UserInterface
@@ -34,14 +34,15 @@ export const changeAdditional = createAsyncThunk('changeAdditional', (arg, thunk
   const user = state.user.data;
 
   if (typeof arg !== "undefined") {
-    thunkAPI.dispatch(() => axios.put('/user/additional', arg));
-
-    thunkAPI.dispatch(syncUser({
-      ...lo.merge(user, {
-        data: {
-          additional: lo.merge(user.data.additional, arg)
-        }
-      })
-    }));
+    await Promise.all([
+      thunkAPI.dispatch(() => axios.put('/user/additional', arg)),
+      thunkAPI.dispatch(syncUser({
+        ...lo.merge(user, {
+          data: {
+            additional: lo.merge(user.data.additional, arg)
+          }
+        })
+      }))
+    ]);
   }
 });

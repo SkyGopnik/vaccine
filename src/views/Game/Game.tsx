@@ -51,7 +51,7 @@ export default class extends React.Component<IProps, IState> {
 
         syncUser(lo.merge(user, {
           data: {
-            balance: new Decimal(user.data.balance).add(user.data.clickPassive)
+            balance: new Decimal(user.data.balance).plus(user.data.clickPassive)
           }
         }));
       }
