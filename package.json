@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --define process.env.localConfig='\"local\"' --config webpack.config.dev.js --port 10888 --open --hot",
     "start:development": "webpack-dev-server --mode development --define process.env.localConfig='\"development\"' --config webpack.config.dev.js --port 10888 --open --hot",
-    "build:production": "webpack -p --mode production --define process.env.localConfig='\"production\"' --config webpack.config.js",
+    "build:master": "webpack -p --mode production --define process.env.localConfig='\"production\"' --config webpack.config.js",
     "build:development": "webpack -p --mode production --define process.env.localConfig='\"development\"' --config webpack.config.js"
   },
   "keywords": [],
