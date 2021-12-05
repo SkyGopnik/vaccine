@@ -139,9 +139,9 @@ export default class extends React.Component<IProps> {
             >
               Отображение в рейтинге
             </SimpleCell>
-            <SimpleCell onClick={() => changeModal('dropProgress')}>
-              Сбросить прогресс
-            </SimpleCell>
+            {/*<SimpleCell onClick={() => changeModal('dropProgress')}>*/}
+            {/*  Сбросить прогресс*/}
+            {/*</SimpleCell>*/}
             {/*<SimpleCell*/}
             {/*  expandable*/}
             {/*  indicator="Name"*/}
