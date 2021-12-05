@@ -1,6 +1,6 @@
 import React from "react";
 import {Avatar, Snackbar, Text} from "@vkontakte/vkui";
-import {Icon16Done} from "@vkontakte/icons";
+import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
 
 import { store } from 'src/js'
 
@@ -61,6 +61,32 @@ export function newFriend(data: newFriend) {
   >
     <div>Ты получил {locale(data.sum)} вакцины за нового друга </div>
   </Snackbar>
+  )
+}
+
+export function captchaSuccess(bonus: number) {
+  return(
+    <Snackbar
+      className='success-snack'
+      layout='vertical'
+      onClose={() => store.dispatch(changeSnackbar(null))}
+      before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+    >
+      <div>Ты получил {locale(bonus)} вакцины за прохождение мини-игры</div>
+    </Snackbar>
+  )
+}
+
+export function captchaFailed() {
+  return(
+    <Snackbar
+      className="error-snack"
+      layout="vertical"
+      onClose={() => changeSnackbar(null)}
+      before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
+    >
+      Мини-игра не была пройдена, в следующий раз будь внимательнее, иначе это может повлечь наказание
+    </Snackbar>
   )
 }
 

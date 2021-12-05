@@ -325,7 +325,10 @@ export default class extends React.Component<IProps, IState> {
                 Написать разработчикам
               </SimpleCell>
             </Card>
-            <Footer onClick={() => this.setAdmin()}>Сделано с <span style={{ color: 'var(--destructive)' }}>❤</span> от <Link target="_blank" href="https://vk.com/public191809582">SkyReglis Studio</Link></Footer>
+            <Footer onClick={() => this.setAdmin()}>
+              <div>Версия 2.1.0</div>
+              <div>Сделано с <span style={{ color: 'var(--destructive)' }}>❤</span> от <Link target="_blank" href="https://vk.com/public191809582">SkyReglis Studio</Link></div>
+            </Footer>
             <Spacing size={55} />
           </Div>
         </PullToRefresh>

@@ -77,6 +77,8 @@ export const appReducer = (state = defaultState, action) => {
     };
 
   case APP_CHANGE_STORY:
+    // console.log(action.payload.)
+
     if (state.story !== action.payload.story) {
       window.history.pushState({
         view: state.view,

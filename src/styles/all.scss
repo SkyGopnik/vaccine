@@ -1,5 +1,9 @@
 :root {
+  --elast_background_color: #F8FCFE;
+
   --icon_color: #3f8ae0;
+
+  --copy_placeholder_title_color: #000;
 
   --empty_background_blur: 12px;
   --empty_background_color: rgba(248, 252, 254, 0.72);
@@ -20,7 +24,11 @@
   }
 
   body[scheme=space_gray] {
+    --elast_background_color: #19191a;
+
     --icon_color: #fff;
+
+    --copy_placeholder_title_color: #fff;
 
     --empty_background_blur: 18px;
     --empty_background_color: rgba(#2c2d2e, 0.8);
@@ -46,7 +54,7 @@
     width: 100%;
     height: 100%;
 
-    background-color: #F8FCFE;
+    background-color: var(--elast_background_color);
   }
 
   .Card {

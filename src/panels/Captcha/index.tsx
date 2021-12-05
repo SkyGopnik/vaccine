@@ -66,7 +66,7 @@ export class Captcha extends React.Component<IProps, IState> {
 
     return (
       <Panel id={id}>
-        <PanelHeader separator={false}>Мини игра</PanelHeader>
+        <PanelHeader separator={false}>Мини-игра</PanelHeader>
         <Div className={style.captcha}>
           <CustomCard title="Как играть?" description="Вам необходимо выбрать колбу с готовой вакциной." />
           <div className={style.list}>

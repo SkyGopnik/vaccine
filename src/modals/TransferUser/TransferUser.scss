@@ -4,6 +4,10 @@
 
     position: relative;
 
+    &:before {
+      border: 1px solid var(--separator_common) !important;
+    }
+
     .header {
       padding: 16px 12px;
 
@@ -16,7 +20,7 @@
           overflow: hidden;
           text-overflow: ellipsis;
 
-          color: #000000;
+          color: var(--copy_placeholder_title_color);
         }
       }
 

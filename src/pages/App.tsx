@@ -114,17 +114,11 @@ export default class extends React.Component<IProps, IState> {
         }
 
         const appearance = {
-          [Scheme.BRIGHT_LIGHT]: {
-            status: Appearance.DARK,
-            color: '#6A9EE5'
-          },
-          [Scheme.SPACE_GRAY]: {
-            status: Appearance.LIGHT,
-            color: '#19191a'
-          }
+          [Scheme.BRIGHT_LIGHT]: '#6A9EE5',
+          [Scheme.SPACE_GRAY]: '#19191a'
         };
 
-        platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
+        platformApi.changeViewSettings(data.appearance, appearance[scheme]);
 
         this.setState({
           scheme
@@ -179,7 +173,7 @@ export default class extends React.Component<IProps, IState> {
       return;
     }
 
-    snackbar.style.paddingBottom = `calc(${tabbar.offsetHeight}px + var(--safe-area-inset-bottom))`;
+    snackbar.style.paddingBottom = tabbar.offsetHeight + "px";
   }
 
   render() {
