@@ -56,10 +56,12 @@ if (platformApi.currentType() === 'vk') {
 let el = document.createElement('div');
 document.body.appendChild(el);
 
-// eruda.init({
-//   container: el,
-//   tool: ['console', 'elements']
-// });
+if (process.env.localConfig === 'production') {
+  eruda.init({
+    container: el,
+    tool: ['console', 'elements']
+  });
+}
 
 ReactDOM.render(
   <Provider store={store}>
