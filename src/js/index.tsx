@@ -58,8 +58,7 @@ document.body.appendChild(el);
 
 if (process.env.localConfig === 'production') {
   eruda.init({
-    container: el,
-    tool: ['console', 'elements']
+    container: el
   });
 }
 
