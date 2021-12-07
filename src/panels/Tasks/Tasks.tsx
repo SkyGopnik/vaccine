@@ -132,7 +132,6 @@ export default class extends React.Component<IProps, IState> {
     new Promise(function(resolve, reject) {
       switch (type) {
         case 'watchAds':
-          resolve(true);
           bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'reward'})
             .then((res) => resolve(res))
             .catch((err) => reject(err));
