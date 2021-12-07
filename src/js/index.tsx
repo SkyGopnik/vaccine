@@ -40,15 +40,6 @@ axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
 if (platformApi.currentType() === 'vk') {
-  // Change scheme
-  bridge.send(
-    'VKWebAppSetViewSettings',
-    {
-      'status_bar_style': 'dark',
-      'action_bar_color': '#F8FCFE'
-    }
-  );
-
   // Init VK Mini App
   bridge.send('VKWebAppInit');
 }

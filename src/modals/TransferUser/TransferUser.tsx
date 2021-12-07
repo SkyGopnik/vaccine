@@ -101,6 +101,10 @@ export default class extends React.Component<IProps, IState> {
       error = undefined;
     }
 
+    if (!/^[a-z0-9_\.=\/\:-]{0,50}$/gm.test(value)) {
+      error = 'Разрешены только ссылки или прямые ID и короткие адреса';
+    }
+
     if (value.length >= 50) {
       error = 'ID или короткий адрес должен быть меньше 50 символов';
     }
@@ -127,7 +131,7 @@ export default class extends React.Component<IProps, IState> {
     }
 
     try {
-      const { data } = await axios.get(`/user/${value}`);
+      const { data } = await axios.get("/user/" + value);
 
       if (data) {
         if (user.id !== data.userId) {

@@ -114,11 +114,17 @@ export default class extends React.Component<IProps, IState> {
         }
 
         const appearance = {
-          [Scheme.BRIGHT_LIGHT]: '#6A9EE5',
-          [Scheme.SPACE_GRAY]: '#19191a'
+          [Scheme.BRIGHT_LIGHT]: {
+            status: Appearance.DARK,
+            color: '#6A9EE5'
+          },
+          [Scheme.SPACE_GRAY]: {
+            status: Appearance.LIGHT,
+            color: '#19191a'
+          }
         };
 
-        platformApi.changeViewSettings(data.appearance, appearance[scheme]);
+        platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
 
         this.setState({
           scheme

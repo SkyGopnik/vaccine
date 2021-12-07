@@ -69,6 +69,23 @@ export default class extends React.Component<IProps, IState> {
         }
       ]
     };
+
+    this.changeStory = this.changeStory.bind(this);
+  }
+
+  changeStory(e) {
+    const { panel, story, changeStory } = this.props;
+
+    const { dataset } = e.currentTarget;
+
+    if (story === dataset.story && panel === 'main') {
+      window.scroll({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    window.scroll({ top: 0, behavior: "auto" });
+
+    changeStory(dataset.story);
   }
 
   render() {
@@ -159,7 +176,7 @@ export default class extends React.Component<IProps, IState> {
               name={item.name}
               icon={item.icon}
               activeStory={story}
-              changeStory={(e) => changeStory(e.currentTarget.dataset.story)}
+              changeStory={this.changeStory}
             />
           ))}
         </div>

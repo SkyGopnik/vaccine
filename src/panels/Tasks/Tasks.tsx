@@ -132,6 +132,7 @@ export default class extends React.Component<IProps, IState> {
     new Promise(function(resolve, reject) {
       switch (type) {
         case 'watchAds':
+          resolve(true);
           bridge.send("VKWebAppShowNativeAds" as any, {ad_format: 'reward'})
             .then((res) => resolve(res))
             .catch((err) => reject(err));
@@ -189,11 +190,11 @@ export default class extends React.Component<IProps, IState> {
           <Text weight="medium">{locale(data.bonus)} вакцины</Text>
         </Snackbar>
       );
-    }).catch((err) => {
+    }).catch((e) => {
       let error = "Произошла ошибка во время выполнения задания";
 
-      if (err) {
-        error = task[type][err.error_data.error_code];
+      if (e) {
+        error = e.error_data ? task[type][e.error_data.error_code] : task[e.response.data.message];
       }
 
       changeSnackbar(
