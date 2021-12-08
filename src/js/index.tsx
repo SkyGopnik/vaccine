@@ -24,6 +24,7 @@ import rootReducer from '../store/reducers';
 import '@vkontakte/vkui/dist/vkui.css';
 import '@vkontakte/vkui/dist/unstable.css';
 import platformApi from "src/js/platformApi";
+import hashGet from "src/functions/hash_get";
 
 // Главный объект стора
 export const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -47,7 +48,7 @@ if (platformApi.currentType() === 'vk') {
 let el = document.createElement('div');
 document.body.appendChild(el);
 
-if (process.env.localConfig === 'production') {
+if (hashGet('eruda') === 'true') {
   eruda.init({
     container: el
   });
