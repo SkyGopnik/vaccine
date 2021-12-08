@@ -34,11 +34,20 @@ export default class extends React.Component<IProps, IState> {
       slideIndex: 0
     };
 
+    this.next = this.next.bind(this);
     this.finish = this.finish.bind(this);
   }
 
   componentDidMount() {
     console.log('onBoard bug');
+  }
+
+  next(e) {
+    const { index } = e.currentTarget.dataset;
+
+    this.setState({
+      slideIndex: Number(index)
+    });
   }
 
   async finish() {
@@ -81,7 +90,8 @@ export default class extends React.Component<IProps, IState> {
             <Div>
               <Button
                 size="l"
-                onClick={() => this.setState({ slideIndex: 1 })}
+                data-index="1"
+                onClick={this.next}
                 stretched
               >
                 Да, готов!
@@ -94,13 +104,14 @@ export default class extends React.Component<IProps, IState> {
                 icon={<img src={Img2} alt=""/>}
                 header="Разработайте вакцину"
               >
-                Учёные всего мира заняты разработкой вакцины. Настала и твоя очередь
+                Учёные всего мира заняты разработкой вакцины. Настала и твоя очередь!
               </Placeholder>
             </div>
             <Div>
               <Button
                 size="l"
-                onClick={() => this.setState({ slideIndex: 2 })}
+                data-index="2"
+                onClick={this.next}
                 stretched
               >
                 Ок, дальше!
