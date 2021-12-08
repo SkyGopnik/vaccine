@@ -152,7 +152,7 @@ export default class extends React.Component<IProps, IState> {
     const { code, bonus, limit, expireAt } = this.state;
 
     try {
-      const { data } = await axios.post('/promocode', {
+      const { data } = await axios.post('/v1/promocode', {
         code: code.value,
         bonus: bonus.value,
         limit: limit.value,

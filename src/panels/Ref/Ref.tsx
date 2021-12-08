@@ -158,7 +158,7 @@ export default class extends React.Component<IProps, IState> {
     });
 
     try {
-      const { data } = await axios.post('/ref', {
+      const { data } = await axios.post('/v1/ref', {
         code: value
       });
 

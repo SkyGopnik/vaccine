@@ -109,7 +109,7 @@ export default class extends React.Component<IProps, IState> {
     const { id } = this.state;
 
     try {
-      await axios.post(`/admin/${modalData}`, {
+      await axios.post("/v1/admin/" + modalData, {
         id: id.value
       });
 

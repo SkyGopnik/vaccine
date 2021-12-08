@@ -118,7 +118,7 @@ export default class extends React.Component<IProps, IState> {
     const { id, role } = this.state;
 
     try {
-      await axios.post('/admin/role', {
+      await axios.post('/v1/admin/role', {
         id: id.value.split(','),
         role: role.value
       });

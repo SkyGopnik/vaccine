@@ -11,7 +11,7 @@ export const getRating = createAsyncThunk('getRating', async (arg: boolean = tru
   }
 
   try {
-    const { data } = await axios.get('/rating');
+    const { data } = await axios.get('/v1/rating');
 
     thunkAPI.dispatch(getRatingSuccess(data));
   } catch (e) {

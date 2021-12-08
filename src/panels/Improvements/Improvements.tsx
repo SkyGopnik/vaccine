@@ -88,7 +88,7 @@ export default class extends React.Component<IProps, IState> {
 
     const count = user.data.additional.improvementsCount ? user.data.additional.improvementsCount : 1;
 
-    const { data } = await axios.get('/improvement/');
+    const { data } = await axios.get('/v1/improvement');
     const buttons = [];
 
     improvements[type].forEach(() => buttons.push(false));
@@ -120,7 +120,7 @@ export default class extends React.Component<IProps, IState> {
     try {
       this.changeButtonType(index, true);
 
-      const { data } = await axios.post('/improvement/buy', {
+      const { data } = await axios.post('/v1/improvement/buy', {
         type,
         count,
         index

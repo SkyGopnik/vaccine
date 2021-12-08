@@ -87,7 +87,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get('/transfer/recent');
+    const { data } = await axios.get('/v1/transfer/recent');
 
     this.setState({
       recentTransfer: data.map((item) => item.additional.user)
@@ -127,7 +127,7 @@ export default class extends React.Component<IProps, IState> {
     }
 
     try {
-      const { data } = await axios.get(`/user/${value}`);
+      const { data } = await axios.get("/v1/user/" + value);
 
       if (data) {
         if (user.id !== data.userId) {

@@ -59,7 +59,7 @@ export default class extends React.Component<IProps, IState> {
     this.subscribe();
 
     try {
-      const { data } = await axios.get('/user');
+      const { data } = await axios.get('/v1/user');
 
       console.log(data);
       console.log(JSON.stringify(data));

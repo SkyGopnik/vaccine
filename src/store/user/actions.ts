@@ -35,7 +35,7 @@ export const changeAdditional = createAsyncThunk('changeAdditional', async (arg,
 
   if (typeof arg !== "undefined") {
     await Promise.all([
-      thunkAPI.dispatch(() => axios.put('/user/additional', arg)),
+      thunkAPI.dispatch(() => axios.put('/v1/user/additional', arg)),
       thunkAPI.dispatch(syncUser({
         ...lo.merge(user, {
           data: {

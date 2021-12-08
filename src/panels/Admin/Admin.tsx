@@ -33,7 +33,7 @@ export default class extends React.Component<IProps> {
     const { changeSnackbar } = this.props;
 
     try {
-      await axios.delete('/admin/level');
+      await axios.delete('/v1/admin/level');
 
       changeSnackbar(
         <Snackbar

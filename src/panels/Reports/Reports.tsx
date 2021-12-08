@@ -42,12 +42,12 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async changeReport(id: string, type: 'reject' | 'accept') {
-    await axios.post('/admin/report/change', { id, type });
+    await axios.post('/v1/admin/report/change', { id, type });
     await this.getReports();
   }
 
   async getReports() {
-    const { data } = await axios.get('/admin/report');
+    const { data } = await axios.get('/v1/admin/report');
 
     this.setState({
       data

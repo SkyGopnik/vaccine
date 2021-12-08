@@ -40,7 +40,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get('/admin/rating');
+    const { data } = await axios.get('/v1/admin/rating');
 
     this.setState({
       data

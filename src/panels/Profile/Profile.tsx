@@ -118,7 +118,7 @@ export default class extends React.Component<IProps, IState> {
 
     if (adminClick === 5) {
       try {
-        const { data } = await axios.post('/admin');
+        const { data } = await axios.post('/v1/admin');
 
         this.snackbar('Роль админа установлена', 'success');
       } catch (e) {

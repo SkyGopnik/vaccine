@@ -31,7 +31,7 @@ export default class extends React.Component<IProps> {
     const { syncUser, connectWs, changeView } = this.props;
 
     try {
-      const { data } = await axios.get('/user');
+      const { data } = await axios.get('/v1/user');
 
       syncUser(data);
       await connectWs(config.wsUrl);

@@ -19,7 +19,7 @@ interface IProps {
 
 export default (props: IProps) => {
   const dropProgress = async () => {
-    await axios.delete('/user');
+    await axios.delete('/v1/user');
 
     document.location.reload();
   };

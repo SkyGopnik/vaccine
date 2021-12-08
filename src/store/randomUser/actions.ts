@@ -16,7 +16,7 @@ export const getRandomUser = createAsyncThunk('getRandomUser', async (arg: { loa
   }
 
   try {
-    const { data } = await axios.get("/profile/" + id);
+    const { data } = await axios.get("/v1/profile/" + id);
 
     thunkAPI.dispatch(getRandomUserSuccess(data));
   } catch (e) {

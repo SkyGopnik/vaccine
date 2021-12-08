@@ -11,7 +11,7 @@ export const getNotifications = createAsyncThunk('getNotifications', async (arg:
   }
 
   try {
-    const { data } = await axios.get('/user/notifications');
+    const { data } = await axios.get('/v1/user/notifications');
 
     thunkAPI.dispatch(getNotificationsSuccess(data));
   } catch (e) {

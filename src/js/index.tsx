@@ -7,8 +7,6 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import eruda from "eruda";
 
-import queryGet from 'src/functions/query_get';
-
 import { config } from 'src/js/config';
 
 // Import scroll helper for safari

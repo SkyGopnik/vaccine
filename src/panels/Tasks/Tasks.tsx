@@ -119,7 +119,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async getTasks() {
-    const { data } = await axios.get('/task');
+    const { data } = await axios.get('/v1/task');
 
     this.setState({
       tasks: data
@@ -166,7 +166,7 @@ export default class extends React.Component<IProps, IState> {
           break;
       }
     }).then(async () => {
-      const { data } = await axios.post('/task/complete', {
+      const { data } = await axios.post('/v1/task/complete', {
         type
       });
 

@@ -52,7 +52,7 @@ export default class extends React.Component<IProps, IState> {
     try {
       const { access_token } = await bridge.send("VKWebAppGetAuthToken", {"app_id": config.appId, "scope": "friends"});
       const { response } = await bridge.send("VKWebAppCallAPIMethod", {"method": "friends.get", "params": {"fields": "photo_200,sex", "v":"5.130", "access_token": access_token}});
-      const { data } = await axios.post('/user/list/check', {
+      const { data } = await axios.post('/v1/user/list/check', {
         users: response.items.map((item) => String(item.id))
       });
 

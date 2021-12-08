@@ -95,7 +95,11 @@ export default class extends React.Component<IProps, IState> {
     });
 
     try {
-      const { data } = await axios.get(`/promocode/?code=${value}`);
+      const { data } = await axios.get("/v1/promocode", {
+        params: {
+          code: value
+        }
+      });
 
       // Обновляем себе баланс
       syncUser(lo.merge(user, {
