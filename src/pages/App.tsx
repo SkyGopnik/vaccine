@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import bridge from "@vkontakte/vk-bridge";
 import {Appearance, AppRoot, ConfigProvider, Epic, Root, Scheme} from '@vkontakte/vkui';
 
 import RatingView from "src/views/Rating/RatingContainer";
@@ -13,15 +14,16 @@ import WrongOrientationView from "src/views/WrongOrientation";
 
 import TabbarLight from "src/components/TabbarLight/TabbarLightContainer";
 import Modals from "src/components/Modals/ModalsContainer";
-import platformApi from "src/js/platformApi";
+
+import queryGet from 'src/functions/query_get';
 
 import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 
+import platformApi from "src/js/platformApi";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
-import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   getUser(),
@@ -78,6 +80,7 @@ export default class extends React.Component<IProps, IState> {
       this.menu(e);
     });
 
+    this.updatePanelScroll();
     this.updateSnackbarPadding();
   }
 
@@ -92,7 +95,12 @@ export default class extends React.Component<IProps, IState> {
       || prevProps.story !== story
       || prevProps.story === story && prevProps.panel !== panel
     ) {
-      setTimeout(() => this.updateSnackbarPadding(), 250);
+      // Fix vk games scroll bug
+      // Fix snackbar padding
+      setTimeout(() => {
+        this.updatePanelScroll();
+        this.updateSnackbarPadding();
+      }, 250);
     }
   }
 
@@ -180,6 +188,14 @@ export default class extends React.Component<IProps, IState> {
     }
 
     snackbar.style.paddingBottom = tabbar.offsetHeight + "px";
+  }
+
+  updatePanelScroll() {
+    const panel = document.querySelector<HTMLElement>('.Panel');
+
+    if (panel && queryGet('reglis_platform') === 'web') {
+      panel.style.overflowY = "scroll";
+    }
   }
 
   render() {

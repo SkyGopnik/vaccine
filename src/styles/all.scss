@@ -57,13 +57,11 @@
     background-color: var(--elast_background_color);
   }
 
-  //.Panel {
-  //  overflow-y: auto;
-  //
-  //  &::-webkit-scrollbar {
-  //    width: 0;
-  //  }
-  //}
+  .Panel {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
 
   .Card {
     overflow: hidden;
