@@ -131,8 +131,6 @@ export default class extends React.Component<IProps, IState> {
     } = this.props;
     const { lastClick, lastInterval, showAds } = this.state;
 
-    console.log('click');
-
     const newInterval = new Date().getTime() - lastInterval.time;
 
     this.setState({

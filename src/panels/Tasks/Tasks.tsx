@@ -189,11 +189,11 @@ export default class extends React.Component<IProps, IState> {
           <Text weight="medium">{locale(data.bonus)} вакцины</Text>
         </Snackbar>
       );
-    }).catch((err) => {
+    }).catch((e) => {
       let error = "Произошла ошибка во время выполнения задания";
 
-      if (err) {
-        error = task[type][err.error_data.error_code];
+      if (e) {
+        error = e.error_data ? task[type][e.error_data.error_code] : task[e.response.data.message];
       }
 
       changeSnackbar(

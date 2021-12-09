@@ -20,9 +20,18 @@ export const changeView = (view: string, viewData: Object = null) => {
   };
 };
 
-export const changePanel = (panel: string, panelData: Object = null) => {
+export const changePanel = (panel: string, panelData: any = null) => {
   const { user } = store.getState();
   const { snackbarTabNotification } = user.data.data.additional;
+
+  if (panel === 'user' && user.data.id === panelData.userId) {
+    return {
+      type: APP_CHANGE_STORY,
+      payload: {
+        story: 'profile'
+      }
+    };
+  }
 
   return {
     type: APP_CHANGE_PANEL,

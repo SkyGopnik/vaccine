@@ -70,22 +70,13 @@ export default class extends React.Component<IProps, IState> {
     }, 1000);
   }
 
-  openProfile(item: UserDataInterface) {
-    const { user, changeStory, changePanel } = this.props;
-
-    if (user.id !== item.userId) {
-      changePanel('user', item);
-    } else {
-      changeStory('profile')
-    }
-  }
-
   render() {
     const {
       id,
       user,
       list,
       snackbar,
+      changePanel,
       changeModal
     } = this.props;
     const { ptr } = this.state;
@@ -125,7 +116,7 @@ export default class extends React.Component<IProps, IState> {
                         className={style.avatar}
                         size={48}
                         src={item.user.info.photo}
-                        onClick={() => this.openProfile(item)}
+                        onClick={() => changePanel('user', item)}
                       />
                     }
                     after={(item.userId !== user.id) && (
@@ -139,7 +130,7 @@ export default class extends React.Component<IProps, IState> {
                     multiline
                     disabled
                   >
-                    <div className={style.name} onClick={() => this.openProfile(item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
+                    <div className={style.name} onClick={() => changePanel('user', item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
                   </SimpleCell>
                 </div>
               )) : (

@@ -210,6 +210,7 @@ export default class extends React.Component<IProps, IState> {
     const { ref, refCode } = data.ref;
 
     const refDisabled = loading || additional.code || user.data.level <= 1;
+    const refBtnDisabled = value.length === 0;
 
     return (
       <Panel id={id} className={style.ref}>
@@ -260,7 +261,7 @@ export default class extends React.Component<IProps, IState> {
                   onChange={(e) => this.handleInputChange(e.currentTarget.value)}
                 />
                 <Button
-                  disabled={refDisabled}
+                  disabled={refDisabled || refBtnDisabled}
                   stretched
                   onClick={this.activateRef}
                 >

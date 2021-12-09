@@ -22,6 +22,7 @@ import rootReducer from '../store/reducers';
 import '@vkontakte/vkui/dist/vkui.css';
 import '@vkontakte/vkui/dist/unstable.css';
 import platformApi from "src/js/platformApi";
+import hashGet from "src/functions/hash_get";
 
 // Главный объект стора
 export const store = createStore(rootReducer, applyMiddleware(thunk));
@@ -38,15 +39,6 @@ axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
 if (platformApi.currentType() === 'vk') {
-  // Change scheme
-  bridge.send(
-    'VKWebAppSetViewSettings',
-    {
-      'status_bar_style': 'dark',
-      'action_bar_color': '#F8FCFE'
-    }
-  );
-
   // Init VK Mini App
   bridge.send('VKWebAppInit');
 }
@@ -54,10 +46,11 @@ if (platformApi.currentType() === 'vk') {
 let el = document.createElement('div');
 document.body.appendChild(el);
 
-// eruda.init({
-//   container: el,
-//   tool: ['console', 'elements']
-// });
+if (hashGet('eruda') === 'true') {
+  eruda.init({
+    container: el
+  });
+}
 
 ReactDOM.render(
   <Provider store={store}>

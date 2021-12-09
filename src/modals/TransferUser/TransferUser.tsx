@@ -87,7 +87,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { data } = await axios.get('/v1/transfer/recent');
+    const { data } = await axios.get('/transfer/recent');
 
     this.setState({
       recentTransfer: data.map((item) => item.additional.user)
@@ -99,6 +99,10 @@ export default class extends React.Component<IProps, IState> {
 
     if (value.length === 0) {
       error = undefined;
+    }
+
+    if (!/^[a-z0-9_\.=\/\:-]{0,50}$/gm.test(value)) {
+      error = 'Разрешены только ссылки или прямые ID и короткие адреса';
     }
 
     if (value.length >= 50) {
@@ -127,7 +131,7 @@ export default class extends React.Component<IProps, IState> {
     }
 
     try {
-      const { data } = await axios.get("/v1/user/" + value);
+      const { data } = await axios.get("/user/" + value);
 
       if (data) {
         if (user.id !== data.userId) {

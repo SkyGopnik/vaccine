@@ -82,7 +82,7 @@ export function captchaFailed() {
     <Snackbar
       className="error-snack"
       layout="vertical"
-      onClose={() => changeSnackbar(null)}
+      onClose={() => store.dispatch(changeSnackbar(null))}
       before={<Avatar size={24} style={{background: 'var(--destructive)'}}><Icon16Cancel fill="#fff" width={14} height={14}/></Avatar>}
     >
       Мини-игра не была пройдена, в следующий раз будь внимательнее, иначе это может повлечь наказание

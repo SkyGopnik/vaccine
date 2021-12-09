@@ -57,6 +57,12 @@
     background-color: var(--elast_background_color);
   }
 
+  .Panel {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
   .Card {
     overflow: hidden;
   }
