@@ -1,7 +1,14 @@
 import {changeModal, changeSnackbar, changeView} from "src/store/app/actions";
 import {changeProgress, syncUser, balancePlus} from "src/store/user/actions";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {passiveOfflineBonus, transferGet, newFriend, captchaSuccess, captchaFailed} from "src/functions/getSnackbar";
+import {
+  passiveOfflineBonus,
+  transferGet,
+  newFriend,
+  captchaSuccess,
+  captchaFailed,
+  newLevel
+} from "src/functions/getSnackbar";
 import {AppReducerInterface} from "src/store/app/reducers";
 import bridge, {AnyRequestMethodName} from "@vkontakte/vk-bridge";
 
@@ -70,6 +77,12 @@ export const connectWs = createAsyncThunk('connectWs', async (arg: string, thunk
 
       if (type === 'CaptchaFailed') {
         thunkAPI.dispatch(changeSnackbar(captchaFailed()));
+      }
+
+      if (type === 'NewLevel') {
+        const { level } = data;
+
+        thunkAPI.dispatch(changeSnackbar(newLevel(level)));
       }
 
       thunkAPI.dispatch(connectWsMessage(msg.data));

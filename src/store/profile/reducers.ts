@@ -5,6 +5,7 @@ import {
 } from './actions';
 
 import {Notification} from "src/store/notifications/reducers";
+import {UserInterface} from "src/store/user/reducers";
 
 export interface UserStat {
   level?: number,
@@ -18,12 +19,20 @@ export interface UserStat {
   transferSumToday?: number
 }
 
+interface RefHistoryInterface {
+  id?: number,
+  user: UserInterface,
+  refId?: number,
+  userId?: string
+}
+
 export interface ProfileData {
   id: string,
   type: string,
   stat: UserStat,
   ref: {
     refCode?: number,
+    history?: Array<RefHistoryInterface>,
     ref?: number
   },
   role: string,

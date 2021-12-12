@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Panel, PanelHeader, Div, Card, Button
+  Panel, PanelHeader, Div, Card, Button, FixedLayout
 } from '@vkontakte/vkui';
 
 import {AppReducerInterface} from "src/store/app/reducers";
@@ -84,16 +84,20 @@ export class Captcha extends React.Component<IProps, IState> {
               </Card>
             ))}
           </div>
-          <Button
-            className={style.checkBtn}
-            size="l"
-            disabled={activeIndex === null}
-            stretched
-            onClick={this.checkCaptcha}
-          >
-            Проверить
-          </Button>
         </Div>
+        <FixedLayout vertical="bottom">
+          <Div>
+            <Button
+              className={style.checkBtn}
+              size="l"
+              disabled={activeIndex === null}
+              stretched
+              onClick={this.checkCaptcha}
+            >
+              Проверить
+            </Button>
+          </Div>
+        </FixedLayout>
       </Panel>
     );
   }

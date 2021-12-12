@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {getProfile} from "src/store/profile/actions";
-import {changeSnackbar} from "src/store/app/actions";
+import {changeModal, changePanel, changeSnackbar} from "src/store/app/actions";
 import {sendWsMessage} from "src/store/webSocket/actions";
 import {syncUser} from "src/store/user/actions";
 
@@ -24,6 +24,8 @@ const mapDispatchToProps = {
   sendWsMessage,
   changeSnackbar,
   syncUser,
+  changeModal,
+  changePanel,
   getProfile
 };
 

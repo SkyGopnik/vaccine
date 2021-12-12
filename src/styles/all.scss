@@ -7,6 +7,8 @@
 
   --empty_background_blur: 12px;
   --empty_background_color: rgba(248, 252, 254, 0.72);
+
+  --ref_code_color: #000000;
 }
 
 :global {
@@ -32,6 +34,8 @@
 
     --empty_background_blur: 18px;
     --empty_background_color: rgba(#2c2d2e, 0.8);
+
+    --ref_code_color: #ffffff;
   }
 }
 

@@ -15,7 +15,7 @@ import {
   Avatar,
   Snackbar,
   FormItem,
-  Spinner
+  Spinner, IconButton, SimpleCell
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -23,11 +23,13 @@ import Card from 'src/components/Card/Card';
 
 import Img5 from "src/img/profile/5.svg";
 import Img6 from "src/img/profile/6.svg";
+import Img7 from "src/img/Friends.svg";
 
-import {Icon16Cancel, Icon16Done, Icon28Send} from '@vkontakte/icons';
+import {Icon16Cancel, Icon16Done, Icon28MoneySendOutline, Icon28Send} from '@vkontakte/icons';
 
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 import {UserInterface} from "src/store/user/reducers";
+import {AppReducerInterface} from "src/store/app/reducers";
 
 import {locale} from "src/functions/balanceFormat";
 import isset from "src/functions/isset";
@@ -36,9 +38,9 @@ import Spacing from "src/components/Spacing";
 
 import platformApi from "src/js/platformApi";
 
-import style from "./Ref.scss";
+import style from "./Ref.module.scss";
 
-interface IProps extends ProfileReducerInterface {
+interface IProps extends ProfileReducerInterface, AppReducerInterface {
   id: string,
   snackbar: ReactNode | null,
   user: UserInterface,
@@ -200,14 +202,14 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, data, user, snackbar } = this.props;
+    const { id, data, user, snackbar, changeModal, changePanel } = this.props;
     const {
       value,
       error,
       loading
     } = this.state;
     const { stat, additional } = data;
-    const { ref, refCode } = data.ref;
+    const { ref, history, refCode } = data.ref;
 
     const refDisabled = loading || additional.code || user.data.level <= 1;
     const refBtnDisabled = value.length === 0;
@@ -235,6 +237,39 @@ export default class extends React.Component<IProps, IState> {
               <div>· Получено вакцины за друзей: {ref && locale(ref) || 0}</div>
             </Subhead>
           </Card>
+          {history.length !== 0 && (
+            <Card
+              icon={<img src={Img7} alt="" />}
+              title="Друзья"
+            >
+              {history.map((item, index) => (
+                <SimpleCell
+                  className={style.userItem}
+                  key={index}
+                  before={
+                    <Avatar
+                      className={style.avatar}
+                      size={48}
+                      src={item.user.info.photo}
+                      onClick={() => changePanel('user', item)}
+                    />
+                  }
+                  after={(item.user.id !== user.id) && (
+                    <IconButton
+                      className={style.transferIcon}
+                      icon={<Icon28MoneySendOutline />}
+                      onClick={() => changeModal('transferMoney', item.user.info)}
+                    />
+                  )}
+                  description={locale(item.user.data.balance)}
+                  multiline
+                  disabled
+                >
+                  <div className={style.name} onClick={() => changePanel('user', item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
+                </SimpleCell>
+              ))}
+            </Card>
+          )}
         </Div>
         <Div className={style.block}>
           <Header mode="secondary">У меня есть код</Header>

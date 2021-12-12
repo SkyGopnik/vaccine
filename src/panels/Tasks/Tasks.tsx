@@ -276,12 +276,14 @@ export default class extends React.Component<IProps, IState> {
                       <div className={style.header}>
                         <Headline weight="medium">{item.name}</Headline>
                       </div>
-                      <Text
-                        className={style.body}
-                        weight="regular"
-                      >
-                        {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
-                      </Text>
+                      {!this.taskDisabled(item) && (
+                        <Text
+                          className={style.body}
+                          weight="regular"
+                        >
+                          {locale(new Decimal((user.data.clickUser ? user.data.clickUser : 1) * item.multiplier).toNumber())} вакцины
+                        </Text>
+                      )}
                       <div className={style.button}>
                         {this.taskButton(item)}
                       </div>

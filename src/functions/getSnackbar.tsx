@@ -90,3 +90,15 @@ export function captchaFailed() {
   )
 }
 
+export function newLevel(level: number) {
+  return(
+    <Snackbar
+      className='success-snack'
+      layout='vertical'
+      onClose={() => store.dispatch(changeSnackbar(null))}
+      before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+    >
+      <div>Ты получил {level} уровень</div>
+    </Snackbar>
+  )
+}

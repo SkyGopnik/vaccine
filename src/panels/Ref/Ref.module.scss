@@ -1,5 +1,18 @@
 .ref {
   .block {
+    .userItem {
+      padding-left: 0;
+      padding-right: 0;
+
+      .avatar, .name {
+        cursor: pointer;
+      }
+
+      .transferIcon {
+        color: var(--icon_color);
+      }
+    }
+
     :global {
       .Header {
         .Header__in {
@@ -23,8 +36,8 @@
 
       :global {
         .Title {
-          margin: 18px 0px;
-          color: #000000;
+          margin: 18px 0;
+          color: var(--ref_code_color);
         }
       }
     }
