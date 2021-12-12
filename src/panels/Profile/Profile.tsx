@@ -26,6 +26,7 @@ import {
 import Card from 'src/components/Card/Card';
 import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
 import Spacing from "src/components/Spacing";
+import StatCard from "src/components/Profile/StatCard";
 
 import getDate from "src/functions/getDate";
 import declNum from "src/functions/decl_num";
@@ -118,7 +119,7 @@ export default class extends React.Component<IProps, IState> {
 
     if (adminClick === 5) {
       try {
-        const { data } = await axios.post('/v1/admin');
+        await axios.post('/v1/admin');
 
         this.snackbar('Роль админа установлена', 'success');
       } catch (e) {
@@ -288,20 +289,7 @@ export default class extends React.Component<IProps, IState> {
             {/*    </div>*/}
             {/*  </HorizontalScroll>*/}
             {/*</Card>*/}
-            <Card
-              icon={<img src={Img5} alt="" />}
-              title="Статистика"
-            >
-              <Subhead weight="regular">
-                <div>· Уровень: {stat.level ? locale(stat.level) : 0}</div>
-                {stat.level <= 5 && <div>· Дневной лимит: {stat.level ? locale(Math.pow(2, stat.level)) : 0}</div>}
-                <div>· Начало разработки вакцины: {stat.startAt ? getDate(stat.startAt) : 0}</div>
-                <div>· Разработано: {stat.record && locale(stat.record) || 0}</div>
-                <div>· Получено вакцины: {stat.transfer && locale(stat.transfer) || 0}</div>
-                <div>· Произведено улучшений: {stat.improvements && locale(stat.improvements) || 0}</div>
-                {/*<div>· Достижений: {stat.achievements || 0}</div>*/}
-              </Subhead>
-            </Card>
+            <StatCard stat={stat} />
             <Card noPadding>
               {!subGroup && (
                 <SubscribeGroup />

@@ -25,13 +25,12 @@ import { Swipeable } from 'react-swipeable';
 import HistoryBackBtn from "src/components/HistoryBackBtn";
 import MainIcon from "src/components/MainIcon";
 
-import { improvements } from "src/js/data";
-
 import { UserInterface } from "src/store/user/reducers";
 
 import { locale } from "src/functions/balanceFormat";
 
 import style from './Improvements.scss';
+import bridge from "@vkontakte/vk-bridge";
 
 interface IProps {
   id: string,
@@ -45,6 +44,15 @@ interface IProps {
   changeAdditional(data: object)
 }
 
+interface ImprovementItem {
+  name: string,
+  desc: string,
+  price: number,
+  count: number,
+  icon: string,
+  pref: string
+}
+
 interface IState {
   stat: {
     vaccine?: {
@@ -54,11 +62,14 @@ interface IState {
       [key: string]: number
     }
   },
+  improvements: {
+    vaccine: Array<ImprovementItem>,
+    scientists: Array<ImprovementItem>
+  } | null,
   type: 'vaccine' | 'scientists' | 'pharmacy',
   count: number,
   buttons: Array<boolean>,
-  loading: boolean,
-  firstLoading: boolean
+  loading: boolean
 }
 
 const localization = {
@@ -72,11 +83,11 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       stat: {},
+      improvements: null,
       type: 'vaccine',
       count: 1,
       buttons: [],
-      loading: false,
-      firstLoading: true
+      loading: true
     };
 
     this.actionSheet = React.createRef();
@@ -89,27 +100,26 @@ export default class extends React.Component<IProps, IState> {
     const count = user.data.additional.improvementsCount ? user.data.additional.improvementsCount : 1;
 
     const { data } = await axios.get('/v1/improvement');
-    const buttons = [];
+    const { stat, improvements } = data;
 
-    improvements[type].forEach(() => buttons.push(false));
+    const buttons = Array(improvements[type].length).fill(false);
+
+    console.log(data);
 
     this.setState({
-      stat: data,
-      firstLoading: false,
+      stat,
+      improvements,
       buttons,
-      count
+      count,
+      loading: false
     });
   }
 
-  async buyImprovement(index: number, price: number) {
+  async buyImprovement(index: number, item) {
     const { user, syncUser, changeSnackbar } = this.props;
     const { type, count } = this.state;
 
     if (!user) {
-      return;
-    }
-
-    if (new Decimal(user.data.balance).minus(price).toNumber() < 0) {
       return;
     }
 
@@ -126,6 +136,11 @@ export default class extends React.Component<IProps, IState> {
         index
       });
 
+      const price = this.calculatePrice(item);
+      const balance = new Decimal(user.data.balance)
+        .minus(price)
+        .toNumber();
+
       syncUser(data);
 
       this.setState({
@@ -140,7 +155,7 @@ export default class extends React.Component<IProps, IState> {
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
           <div>Улучшение куплено</div>
-          <Text weight="medium">Осталось {locale(new Decimal(user.data.balance).minus(price).toNumber())} вакцины</Text>
+          <Text weight="medium">Осталось {locale(balance)} вакцины</Text>
         </Snackbar>
       );
     } catch (e) {
@@ -175,14 +190,23 @@ export default class extends React.Component<IProps, IState> {
   }
 
   // Подсчёт стоимости улучшения
-  calculatePrice(price: number, multiple: number) {
-    const { count } = this.state;
+  calculatePrice(item) {
+    const userCount = this.state.count;
 
-    if (multiple !== 0) {
-      return price * (multiple + 1) * count;
-    }
+    const price = item.price;
+    const count = new Decimal(this.itemCount(item.name))
+      .plus(userCount)
+      .toNumber();
 
-    return price * count;
+    return Number(
+      new Decimal(price)
+        .mul(
+          new Decimal(1.04)
+            .pow(count)
+            .toNumber()
+        )
+        .toFixed(4)
+    );
   }
 
   // Подсчёт купленых улучшений
@@ -193,10 +217,9 @@ export default class extends React.Component<IProps, IState> {
   }
 
   changeType(name: 'vaccine' | 'scientists' | 'pharmacy') {
-    const { type } = this.state;
-    const buttons = [];
+    const { type, improvements } = this.state;
 
-    improvements[type].forEach(() => buttons.push(false));
+    const buttons = Array(improvements[type].length).fill(false);
 
     window.scroll({ top: 0, behavior: type === name ? 'smooth' : 'auto' });
 
@@ -242,15 +265,29 @@ export default class extends React.Component<IProps, IState> {
     this.setState({ count });
   }
 
+  buttonDisabled(index, item) {
+    const { user } = this.props;
+    const { buttons, loading } = this.state;
+
+    if (buttons[index]) {
+      return true;
+    }
+
+    if (loading) {
+      return true;
+    }
+
+    return this.calculatePrice(item) >= new Decimal(user.data.balance).toNumber();
+  }
+
   render() {
-    const { id, user, snackbar, changePopout } = this.props;
+    const { id, snackbar, changePopout } = this.props;
     const {
       stat,
+      improvements,
       type,
       count,
-      buttons,
-      loading,
-      firstLoading
+      buttons
     } = this.state;
 
     return (
@@ -312,7 +349,7 @@ export default class extends React.Component<IProps, IState> {
             >
               Количество
             </Button>
-            {improvements[type].map((item, index) => (
+            {improvements && improvements[type].map((item, index) => (
               <Card
                 className={style.card}
                 key={index}
@@ -336,14 +373,12 @@ export default class extends React.Component<IProps, IState> {
                     <Button
                       mode="outline"
                       size="m"
-                      // click * 5 - кол-во которое максимально можно заработать с рекламы 18 * 5 = 90
-                      // item.price * lo.filter - стоимость с множителем
-                      disabled={buttons[index] || loading || firstLoading || this.calculatePrice(item.price, this.itemCount(item.name)) > user.data.balance}
-                      onClick={() => this.buyImprovement(index, this.calculatePrice(item.price, this.itemCount(item.name)))}
+                      disabled={this.buttonDisabled(index, item)}
+                      onClick={() => this.buyImprovement(index, item)}
                     >
-                      {!firstLoading && !buttons[index] ? (
+                      {!buttons[index] ? (
                         <>
-                          <div>{locale(this.calculatePrice(item.price, this.itemCount(item.name)))}</div>
+                          <div>{locale(this.calculatePrice(item))}</div>
                           <div><MainIcon className={style.btnIcon} /></div>
                         </>
                       ) : <Spinner size="small" />}

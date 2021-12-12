@@ -14,7 +14,8 @@ export interface UserStat {
   savedFriends?: number,
   transfer?: number,
   improvements?: number,
-  achievements?: number
+  achievements?: number,
+  transferSumToday?: number
 }
 
 export interface ProfileData {
