@@ -38,7 +38,10 @@ if (document.location.href) {
 axios.defaults.baseURL = config.apiUrl;
 axios.defaults.responseType = 'json';
 
-if (platformApi.currentType() === 'vk') {
+if (
+  platformApi.currentType() === 'vk'
+  || platformApi.currentType() === 'ok'
+) {
   // Init VK Mini App
   bridge.send('VKWebAppInit');
 }
