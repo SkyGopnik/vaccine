@@ -249,15 +249,6 @@ export default class extends React.Component<IProps, IState> {
             <Card
               icon={<img src={Img7} alt="" />}
               title={`Уровень ${stat.level}`}
-              actions={
-                <Button
-                  mode="outline"
-                  size="m"
-                  onClick={() => changePanel('levels')}
-                >
-                  Посмотреть все
-                </Button>
-              }
             >
               <div className={style.levels}>
                 <div className={style.progressWrapper}>
