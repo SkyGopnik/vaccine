@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Panel, PanelHeader, Div, Card, Button, FixedLayout
+  Panel, PanelHeader, Div, Card, Button, FixedLayout, Headline
 } from '@vkontakte/vkui';
 
 import {AppReducerInterface} from "src/store/app/reducers";
@@ -22,6 +22,8 @@ interface IState {
 }
 
 export class Captcha extends React.Component<IProps, IState> {
+  private timeout: any;
+
   constructor(props: IProps) {
     super(props);
 
@@ -30,7 +32,12 @@ export class Captcha extends React.Component<IProps, IState> {
     };
 
     this.handleImageClick = this.handleImageClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.checkCaptcha = this.checkCaptcha.bind(this);
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeout);
   }
 
   handleImageClick(e) {
@@ -46,6 +53,12 @@ export class Captcha extends React.Component<IProps, IState> {
     this.setState({
       activeIndex: _index
     });
+  }
+
+  handleClick() {
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(this.checkCaptcha, 500);
   }
 
   checkCaptcha() {
@@ -91,8 +104,8 @@ export class Captcha extends React.Component<IProps, IState> {
               className={style.checkBtn}
               size="l"
               disabled={activeIndex === null}
+              onClick={this.handleClick}
               stretched
-              onClick={this.checkCaptcha}
             >
               Проверить
             </Button>

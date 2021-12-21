@@ -44,12 +44,14 @@
         }
       }
 
-      :global {
-        .Text {
-          margin-top: 8px;
+      .text {
+        margin-top: 8px;
 
-          color: #2C2D2E;
-        }
+        color: #2C2D2E;
+      }
+
+      .button {
+        margin-top: 8px;
       }
     }
   }
