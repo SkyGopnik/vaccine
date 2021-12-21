@@ -87,7 +87,10 @@ export default class platformApi {
   public static getHref(type: string, id: string) {
     switch (type) {
       case 'vk':
+      case 'vk_game':
         return 'https://vk.com/id' + id;
+      case 'ok':
+        return 'https://ok.ru/profile/' + id;
     }
   }
 

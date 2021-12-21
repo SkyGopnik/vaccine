@@ -4,13 +4,17 @@ import axios from "axios";
 import Decimal from "decimal.js";
 import bridge, {AnyRequestMethodName} from "@vkontakte/vk-bridge";
 import {
+  Avatar,
+  Button,
+  Card,
+  Div,
+  Headline,
   Panel,
   PanelHeader,
-  Div,
-  Card,
-  Headline,
-  Text,
-  Button, Spinner, Snackbar, Avatar, PullToRefresh
+  PullToRefresh,
+  Snackbar,
+  Spinner,
+  Text
 } from '@vkontakte/vkui';
 import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
 
@@ -26,16 +30,13 @@ import {locale} from "src/functions/balanceFormat";
 import Img1 from "src/img/tasks/1.svg";
 import Img2 from "src/img/tasks/2.svg";
 import Img3 from "src/img/tasks/3.svg";
-import Img4 from "src/img/tasks/4.svg";
-import Img5 from "src/img/tasks/5.svg";
 import Img6 from "src/img/tasks/6.svg";
 import Img7 from "src/img/tasks/7.svg";
-
-import {config} from "src/js/config";
 
 import style from './Tasks.scss';
 import Promocode from "src/components/Promocode/PromocodeContainer";
 import task from "src/errors/task";
+import Support, {SupportTypes} from "src/js/support";
 
 interface Task {
   multiplier: number,
@@ -263,7 +264,7 @@ export default class extends React.Component<IProps, IState> {
             <Spacing size={12} />
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
+                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && Support.check(SupportTypes.Tasks) && (
                   <Card
                     className={style.card}
                     key={index}
