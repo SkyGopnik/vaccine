@@ -20,7 +20,7 @@ import {
   Icon28MessageOutline,
   Icon28Users3Outline,
   Icon24ErrorCircleOutline,
-  Icon28SettingsOutline
+  Icon28SettingsOutline, Icon28QuestionOutline
 } from "@vkontakte/icons";
 
 import Card from 'src/components/Card/Card';
@@ -252,6 +252,15 @@ export default class extends React.Component<IProps, IState> {
             <Card
               icon={<img src={Img7} alt="" />}
               title={`Уровень ${stat.level}`}
+              actions={
+                <Button
+                  mode="outline"
+                  size="m"
+                  onClick={() => changePanel('levels')}
+                >
+                  Посмотреть все
+                </Button>
+              }
             >
               <div className={style.levels}>
                 <div className={style.progressWrapper}>
@@ -297,6 +306,15 @@ export default class extends React.Component<IProps, IState> {
               {!subGroup && (
                 <SubscribeGroup />
               )}
+              <SimpleCell
+                before={<Icon28QuestionOutline />}
+                description="Потерялся? Мы поможем"
+                href={config.faqUrl}
+                target="_blank"
+                expandable
+              >
+                Часто задаваемые вопросы
+              </SimpleCell>
               <SimpleCell
                 before={<Icon28MessageOutline />}
                 description="Общайтесь с другими игроками"

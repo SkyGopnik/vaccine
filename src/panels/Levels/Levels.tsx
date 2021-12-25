@@ -1,4 +1,5 @@
 import React, {ReactNode} from "react";
+import Decimal from "decimal.js";
 import {
   Button,
   Caption,
@@ -22,13 +23,18 @@ import {classNames} from "@vkontakte/vkjs";
 import style from "./index.module.scss";
 import axios from "axios";
 import {locale} from "src/functions/balanceFormat";
-import Decimal from "decimal.js";
-import {UserInterface} from "src/store/user/reducers";
 
-interface IProps {
+import {UserInterface} from "src/store/user/reducers";
+import {AppReducerInterface} from "src/store/app/reducers";
+import {changeSnackbar} from "src/store/app/actions";
+import {levelBonus} from "src/functions/getSnackbar";
+import lo from "lodash";
+
+interface IProps extends AppReducerInterface {
   id: string,
   user: UserInterface | null,
-  snackbar: ReactNode | null
+  snackbar: ReactNode | null,
+  syncUser(data: UserInterface)
 }
 
 interface IState {
@@ -38,10 +44,12 @@ interface IState {
       clickUser: number,
       clickPassive: number,
       bonus: number,
+      isBonus?: boolean,
       additional?: Array<string>
     }>,
     level: number
-  } | null
+  } | null,
+  buttons: Array<boolean>
 }
 
 export default class extends React.Component<IProps, IState> {
@@ -49,15 +57,21 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
-      data: null
+      data: null,
+      buttons: []
     };
   }
 
   async componentDidMount() {
+    await this.loadLevels();
+  }
+
+  async loadLevels() {
     const { data } = await axios.get('/v1/levels');
 
     this.setState({
-      data
+      data,
+      buttons: new Array(data.length).fill(false)
     });
   }
 
@@ -75,12 +89,60 @@ export default class extends React.Component<IProps, IState> {
     const { user } = this.props;
     const { data } = this.state;
 
-    return new Decimal(Math.pow(3, data.level)).minus(new Decimal(user.data.record).toNumber()).toNumber();
+    return new Decimal(Math.pow(3, data.level))
+      .minus(new Decimal(user.data.record).toNumber())
+      .toNumber();
+  }
+
+  getLevelProgress(level: number) {
+    const progress = 100 - 100 / ((this.getLevel(level).end - this.getLevel(level).start) / this.getDifference());
+
+    return progress > 0 ? progress : 100;
+  }
+
+  async completeLevel(index: number, level: number) {
+    const { user, syncUser, changeSnackbar } = this.props;
+
+    this.changeButtonType(index, true);
+
+    try {
+      const { data } = await axios.post('/v1/levels', {
+        level
+      });
+
+      await this.loadLevels();
+
+      syncUser(lo.merge(user, {
+        data: {
+          balance: new Decimal(user.data.balance).plus(data.bonus),
+          clickUser: new Decimal(user.data.clickUser).plus(data.clickUser),
+          clickPassive: new Decimal(user.data.clickPassive).plus(data.clickPassive)
+        }
+      }));
+
+      changeSnackbar(levelBonus(level));
+    } catch (e) {
+      console.log(e);
+    }
+
+    this.changeButtonType(index, false);
+  }
+
+  changeButtonType(index: number, type: boolean) {
+    const { buttons } = this.state;
+    const newButtons = [...buttons];
+
+    newButtons[index] = type;
+
+    this.setState({
+      buttons: newButtons
+    });
   }
 
   render() {
     const { id, snackbar } = this.props;
-    const { data } = this.state;
+    const { data, buttons } = this.state;
+
     const level = data && data.level;
 
     return (
@@ -92,7 +154,7 @@ export default class extends React.Component<IProps, IState> {
           <Div>
             {data.levels.map((item, index) => item.level <= level && (
               <Card
-                className={classNames(style.card, item.level < level && style.cardDisabled)}
+                className={classNames(style.card, !item.isBonus && style.cardDisabled)}
                 key={index}
                 mode="shadow"
               >
@@ -100,24 +162,26 @@ export default class extends React.Component<IProps, IState> {
                 <div className={style.info}>
                   <Headline weight="medium">Уровень {item.level}</Headline>
                   <div className={style.progressWrapper}>
-                    <Progress className={style.progress} value={100 - 100 / ((this.getLevel(item.level).end - this.getLevel(item.level).start) / this.getDifference())} />
+                    <Progress className={style.progress} value={this.getLevelProgress(item.level)} />
                     <div className={style.numbers}>
                       <Caption level="3" weight="regular">{locale(this.getLevel(item.level).start)}</Caption>
                       <Caption level="3" weight="regular">{locale(this.getLevel(item.level).end)}</Caption>
                     </div>
                   </div>
                   <Text className={style.text} weight="regular">
-                    <div>· Улучшение {item.clickUser} за клик</div>
-                    <div>· Улучшение {item.clickPassive} в секунду</div>
-                    <div>· Бонус {locale(item.bonus)} вакцины</div>
+                    <div>· Бонус <span style={{ fontWeight: 500 }}>{locale(item.bonus)}</span> вакцины</div>
+                    <div>· Улучшение <span style={{ fontWeight: 500 }}>{item.clickPassive}</span> в секунду</div>
+                    <div>· Улучшение <span style={{ fontWeight: 500 }}>{item.clickUser}</span> за клик</div>
                   </Text>
-                  {item.level === level && (
+                  {item.isBonus && (
                     <Button
                       className={style.button}
                       mode="outline"
                       size="m"
+                      disabled={buttons[index]}
+                      onClick={() => this.completeLevel(index, item.level)}
                     >
-                      Получить бонус
+                      {!buttons[index] ? "Получить бонус" : <Spinner size="small" />}
                     </Button>
                   )}
                 </div>

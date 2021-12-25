@@ -4,7 +4,7 @@ import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
 
 import { store } from 'src/js'
 
-import {changeSnackbar} from "src/store/app/actions";
+import {changePanel, changeSnackbar} from "src/store/app/actions";
 import {UserInterface} from "src/store/user/reducers";
 
 import {locale} from "src/functions/balanceFormat";
@@ -98,7 +98,21 @@ export function newLevel(level: number) {
       onClose={() => store.dispatch(changeSnackbar(null))}
       before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
     >
-      <div>Ты получил {level} уровень</div>
+      <div>Ты достиг <span style={{fontWeight: 500}}>{level}</span> уровня</div>
+      <Text weight="medium" onClick={() => store.dispatch(changePanel('levels'))}>Получить бонус</Text>
+    </Snackbar>
+  )
+}
+
+export function levelBonus(level: number) {
+  return(
+    <Snackbar
+      className='success-snack'
+      layout='vertical'
+      onClose={() => store.dispatch(changeSnackbar(null))}
+      before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+    >
+      <div>Бонус за <span style={{fontWeight: 500}}>{level}</span> уровень получен</div>
     </Snackbar>
   )
 }

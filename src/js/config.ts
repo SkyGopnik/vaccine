@@ -25,5 +25,6 @@ if (process.env.localConfig === 'production') {
 config = {
   ...config,
   chatUrl: 'https://vk.me/join/AJQ1d/E8nBabv9DfXT9Pmnhs',
-  messageGroupUrl: 'https://vk.me/skyreglis'
+  messageGroupUrl: 'https://vk.me/skyreglis',
+  faqUrl: 'https://vk.com/topic-191809582_47610720'
 };

@@ -6,6 +6,7 @@ import Decimal from 'decimal.js';
 import GamePanel from "src/panels/Game/GameContainer";
 import ImprovementsPanel from "src/panels/Improvements/ImprovementsContainer";
 import TasksPanel from "src/panels/Tasks/TasksContainer";
+import LevelsPanel from "src/panels/Levels/LevelsContainer";
 
 // Компоненты
 import ViewLight from '../../components/ViewLight';
@@ -92,6 +93,10 @@ export default class extends React.Component<IProps, IState> {
           {
             id: 'tasks',
             component: TasksPanel
+          },
+          {
+            id: 'levels',
+            component: LevelsPanel
           }
         ]}
       />
