@@ -116,8 +116,11 @@ export default class extends React.Component<IProps, IState> {
                         className={style.avatar}
                         size={48}
                         src={item.user.info.photo}
-                        onClick={() => changePanel('user', item)}
-                      />
+                      >
+                        <div className="status-wrapper" onClick={() => changePanel('user', item)}>
+                          <div className="status">{item.user.status && item.user.status.code}</div>
+                        </div>
+                      </Avatar>
                     }
                     after={(item.userId !== user.id) && (
                       <IconButton
@@ -130,7 +133,9 @@ export default class extends React.Component<IProps, IState> {
                     multiline
                     disabled
                   >
-                    <div className={style.name} onClick={() => changePanel('user', item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
+                    <div className={style.name} onClick={() => changePanel('user', item)}>
+                      {item.user.info.firstName} {item.user.info.lastName}
+                    </div>
                   </SimpleCell>
                 </div>
               )) : (

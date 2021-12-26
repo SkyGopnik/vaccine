@@ -44,7 +44,10 @@ export interface UserInterface {
     type: string
     text: string
     user?: UserInterface
-  }>
+  }>,
+  status: {
+    code: string
+  }
 }
 
 const defaultState = {

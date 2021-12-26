@@ -26,6 +26,7 @@ import style from './Game.scss';
 import declBySex from "src/functions/declBySex";
 import axios from "axios";
 import bridge from "@vkontakte/vk-bridge";
+import Decimal from "decimal.js";
 
 interface IProps extends AppReducerInterface, WebSocketReducerInterface {
   id: string,
@@ -105,7 +106,11 @@ export default class extends React.Component<IProps, IState> {
         this.renderEffect();
       }
 
-      balancePlus(user.data.clickUser * 5);
+      const bonus = new Decimal(user.data.clickUser)
+        .mul(50)
+        .toNumber();
+
+      balancePlus(bonus);
 
       if (user.data.additional.vaccineClickNotification) {
         changeSnackbar(
@@ -115,7 +120,7 @@ export default class extends React.Component<IProps, IState> {
             onClose={() => changeSnackbar(null)}
             before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
           >
-            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(user.data.clickUser * 50)}</span> вакцины</div>
+            <div>Ты {declBySex(user.info.sex, ['получил (a)', 'получила', 'получил'])} <span style={{fontWeight: 500}}>{locale(bonus)}</span> вакцины</div>
             <div>Отличная работа, так держать!</div>
           </Snackbar>
         );

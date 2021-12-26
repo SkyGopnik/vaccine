@@ -112,8 +112,11 @@ export default class extends React.Component<IProps, IState> {
                 <Avatar
                   size={48}
                   src={user.info.photo}
-                  onClick={() => changeStory('profile')}
-                />
+                >
+                  <div className="status-wrapper" onClick={() => changeStory('profile')}>
+                    <span className="status">{user.status && user.status.code}</span>
+                  </div>
+                </Avatar>
               }
               after={
                 <IconButton

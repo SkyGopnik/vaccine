@@ -182,9 +182,13 @@ export default class extends React.Component<IProps, IState> {
         <PullToRefresh onRefresh={() => this.onRefresh()} isFetching={ptr}>
           <Div className={style.avatar}>
             <a href={platformApi.getHref(data.type, data.id)} target="_blank">
-              <Avatar src={photo} size={72} />
+              <Avatar src={photo} size={72}>
+                <span className="status status-24 status-profile">{user.status && user.status.code}</span>
+              </Avatar>
             </a>
-            <Title level="3" weight="medium">{firstName} {lastName}</Title>
+            <Title level="3" weight="medium">
+              {firstName} {lastName}
+            </Title>
             {stat.ratingPosition ? (
               <Caption level="1" weight="regular">{stat.ratingPosition.toLocaleString()} место в рейтинге</Caption>
             ) : (

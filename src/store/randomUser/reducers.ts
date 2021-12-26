@@ -12,7 +12,10 @@ export interface RandomUserReducerInterface {
     id: string,
     type: string,
     stat: UserStat,
-    data: UserDataInterface
+    data: UserDataInterface,
+    status: {
+      code: string
+    }
   },
   error: any,
   loading: boolean,
