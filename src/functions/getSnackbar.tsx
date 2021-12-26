@@ -41,26 +41,26 @@ export function passiveOfflineBonus(sum: number) {
 export function transferGet(data: transferGet) {
   return(
     <Snackbar
-    className='success-snack'
-    layout='vertical'
-    onClose={() => store.dispatch(changeSnackbar(null))}
-    before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
-  >
-    <div>{data.data.info.firstName} {data.data.info.lastName} {declBySex(data.data.info.sex, ['передал (a)', 'передала', 'передал'])} тебе {locale(data.sum)} вакцины</div>
-  </Snackbar>
+      className='success-snack'
+      layout='vertical'
+      onClose={() => store.dispatch(changeSnackbar(null))}
+      before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+    >
+      <div><span style={{fontWeight: 500}}>{data.data.info.firstName} {data.data.info.lastName}</span> {declBySex(data.data.info.sex, ['передал (a)', 'передала', 'передал'])} тебе <span style={{fontWeight: 500}}>{locale(data.sum)}</span> вакцины</div>
+    </Snackbar>
   )
 }
 
 export function newFriend(data: newFriend) {
   return(
     <Snackbar
-    className='success-snack'
-    layout='vertical'
-    onClose={() => store.dispatch(changeSnackbar(null))}
-    before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
-  >
-    <div>Ты получил {locale(data.sum)} вакцины за нового друга </div>
-  </Snackbar>
+      className='success-snack'
+      layout='vertical'
+      onClose={() => store.dispatch(changeSnackbar(null))}
+      before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+    >
+      <div>Ты получил <span style={{fontWeight: 500}}>{locale(data.sum)}</span> вакцины за нового друга </div>
+    </Snackbar>
   )
 }
 
@@ -72,7 +72,7 @@ export function captchaSuccess(bonus: number) {
       onClose={() => store.dispatch(changeSnackbar(null))}
       before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
     >
-      <div>Ты получил {locale(bonus)} вакцины за прохождение мини-игры</div>
+      <div>Ты получил <span style={{fontWeight: 500}}>{locale(bonus)}</span> вакцины за прохождение мини-игры</div>
     </Snackbar>
   )
 }
