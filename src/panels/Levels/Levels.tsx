@@ -76,8 +76,10 @@ export default class extends React.Component<IProps, IState> {
   }
 
   getLevel(level: number) {
-    const lvlStart = (level - 1) !== 0 ? Math.pow(3, level - 1) : 0;
-    const lvlEnd = Math.pow(3, level);
+    const _level = level - 1;
+
+    const lvlStart = (_level - 1) !== 0 ? Math.pow(3, _level - 1) : 0;
+    const lvlEnd = Math.pow(3, _level);
 
     return {
       start: lvlStart,
@@ -89,13 +91,14 @@ export default class extends React.Component<IProps, IState> {
     const { user } = this.props;
     const { data } = this.state;
 
-    return new Decimal(Math.pow(3, data.level))
+    return new Decimal(Math.pow(3, data.level - 1))
       .minus(new Decimal(user.data.record).toNumber())
       .toNumber();
   }
 
   getLevelProgress(level: number) {
-    const progress = 100 - 100 / ((this.getLevel(level).end - this.getLevel(level).start) / this.getDifference());
+    const _level = level - 1;
+    const progress = 100 - 100 / ((this.getLevel(_level).end - this.getLevel(_level).start) / this.getDifference());
 
     return progress > 0 ? progress : 100;
   }
@@ -161,13 +164,15 @@ export default class extends React.Component<IProps, IState> {
                 <img src={Img1} alt="" />
                 <div className={style.info}>
                   <Headline weight="medium">Уровень {item.level}</Headline>
-                  <div className={style.progressWrapper}>
-                    <Progress className={style.progress} value={this.getLevelProgress(item.level)} />
-                    <div className={style.numbers}>
-                      <Caption level="3" weight="regular">{locale(this.getLevel(item.level).start)}</Caption>
-                      <Caption level="3" weight="regular">{locale(this.getLevel(item.level).end)}</Caption>
+                  {item.level !== 1 && (
+                    <div className={style.progressWrapper}>
+                      <Progress className={style.progress} value={this.getLevelProgress(item.level)} />
+                      <div className={style.numbers}>
+                        <Caption level="3" weight="regular">{locale(this.getLevel(item.level).start)}</Caption>
+                        <Caption level="3" weight="regular">{locale(this.getLevel(item.level).end)}</Caption>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <Text className={style.text} weight="regular">
                     <div>· Бонус <span style={{ fontWeight: 500 }}>{locale(item.bonus)}</span> вакцины</div>
                     <div>· Улучшение <span style={{ fontWeight: 500 }}>{item.clickPassive}</span> в секунду</div>
