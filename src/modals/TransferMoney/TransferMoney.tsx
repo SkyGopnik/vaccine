@@ -153,7 +153,7 @@ export default class extends React.Component<IProps, IState> {
 
       if (story === 'rating' && panel === 'main') {
         // Обновляем рейтинг
-        await getRating(false);
+        await getRating();
       } else if (story === 'profile' && panel === 'notifications') {
         // Обновляем события
         await getNotifications(false);

@@ -4,16 +4,39 @@ import {
   GET_RATING_FAILURE
 } from './actions';
 
-import {UserDataInterface} from "src/store/user/reducers";
+import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+
+export interface GroupInterface {
+  id?: string
+  info: GroupInfoInterface
+  users: GroupUserInterface[]
+  balance?: number
+}
+
+export interface GroupUserInterface {
+  id?: number
+  group: GroupInterface
+  user: UserInterface
+}
+
+export interface GroupInfoInterface {
+  id?: number
+  name: string
+  screenName: string
+  type: string
+  description: string
+  photo: string
+  group: GroupInterface
+}
 
 export interface RatingReducerInterface {
   list: {
     loading: boolean,
-    data: Array<UserDataInterface> | null,
+    data: Array<UserDataInterface> | Array<GroupInterface> | null,
     position: number,
     error: any
   },
-  getRating(needLoading?: boolean)
+  getRating(arg?: { loading: boolean, type: string })
 }
 
 const defaultState = {

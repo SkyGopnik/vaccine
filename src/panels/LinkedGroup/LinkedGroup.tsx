@@ -16,7 +16,7 @@ import Img from "src/img/profile/6.svg";
 
 import { Icon28DeleteOutline } from '@vkontakte/icons';
 
-import style from "./LinkedGroup.scss";
+import style from "./index.module.scss";
 
 interface IProps {
   id: string
@@ -45,6 +45,7 @@ export default class extends React.Component<IProps> {
             title="Моё сообщество"
           >
             <SimpleCell
+              className={style.group}
               before={<Avatar size={40} />}
               description="182 учёных"
               disabled
@@ -52,7 +53,7 @@ export default class extends React.Component<IProps> {
               SkyReglis Studio
             </SimpleCell>
           </Card>
-          <CellButton before={<Icon28DeleteOutline />} mode="danger">Удалить сообщество</CellButton>
+          <CellButton before={<Icon28DeleteOutline />} mode="danger">Покинуть сообщество</CellButton>
         </Div>
       </Panel>
     );

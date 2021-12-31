@@ -1,5 +1,4 @@
 import React, {ReactNode} from 'react';
-import Decimal from 'decimal.js';
 import {
   Panel,
   PanelHeader,
@@ -9,8 +8,8 @@ import {
   Avatar,
   IconButton,
   Spinner,
-  FormItem,
-  FormStatus,
+  Tabs,
+  TabsItem,
   PullToRefresh
 } from '@vkontakte/vkui';
 
@@ -36,6 +35,7 @@ interface IProps extends RatingReducerInterface {
 }
 
 interface IState {
+  type: 'scientists' | 'hospitals'
   ptr: boolean
 }
 
@@ -44,6 +44,7 @@ export default class extends React.Component<IProps, IState> {
     super(props);
 
     this.state = {
+      type: 'scientists',
       ptr: false
     };
   }
@@ -54,13 +55,23 @@ export default class extends React.Component<IProps, IState> {
     await getRating();
   }
 
+  changeType(type: IState["type"]) {
+    const { getRating } = this.props;
+
+    getRating({ loading: true, type });
+
+    this.setState({
+      type
+    });
+  }
+
   async onRefresh() {
     const { getRating, sendWsMessage } = this.props;
 
     this.setState({ ptr: true });
 
     setTimeout(async () => {
-      await getRating(false);
+      await getRating();
 
       sendWsMessage({
          type: 'SyncUser'
@@ -79,7 +90,21 @@ export default class extends React.Component<IProps, IState> {
       changePanel,
       changeModal
     } = this.props;
-    const { ptr } = this.state;
+    const { type, ptr } = this.state;
+
+    const tabs: Array<{
+      key: IState["type"],
+      name: string
+    }> = [
+      {
+        key: 'scientists',
+        name: 'Доктора'
+      },
+      {
+        key: 'hospitals',
+        name: 'Больницы'
+      }
+    ];
 
     return (
       <Panel id={id} className={style.rating}>
@@ -87,61 +112,87 @@ export default class extends React.Component<IProps, IState> {
           Рейтинг
         </PanelHeader>
         <PullToRefresh onRefresh={() => this.onRefresh()} isFetching={ptr}>
-          {/*<Tabs>*/}
-          {/*  <TabsItem selected>*/}
-          {/*    Доктора*/}
-          {/*  </TabsItem>*/}
-          {/*  <TabsItem>*/}
-          {/*    Больницы*/}
-          {/*  </TabsItem>*/}
-          {/*</Tabs>*/}
-          {/*{!list.loading && (new Decimal(user.data.balance).toNumber() !== (list.user && new Decimal(list.user.balance).toNumber())) && (*/}
-          {/*  <FormItem>*/}
-          {/*    <FormStatus header="Данные отличаются" mode="error">*/}
-          {/*      Рейтинг может отображаться неточно, ты можешь обновить страницу, чтобы это исправить*/}
-          {/*    </FormStatus>*/}
-          {/*  </FormItem>*/}
-          {/*)}*/}
+          <Tabs>
+            {tabs.map((item, index) => (
+              <TabsItem
+                key={index}
+                selected={type === item.key}
+                onClick={() => this.changeType(item.key)}
+              >
+                {item.name}
+              </TabsItem>
+            ))}
+          </Tabs>
           <Div>
             <Card
               className={style.card}
               mode="shadow"
             >
-              {list.data ? list.data.map((item, index) => (
-                <div className={style.userItem} key={index}>
-                  <div className={style.topNumber}>{index + 1}.</div>
-                  <SimpleCell
-                    before={
-                      <Avatar
-                        className={style.avatar}
-                        size={48}
-                        src={item.user.info.photo}
-                      >
-                        <div className="status-wrapper" onClick={() => changePanel('user', item)}>
-                          <div className="status">{item.user.status && item.user.status.code}</div>
-                        </div>
-                      </Avatar>
-                    }
-                    after={(item.userId !== user.id) && (
-                      <IconButton
-                        className={style.transferIcon}
-                        icon={<Icon28MoneySendOutline />}
-                        onClick={() => changeModal('transferMoney', item.user.info)}
-                      />
-                    )}
-                    description={locale(item.balance)}
-                    multiline
-                    disabled
-                  >
-                    <div className={style.name} onClick={() => changePanel('user', item)}>
-                      {item.user.info.firstName} {item.user.info.lastName}
-                    </div>
-                  </SimpleCell>
-                </div>
-              )) : (
-                <Div>
-                  <Spinner />
-                </Div>
+              {type === 'scientists' && (
+                !list.loading && list.data ? list.data.map((item, index) => (
+                  <div className={style.userItem} key={index}>
+                    <div className={style.topNumber}>{index + 1}.</div>
+                    <SimpleCell
+                      before={
+                        <Avatar
+                          className={style.avatar}
+                          size={48}
+                          src={item.user.info.photo}
+                        >
+                          <div className="status-wrapper" onClick={() => changePanel('user', item)}>
+                            <div className="status">{item.user.status && item.user.status.code}</div>
+                          </div>
+                        </Avatar>
+                      }
+                      after={(item.userId !== user.id) && (
+                        <IconButton
+                          className={style.transferIcon}
+                          icon={<Icon28MoneySendOutline />}
+                          onClick={() => changeModal('transferMoney', item.user.info)}
+                        />
+                      )}
+                      description={locale(item.balance)}
+                      multiline
+                      disabled
+                    >
+                      <div className={style.name} onClick={() => changePanel('user', item)}>
+                        {item.user.info.firstName} {item.user.info.lastName}
+                      </div>
+                    </SimpleCell>
+                  </div>
+                )) : (
+                  <Div>
+                    <Spinner />
+                  </Div>
+                )
+              )}
+              {type === 'hospitals' && (
+                !list.loading && list.data ? list.data.map((item, index) => (
+                  <div className={style.userItem} key={index}>
+                    <div className={style.topNumber}>{index + 1}.</div>
+                    <SimpleCell
+                      key={index}
+                      before={
+                        <Avatar
+                          className={style.avatar}
+                          size={48}
+                          src={item.info.photo}
+                        />
+                      }
+                      description={locale(item.balance)}
+                      multiline
+                      disabled
+                    >
+                      <div className={style.name}>
+                        {item.info.name}
+                      </div>
+                    </SimpleCell>
+                  </div>
+                )) : (
+                  <Div>
+                    <Spinner />
+                  </Div>
+                )
               )}
             </Card>
             <Spacing size={140} />

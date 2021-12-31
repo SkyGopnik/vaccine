@@ -142,13 +142,13 @@ export default class extends React.Component<IProps> {
             {/*<SimpleCell onClick={() => changeModal('dropProgress')}>*/}
             {/*  Сбросить прогресс*/}
             {/*</SimpleCell>*/}
-            {/*<SimpleCell*/}
-            {/*  expandable*/}
-            {/*  indicator="Name"*/}
-            {/*  onClick={() => changePanel('linkedGroup')}*/}
-            {/*>*/}
-            {/*  Сообщество*/}
-            {/*</SimpleCell>*/}
+            <SimpleCell
+              indicator="Name"
+              expandable
+              onClick={() => changePanel('linkedGroup')}
+            >
+              Сообщество
+            </SimpleCell>
             {/*<SimpleCell*/}
             {/*  onClick={() => changePanel('donate')}*/}
             {/*>*/}

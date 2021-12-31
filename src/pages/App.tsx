@@ -72,6 +72,18 @@ export default class extends React.Component<IProps, IState> {
       changeView('error');
     }
 
+    const groupId = queryGet('vk_group_id');
+
+    if (groupId) {
+      try {
+        await axios.post("/v1/group/link", {
+          groupId
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
     // Навешиваем обработчик кнопку вперёд/назад
     window.addEventListener('popstate', (e) => {
       // Отменяем стандартное событие
