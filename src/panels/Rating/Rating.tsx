@@ -146,7 +146,7 @@ export default class extends React.Component<IProps, IState> {
                           src={item.user.info.photo}
                         >
                           <div className="status-wrapper" onClick={() => changePanel('user', item)}>
-                            <div className="status">{item.user.status && item.user.status.code}</div>
+                            {item.user.status && <div className="status">{item.user.status.code}</div>}
                           </div>
                         </Avatar>
                       }

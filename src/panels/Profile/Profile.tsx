@@ -183,7 +183,7 @@ export default class extends React.Component<IProps, IState> {
           <Div className={style.avatar}>
             <a href={platformApi.getHref(data.type, data.id)} target="_blank">
               <Avatar src={photo} size={72}>
-                <span className="status status-24 status-profile">{user.status && user.status.code}</span>
+                {user.status && <div className="status status-24 status-profile">{user.status.code}</div>}
               </Avatar>
             </a>
             <Title level="3" weight="medium">

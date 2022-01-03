@@ -113,7 +113,7 @@ export default class extends React.Component<IProps, IState> {
                   src={user.info.photo}
                 >
                   <div className="status-wrapper" onClick={() => changeStory('profile')}>
-                    <span className="status">{user.status && user.status.code}</span>
+                    {user.status && <div className="status">{user.status.code}</div>}
                   </div>
                 </Avatar>
               }
