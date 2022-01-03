@@ -30,22 +30,28 @@ export interface GroupInfoInterface {
 }
 
 export interface RatingReducerInterface {
-  list: {
+  rating: {
     loading: boolean,
-    data: Array<UserDataInterface> | Array<GroupInterface> | null,
+    data: {
+      scientists: {
+        list: Array<UserDataInterface>,
+        position: number
+      },
+      laboratories: {
+        list: Array<GroupInterface>
+      }
+    },
     position: number,
     error: any
   },
-  getRating(arg?: { loading: boolean, type: string })
+  getRating?(arg?: { loading: boolean, type: string })
 }
 
 const defaultState = {
-  list: {
-    loading: false,
-    data: null,
-    position: null,
-    error: null
-  }
+  loading: false,
+  data: {},
+  position: null,
+  error: null
 };
 
 export const ratingReducer = (state = defaultState, { type, payload }) => {
@@ -53,29 +59,24 @@ export const ratingReducer = (state = defaultState, { type, payload }) => {
   case GET_RATING_STARTED:
     return {
       ...state,
-      list: {
-        ...state.list,
-        loading: true
-      }
+      loading: true
     };
   case GET_RATING_SUCCESS:
+    console.log(payload);
     return {
       ...state,
-      list: {
-        loading: false,
-        error: null,
-        data: payload.list,
-        position: payload.position
+      loading: false,
+      error: null,
+      data: {
+        ...state.data,
+        ...payload
       }
     };
   case GET_RATING_FAILURE:
     return {
       ...state,
-      list: {
-        ...state.list,
-        loading: false,
-        error: payload.error
-      }
+      loading: false,
+      error: payload.error
     };
 
   default:

@@ -19,9 +19,9 @@ export const getRating = createAsyncThunk('getRating', async (arg: { loading: bo
   try {
     const { data } = await axios.get('/v1/rating?type=' + _arg.type);
 
-    console.log(data);
-
-    thunkAPI.dispatch(getRatingSuccess(data));
+    thunkAPI.dispatch(getRatingSuccess({
+      [_arg.type]: data
+    }));
   } catch (e) {
     thunkAPI.dispatch(getRatingFailure(e));
   }

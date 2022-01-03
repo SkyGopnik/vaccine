@@ -10,7 +10,7 @@ import Rating from './Rating';
 const RatingContainer = (props) => <Rating {...props} />;
 
 const mapStateToProps = (state) => ({
-  list: state.rating.list,
+  rating: state.rating,
   user: state.user.data,
   snackbar: state.app.snackbar
 });

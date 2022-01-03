@@ -24,15 +24,14 @@ import { locale } from "src/functions/balanceFormat";
 import platformApi from "src/js/platformApi";
 
 import {AppReducerInterface} from "src/store/app/reducers";
-import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+import {UserInterface} from "src/store/user/reducers";
 import {RandomUserReducerInterface} from "src/store/randomUser/reducers";
+import {RatingReducerInterface} from "src/store/rating/reducers";
 
 import style from './TabbarLight.scss';
 
-interface IProps extends AppReducerInterface {
+interface IProps extends AppReducerInterface, RatingReducerInterface {
   user: UserInterface,
-  ratingUserPosition: number,
-  ratingLoading: boolean,
   profile: {
     ref: {
       refCode?: number,
@@ -93,7 +92,7 @@ export default class extends React.Component<IProps, IState> {
       panel,
       story,
       user,
-      ratingUserPosition,
+      rating,
       randomUser,
       changeStory,
       changePanel,
@@ -103,9 +102,9 @@ export default class extends React.Component<IProps, IState> {
 
     return (
       <Tabbar id="tabbar">
-        {(story === 'rating' && panel === 'main') && user && ratingUserPosition && (
+        {(story === 'rating' && panel === 'main') && user && rating.data.scientists && (
           <div className={style.userItem}>
-            <div className={style.topNumber}>{ratingUserPosition.toFixed(0)}.</div>
+            <div className={style.topNumber}>{rating.data.scientists.position}.</div>
             <SimpleCell
               target="_blank"
               before={
@@ -122,7 +121,7 @@ export default class extends React.Component<IProps, IState> {
                 <IconButton
                   className={style.icon}
                   icon={<Icon28ShareOutline />}
-                  onClick={() => platformApi.sharePost(`Я нахожусь на ${ratingUserPosition} месте и уже накопил ${locale(user.data.balance)} вакцины`)}
+                  onClick={() => platformApi.sharePost(`Я нахожусь на ${rating.data.scientists.position} месте и уже накопил ${locale(user.data.balance)} вакцины`)}
                 />
               }
               description={locale(user.data.balance)}

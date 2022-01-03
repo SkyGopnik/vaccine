@@ -10,10 +10,10 @@ import {
   Spinner,
   Tabs,
   TabsItem,
-  PullToRefresh
+  PullToRefresh, Placeholder, Button
 } from '@vkontakte/vkui';
 
-import {Icon28MoneySendOutline} from "@vkontakte/icons";
+import {Icon28MoneySendOutline, Icon56UsersOutline} from "@vkontakte/icons";
 
 import Spacing from "src/components/Spacing";
 
@@ -23,6 +23,7 @@ import {UserDataInterface, UserInterface} from "src/store/user/reducers";
 import { locale } from "src/functions/balanceFormat";
 
 import style from './Rating.scss';
+import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends RatingReducerInterface {
   id: string,
@@ -35,7 +36,7 @@ interface IProps extends RatingReducerInterface {
 }
 
 interface IState {
-  type: 'scientists' | 'hospitals'
+  type: 'scientists' | 'laboratories'
   ptr: boolean
 }
 
@@ -65,13 +66,18 @@ export default class extends React.Component<IProps, IState> {
     });
   }
 
+  addToCommunity() {
+    return bridge.send("VKWebAppAddToCommunity");
+  }
+
   async onRefresh() {
     const { getRating, sendWsMessage } = this.props;
+    const { type } = this.state;
 
     this.setState({ ptr: true });
 
     setTimeout(async () => {
-      await getRating();
+      await getRating({ loading: false, type });
 
       sendWsMessage({
          type: 'SyncUser'
@@ -85,7 +91,7 @@ export default class extends React.Component<IProps, IState> {
     const {
       id,
       user,
-      list,
+      rating,
       snackbar,
       changePanel,
       changeModal
@@ -98,11 +104,11 @@ export default class extends React.Component<IProps, IState> {
     }> = [
       {
         key: 'scientists',
-        name: 'Доктора'
+        name: 'Учёные'
       },
       {
-        key: 'hospitals',
-        name: 'Больницы'
+        key: 'laboratories',
+        name: 'Лаборатории'
       }
     ];
 
@@ -129,7 +135,7 @@ export default class extends React.Component<IProps, IState> {
               mode="shadow"
             >
               {type === 'scientists' && (
-                !list.loading && list.data ? list.data.map((item, index) => (
+                !rating.loading && rating.data.scientists ? rating.data.scientists.list.map((item, index) => (
                   <div className={style.userItem} key={index}>
                     <div className={style.topNumber}>{index + 1}.</div>
                     <SimpleCell
@@ -166,29 +172,41 @@ export default class extends React.Component<IProps, IState> {
                   </Div>
                 )
               )}
-              {type === 'hospitals' && (
-                !list.loading && list.data ? list.data.map((item, index) => (
-                  <div className={style.userItem} key={index}>
-                    <div className={style.topNumber}>{index + 1}.</div>
-                    <SimpleCell
-                      key={index}
-                      before={
-                        <Avatar
-                          className={style.avatar}
-                          size={48}
-                          src={item.info.photo}
-                        />
-                      }
-                      description={locale(item.balance)}
-                      multiline
-                      disabled
-                    >
-                      <div className={style.name}>
-                        {item.info.name}
+              {type === 'laboratories' && (
+                !rating.loading ? (
+                  rating.data.laboratories.list.length !== 0 ? (
+                    rating.data.laboratories.list.map((item, index) => (
+                      <div className={style.userItem} key={index}>
+                        <div className={style.topNumber}>{index + 1}.</div>
+                        <SimpleCell
+                          key={index}
+                          before={
+                            <Avatar
+                              className={style.avatar}
+                              size={48}
+                              src={item.info.photo}
+                            />
+                          }
+                          description={locale(item.balance)}
+                          multiline
+                          disabled
+                        >
+                          <div className={style.name}>
+                            {item.info.name}
+                          </div>
+                        </SimpleCell>
                       </div>
-                    </SimpleCell>
-                  </div>
-                )) : (
+                    ))
+                  ) : (
+                    <Placeholder
+                      icon={<Icon56UsersOutline />}
+                      header="Лаборатории отсутсвуют"
+                      action={<Button size="m" onClick={this.addToCommunity}>Подключить</Button>}
+                    >
+                      Подключите Вакцину в свое сообщество, чтобы оно появилось в рейтинге
+                    </Placeholder>
+                  )
+                ) : (
                   <Div>
                     <Spinner />
                   </Div>

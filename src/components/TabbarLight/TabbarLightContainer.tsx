@@ -19,8 +19,7 @@ const mapStateToProps = (state) => ({
   modal: state.app.modal,
   story: state.app.story,
   user: state.user.data,
-  ratingUserPosition: state.rating.list.position,
-  ratingLoading: state.rating.list.loading,
+  rating: state.rating,
   profile: state.profile.data,
   randomUser: state.randomUser
 });
