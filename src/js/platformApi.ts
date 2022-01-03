@@ -5,16 +5,15 @@ import {config} from "src/js/config";
 
 let type = queryGet('reglis_type');
 
+const bridgeSupport = ["vk", "vk_game", "ok"];
+
 export default class platformApi {
   public static currentType() {
     return type;
   }
 
   public static subscribeGroup(cb?: Function) {
-    if (
-      type === 'vk'
-      || type === 'vk_game'
-    ) {
+    if (bridgeSupport.indexOf(type) !== -1) {
       bridge.send("VKWebAppJoinGroup", {
         "group_id": 191809582
       }).then((res) => cb(res)).catch((err) => cb(err));
@@ -22,10 +21,7 @@ export default class platformApi {
   }
 
   public static shareRef(userId: string, cb?: Function) {
-    if (
-      type === 'vk'
-      || type === 'vk_game'
-    ) {
+    if (bridgeSupport.indexOf(type) !== -1) {
       bridge.send("VKWebAppShare", {
         "link": `${config.appUrl}#ref=${userId}`
       }).then((res) => cb(res)).catch((err) => cb(err));
@@ -33,10 +29,7 @@ export default class platformApi {
   }
 
   public static sharePost(text: string, cb?: Function) {
-    if (
-      type === 'vk'
-      || type === 'vk_game'
-    ) {
+    if (bridgeSupport.indexOf(type) !== -1) {
       bridge.send("VKWebAppShowWallPostBox", {
         "message": text,
         "attachments": config.appUrl
@@ -45,10 +38,7 @@ export default class platformApi {
   }
 
   public static checkSupport() {
-    if (
-      type === 'vk'
-      || type === 'vk_game'
-    ) {
+    if (bridgeSupport.indexOf(type) !== -1) {
       return queryGet('vk_platform') !== 'mobile_web';
     }
 
@@ -56,10 +46,7 @@ export default class platformApi {
   }
 
   public static changeViewSettings(status: 'light' | 'dark', color?: string, cb?: Function) {
-    if (
-      type === 'vk'
-      || type === 'vk_game'
-    ) {
+    if (bridgeSupport.indexOf(type) !== -1) {
       bridge.send(
         'VKWebAppSetViewSettings',
         {
@@ -71,10 +58,7 @@ export default class platformApi {
   }
 
   public static copyToClipboard(text: string, cb?: Function) {
-    if (
-      type === 'vk'
-      || type === 'vk_game'
-    ) {
+    if (bridgeSupport.indexOf(type) !== -1) {
       bridge.send(
         "VKWebAppCopyText",
         {

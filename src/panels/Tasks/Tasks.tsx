@@ -264,7 +264,7 @@ export default class extends React.Component<IProps, IState> {
             <Spacing size={12} />
             {tasks ? (
               lo.differenceWith(tasks, disabledTasks, (x, y) => x.type === y).map((item, index) => (
-                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && Support.check(SupportTypes.Tasks) && (
+                bridge.supports(tasksConfig[item.type].vk as AnyRequestMethodName) && (
                   <Card
                     className={style.card}
                     key={index}

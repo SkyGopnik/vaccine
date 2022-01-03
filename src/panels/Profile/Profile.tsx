@@ -200,15 +200,13 @@ export default class extends React.Component<IProps, IState> {
               icon={<img src={Img2} alt="" />}
               title="Передача вакцины"
               actions={<>
-                {Support.check(SupportTypes.TransferFriends) && (
-                  <Button
-                    size="m"
-                    onClick={() => changePanel('friends')}
-                    stretched
-                  >
-                    Другу
-                  </Button>
-                )}
+                <Button
+                  size="m"
+                  onClick={() => changePanel('friends')}
+                  stretched
+                >
+                  Другу
+                </Button>
                 <Button
                   size="m"
                   onClick={() => changeModal('transferUser')}
