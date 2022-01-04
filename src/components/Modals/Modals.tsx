@@ -9,7 +9,8 @@ import {
   AddPromocode,
   EditRole,
   EditUserBan,
-  DropProgress
+  DropProgress,
+  GroupLeave
 } from "src/modals";
 
 import {AppReducerInterface} from "src/store/app/reducers";
@@ -29,6 +30,7 @@ export default (props: IProps) => {
       <EditRole id="editRole" />
       <EditUserBan id="editUserBan" />
       <DropProgress id="dropProgress" />
+      <GroupLeave id="groupLeave" />
     </ModalRoot>
   );
 };

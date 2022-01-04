@@ -102,15 +102,10 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    const { profile } = this.props;
     const { disabledTasks } = this.state;
     const newDisabledTasks = [...disabledTasks];
 
     newDisabledTasks.push('shareStory');
-
-    if (!profile.ref) {
-      newDisabledTasks.push('refUsers');
-    }
 
     await this.getTasks();
 

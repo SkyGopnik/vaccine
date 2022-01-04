@@ -5,7 +5,6 @@ import {
 } from "@vkontakte/vkui";
 
 import Nomoney from "src/components/Icons/Nomoney";
-import {changeModal} from "src/store/app/actions";
 
 interface IProps {
   id: string,

@@ -6,3 +6,4 @@ export { default as AddPromocode } from "src/modals/AddPromocode/AddPromocodeCon
 export { default as EditRole } from "src/modals/EditRole/EditRoleContainer";
 export { default as EditUserBan } from "src/modals/EditUserBan/EditUserBanContainer";
 export { default as DropProgress } from "src/modals/DropProgress/DropProgressContainer";
+export { default as GroupLeave } from "src/modals/GroupLeave/GroupLeaveContainer";

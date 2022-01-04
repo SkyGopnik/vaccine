@@ -6,6 +6,7 @@ import {
 
 import {Notification} from "src/store/notifications/reducers";
 import {UserInterface} from "src/store/user/reducers";
+import {GroupInfoInterface} from "src/store/rating/reducers";
 
 export interface UserStat {
   level?: number,
@@ -19,7 +20,7 @@ export interface UserStat {
   transferSumToday?: number
 }
 
-interface RefHistoryInterface {
+export interface RefHistoryInterface {
   id?: number,
   user: UserInterface,
   refId?: number,
@@ -30,10 +31,9 @@ export interface ProfileData {
   id: string,
   type: string,
   stat: UserStat,
-  ref: {
-    refCode?: number,
-    history?: Array<RefHistoryInterface>,
-    ref?: number
+  group: {
+    info: GroupInfoInterface,
+    users: number
   },
   role: string,
   additional: any,

@@ -9,7 +9,6 @@ import {
   Div,
   Avatar,
   Button,
-  Subhead,
   SimpleCell,
   Snackbar, PanelHeaderButton, PullToRefresh, Progress, Text, Footer, Link
 } from '@vkontakte/vkui';
@@ -18,9 +17,10 @@ import {
   Icon16Done,
   Icon28BugOutline,
   Icon28MessageOutline,
-  Icon28Users3Outline,
   Icon24ErrorCircleOutline,
-  Icon28SettingsOutline, Icon28QuestionOutline
+  Icon28SettingsOutline,
+  Icon28QuestionOutline,
+  Icon28BuildingOutline
 } from "@vkontakte/icons";
 
 import Card from 'src/components/Card/Card';
@@ -28,7 +28,6 @@ import SubscribeGroup from "src/components/Profile/SubscribeGroupContainer";
 import Spacing from "src/components/Spacing";
 import StatCard from "src/components/Profile/StatCard";
 
-import getDate from "src/functions/getDate";
 import declNum from "src/functions/decl_num";
 import { locale } from "src/functions/balanceFormat";
 
@@ -42,12 +41,12 @@ import Img2 from "src/img/profile/2.svg";
 import Img3 from "src/img/profile/3.svg";
 import Img4 from "src/img/profile/4.svg";
 import Img5 from "src/img/profile/5.svg";
+import Img6 from "src/img/profile/6.svg";
 import Img7 from "src/img/profile/7.svg";
 
-import style from './Profile.scss';
+import style from './index.module.scss';
 import platformApi from "src/js/platformApi";
 import Decimal from "decimal.js";
-import Support, {SupportTypes} from "src/js/support";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -163,7 +162,7 @@ export default class extends React.Component<IProps, IState> {
     } = this.props;
     const { ptr } = this.state;
 
-    const { stat, notification } = data;
+    const { stat, notification, group } = data;
     const { subGroup } = user.data.additional || {};
     const { photo, firstName, lastName } = user.info || {};
 
@@ -225,7 +224,7 @@ export default class extends React.Component<IProps, IState> {
                   <Button
                     mode="outline"
                     size="m"
-                    disabled={!data.ref}
+                    disabled={!data}
                     onClick={() => changePanel('ref')}
                   >
                     Пригласить
@@ -279,6 +278,30 @@ export default class extends React.Component<IProps, IState> {
                 <Text weight="regular">Осталось разработать <span style={{ fontWeight: 500 }}>{locale(new Decimal(Math.pow(3, stat.level)).minus(new Decimal(user.data.record).toNumber()).toNumber())}</span> вакцины, чтобы получить следующий уровень</Text>
               </div>
             </Card>
+            {group && (
+              <Card
+                className={style.linkGroup}
+                icon={<img src={Img6} alt="" />}
+                title="Моя лаборатория"
+              >
+                <SimpleCell
+                  before={<Avatar size={40} src={group.info.photo} />}
+                  after={
+                    <Button
+                      mode="outline"
+                      size="s"
+                      onClick={() => changeModal('groupLeave', group.info)}
+                    >
+                      Покинуть
+                    </Button>
+                  }
+                  description={`${group.users} ${declNum(group.users, ["учёный", "учёных", "учёных"])}`}
+                  disabled
+                >
+                  {group.info.name}
+                </SimpleCell>
+              </Card>
+            )}
             {/*<Card*/}
             {/*  icon={<img src={Img4} alt="" />}*/}
             {/*  title={<span>Достижения <span style={{ color: '#99A2AD' }}>12</span></span>}*/}
@@ -305,6 +328,15 @@ export default class extends React.Component<IProps, IState> {
             {/*</Card>*/}
             <StatCard stat={stat} />
             <Card noPadding>
+              <SimpleCell
+                before={<Icon28BuildingOutline />}
+                description="Хочешь свою лабораторию? Так создай её"
+                href={config.addCommunity}
+                target="_blank"
+                expandable
+              >
+                Новая лаборатория
+              </SimpleCell>
               {!subGroup && (
                 <SubscribeGroup />
               )}

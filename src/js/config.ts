@@ -16,7 +16,7 @@ if (process.env.localConfig === 'production') {
   };
 } else if (process.env.localConfig === 'local') {
   config = {
-    appId: 7704696,
+    appId: 7999835,
     wsUrl: 'ws://localhost:3245',
     apiUrl: 'http://127.0.0.1:3244'
   };
@@ -26,5 +26,6 @@ config = {
   ...config,
   chatUrl: 'https://vk.me/join/AJQ1d/E8nBabv9DfXT9Pmnhs',
   messageGroupUrl: 'https://vk.me/skyreglis',
-  faqUrl: 'https://vk.com/topic-191809582_47610720'
+  faqUrl: 'https://vk.com/@skyreglis-vaccine-faq',
+  addCommunity: 'https://vk.com/add_community_app.php?aid=' + config.appId
 };

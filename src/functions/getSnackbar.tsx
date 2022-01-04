@@ -1,6 +1,6 @@
 import React from "react";
 import {Avatar, Snackbar, Text} from "@vkontakte/vkui";
-import {Icon16Cancel, Icon16Done} from "@vkontakte/icons";
+import {Icon16Cancel, Icon16Done, Icon16InfoOutline} from "@vkontakte/icons";
 
 import { store } from 'src/js'
 
@@ -112,7 +112,20 @@ export function levelBonus(level: number) {
       onClose={() => store.dispatch(changeSnackbar(null))}
       before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
     >
-      <div>Бонус за <span style={{fontWeight: 500}}>{level}</span> уровень получен</div>
+      <div>Бонус за <span style={{fontWeight: 500}}>{level} уровень</span> получен</div>
+    </Snackbar>
+  )
+}
+
+export function leaveGroup(name: string) {
+  return(
+    <Snackbar
+      className='success-snack'
+      layout='vertical'
+      onClose={() => store.dispatch(changeSnackbar(null))}
+      before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
+    >
+      <div>Вы покинули лабораторию <span className="bold">{name}</span></div>
     </Snackbar>
   )
 }

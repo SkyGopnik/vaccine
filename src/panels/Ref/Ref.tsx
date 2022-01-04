@@ -27,9 +27,10 @@ import Img7 from "src/img/Friends.svg";
 
 import {Icon16Cancel, Icon16Done, Icon28MoneySendOutline, Icon28Send} from '@vkontakte/icons';
 
-import {ProfileReducerInterface} from "src/store/profile/reducers";
+import {ProfileReducerInterface, RefHistoryInterface} from "src/store/profile/reducers";
 import {UserInterface} from "src/store/user/reducers";
 import {AppReducerInterface} from "src/store/app/reducers";
+import {ReferReducerInterface} from "src/store/ref/reducers";
 
 import {locale} from "src/functions/balanceFormat";
 import isset from "src/functions/isset";
@@ -40,7 +41,7 @@ import platformApi from "src/js/platformApi";
 
 import style from "./Ref.module.scss";
 
-interface IProps extends ProfileReducerInterface, AppReducerInterface {
+interface IProps extends ProfileReducerInterface, AppReducerInterface, ReferReducerInterface {
   id: string,
   snackbar: ReactNode | null,
   user: UserInterface,
@@ -75,8 +76,12 @@ export default class extends React.Component<IProps, IState> {
     this.activateRef = this.activateRef.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { getRef } = this.props;
+
     this.updateCode();
+
+    await getRef();
   }
 
   updateCode() {
@@ -91,9 +96,9 @@ export default class extends React.Component<IProps, IState> {
   }
 
   copyCode() {
-    const { data, changeSnackbar } = this.props;
+    const { refer, changeSnackbar } = this.props;
 
-    platformApi.copyToClipboard(String(data.ref.refCode), (res) => {
+    platformApi.copyToClipboard(String(refer.code), (res) => {
       if (res.result) {
         changeSnackbar(
           <Snackbar
@@ -202,14 +207,14 @@ export default class extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { id, data, user, snackbar, changeModal, changePanel } = this.props;
+    const { id, data, user, refer, snackbar, changeModal, changePanel } = this.props;
     const {
       value,
       error,
       loading
     } = this.state;
     const { stat, additional } = data;
-    const { ref, history, refCode } = data.ref;
+    const { code, history } = refer || {};
 
     const refDisabled = loading || additional.code || user.data.level <= 1;
     const refBtnDisabled = value.length === 0;
@@ -219,94 +224,102 @@ export default class extends React.Component<IProps, IState> {
         <PanelHeader left={<HistoryBackBtn />} separator={false}>
           Спасение друзей
         </PanelHeader>
-        <Div className={style.block}>
-          <Header mode="secondary">Хочу бонус за друга</Header>
-          <Text weight="regular">Для того чтобы твой друг получил бонус, ему необходимо самостоятельно достигнуть 2 уровня в игре, после чего он сможет активировать твой код и вы вместе получите бонус! Не тормози, спаси своих друзей!</Text>
-          <Card>
-            <div className={style.refCode} onClick={this.copyCode}>
-              <Title level="1" weight="semibold">{refCode || 0}</Title>
-              <Subhead weight="regular">Нажми на код, чтобы скопировать его</Subhead>
-            </div>
-          </Card>
-          <Card
-            icon={<img src={Img5} alt="" />}
-            title="Статистика"
-          >
-            <Subhead weight="regular">
-              <div>· Спасено друзей: {stat.savedFriends || 0}</div>
-              <div>· Получено вакцины за друзей: {ref && locale(ref) || 0}</div>
-            </Subhead>
-          </Card>
-          {history.length !== 0 && (
-            <Card
-              icon={<img src={Img7} alt="" />}
-              title="Друзья"
-            >
-              {history.map((item, index) => (
-                <SimpleCell
-                  className={style.userItem}
-                  key={index}
-                  before={
-                    <Avatar
-                      className={style.avatar}
-                      size={48}
-                      src={item.user.info.photo}
-                      onClick={() => changePanel('user', item)}
-                    />
-                  }
-                  after={(item.user.id !== user.id) && (
-                    <IconButton
-                      className={style.transferIcon}
-                      icon={<Icon28MoneySendOutline />}
-                      onClick={() => changeModal('transferMoney', item.user.info)}
-                    />
-                  )}
-                  description={locale(item.user.data.balance)}
-                  multiline
-                  disabled
+        {!refer.loading ? (
+          <>
+            <Div className={style.block}>
+              <Header mode="secondary">Хочу бонус за друга</Header>
+              <Text weight="regular">Для того чтобы твой друг получил бонус, ему необходимо самостоятельно достигнуть 2 уровня в игре, после чего он сможет активировать твой код и вы вместе получите бонус! Не тормози, спаси своих друзей!</Text>
+              <Card>
+                <div className={style.refCode} onClick={this.copyCode}>
+                  <Title level="1" weight="semibold">{code || 0}</Title>
+                  <Subhead weight="regular">Нажми на код, чтобы скопировать его</Subhead>
+                </div>
+              </Card>
+              <Card
+                icon={<img src={Img5} alt="" />}
+                title="Статистика"
+              >
+                <Subhead weight="regular">
+                  <div>· Спасено друзей: {stat.savedFriends || 0}</div>
+                  <div>· Получено вакцины за друзей: {locale(refer.stat)}</div>
+                </Subhead>
+              </Card>
+              {history.length !== 0 && (
+                <Card
+                  icon={<img src={Img7} alt="" />}
+                  title="Друзья"
                 >
-                  <div className={style.name} onClick={() => changePanel('user', item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
-                </SimpleCell>
-              ))}
-            </Card>
-          )}
-        </Div>
-        <Div className={style.block}>
-          <Header mode="secondary">У меня есть код</Header>
-          {user.data.level <= 1 ? (
-            <Text weight="regular">К сожалению, сначала ты должен достигнуть 2 уровня в игре, чтобы активировать код.</Text>
-          ) : (
-            <Text weight="regular">Есть код? Ура — ты спасён. Осталось лишь ввести этот код от друга сюда. За это ты получишь подарок.</Text>
-          )}
-          <Card
-            icon={<img src={Img6} alt="" />}
-            title="Ввести код"
-          >
-            <FormItem
-              className={style.input}
-              status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
-              bottom={error ? error : null}
-            >
-              <div className={style.code}>
-                <Input
-                  value={value}
-                  type="number"
-                  placeholder="11928"
-                  disabled={refDisabled}
-                  onChange={(e) => this.handleInputChange(e.currentTarget.value)}
-                />
-                <Button
-                  disabled={refDisabled || refBtnDisabled}
-                  stretched
-                  onClick={this.activateRef}
+                  {history.map((item, index) => (
+                    <SimpleCell
+                      className={style.userItem}
+                      key={index}
+                      before={
+                        <Avatar
+                          className={style.avatar}
+                          size={48}
+                          src={item.user.info.photo}
+                          onClick={() => changePanel('user', item)}
+                        />
+                      }
+                      after={(item.user.id !== user.id) && (
+                        <IconButton
+                          className={style.transferIcon}
+                          icon={<Icon28MoneySendOutline />}
+                          onClick={() => changeModal('transferMoney', item.user.info)}
+                        />
+                      )}
+                      description={locale(item.user.data.balance)}
+                      multiline
+                      disabled
+                    >
+                      <div className={style.name} onClick={() => changePanel('user', item)}>{item.user.info.firstName} {item.user.info.lastName}</div>
+                    </SimpleCell>
+                  ))}
+                </Card>
+              )}
+            </Div>
+            <Div className={style.block}>
+              <Header mode="secondary">У меня есть код</Header>
+              {user.data.level <= 1 ? (
+                <Text weight="regular">К сожалению, сначала ты должен достигнуть 2 уровня в игре, чтобы активировать код.</Text>
+              ) : (
+                <Text weight="regular">Есть код? Ура — ты спасён. Осталось лишь ввести этот код от друга сюда. За это ты получишь подарок.</Text>
+              )}
+              <Card
+                icon={<img src={Img6} alt="" />}
+                title="Ввести код"
+              >
+                <FormItem
+                  className={style.input}
+                  status={isset(error) ? (error === '' ? 'valid' : 'error') : 'default'}
+                  bottom={error ? error : null}
                 >
-                  {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
-                </Button>
-              </div>
-            </FormItem>
-          </Card>
-          <Spacing size={110} />
-        </Div>
+                  <div className={style.code}>
+                    <Input
+                      value={value}
+                      type="number"
+                      placeholder="11928"
+                      disabled={refDisabled}
+                      onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+                    />
+                    <Button
+                      disabled={refDisabled || refBtnDisabled}
+                      stretched
+                      onClick={this.activateRef}
+                    >
+                      {!loading ? <Icon28Send /> : <Spinner style={{ color: '#fff' }} size="small" />}
+                    </Button>
+                  </div>
+                </FormItem>
+              </Card>
+              <Spacing size={110} />
+            </Div>
+          </>
+        ) : (
+          <Div>
+            <Spinner />
+          </Div>
+        )}
         {snackbar}
       </Panel>
     );

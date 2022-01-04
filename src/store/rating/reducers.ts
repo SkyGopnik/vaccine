@@ -27,6 +27,7 @@ export interface GroupInfoInterface {
   description: string
   photo: string
   group: GroupInterface
+  groupId: string
 }
 
 export interface RatingReducerInterface {

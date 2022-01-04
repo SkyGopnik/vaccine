@@ -32,6 +32,25 @@
   }
 }
 
+.linkGroup {
+  :global {
+    .SimpleCell {
+      padding: 0;
+
+      align-items: unset;
+
+      .SimpleCell__main {
+        padding: 0;
+      }
+
+      .Button {
+        color: var(--destructive);
+        border: 1px solid var(--destructive);
+      }
+    }
+  }
+}
+
 .levels {
   .progressWrapper {
     margin-top: 12px;

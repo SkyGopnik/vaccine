@@ -70,7 +70,7 @@ const team: Array<Team> = [
     name: 'Аня Безуглова',
     status: 'Ламповый художник ✨',
     img: 'https://sun1-85.userapi.com/s/v1/ig2/76WlLgkHgCQuDkSNx8hLlUa3oME01eDLSMPoP8965EfMtPMxJh5XjaTjHmv82cXlc0RxIc0ogQMe-o-VnHniwlQt.jpg?size=100x0&quality=96&crop=22,74,519,519&ava=1'
-  },
+  }
 ];
 
 export default class extends React.Component<IProps, IState> {

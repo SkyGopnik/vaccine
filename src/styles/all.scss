@@ -84,6 +84,10 @@
   .status-profile {
     background: var(--background_content);
   }
+
+  .bold {
+    font-weight: 500;
+  }
 }
 
 #main {
@@ -169,6 +173,20 @@
     .ModalCard--android, .ModalCard--ios {
       .ModalCard__in {
         max-width: 400px;
+      }
+    }
+  }
+
+  .info-snack {
+    .Snackbar__in {
+      .Snackbar__body {
+        background: #F2994A;
+
+        .Snackbar__content {
+          .Text {
+            color: #fff;
+          }
+        }
       }
     }
   }
