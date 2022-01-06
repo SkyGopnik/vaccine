@@ -188,7 +188,8 @@ export default class extends React.Component<IProps, IState> {
       );
     } catch (e) {
       const localization = {
-        'User reach limit': 'Пользователь достиг лимита на переводы, попробуйте меньшую сумму'
+        'User reach limit': 'Пользователь достиг лимита на переводы, попробуйте меньшую сумму',
+        'Transfer disabled': 'Пользователь отключил переводы'
       };
 
       changeSnackbar(

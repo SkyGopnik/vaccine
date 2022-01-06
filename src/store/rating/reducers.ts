@@ -10,13 +10,21 @@ export interface GroupInterface {
   id?: string
   info: GroupInfoInterface
   users: GroupUserInterface[]
-  balance?: number
 }
 
 export interface GroupUserInterface {
   id?: number
   group: GroupInterface
   user: UserInterface
+  groupId: string
+}
+
+export interface GroupDataInterface {
+  id?: number
+  balance: number
+  record: number
+  group: GroupInterface
+  groupId: string
 }
 
 export interface GroupInfoInterface {
@@ -38,9 +46,7 @@ export interface RatingReducerInterface {
         list: Array<UserDataInterface>,
         position: number
       },
-      laboratories: {
-        list: Array<GroupInterface>
-      }
+      laboratories: Array<GroupDataInterface>
     },
     position: number,
     error: any

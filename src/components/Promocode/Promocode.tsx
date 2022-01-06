@@ -47,10 +47,13 @@ export default class extends React.Component<IProps, IState> {
       loading: false
     };
 
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.activatePromocode = this.activatePromocode.bind(this);
   }
 
-  handleInputChange(value: string) {
+  handleInputChange(e) {
+    const { value } = e.currentTarget;
+
     const sendError = (error: string) => {
       throw error;
     };
@@ -115,7 +118,7 @@ export default class extends React.Component<IProps, IState> {
           onClose={() => changeSnackbar(null)}
           before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}
         >
-          <div>Реферальный код активирован</div>
+          <div>Промокод активирован</div>
           <Text weight="medium">Получено {locale(data.bonus)} вакцины</Text>
         </Snackbar>
       );
@@ -160,7 +163,7 @@ export default class extends React.Component<IProps, IState> {
               type="text"
               placeholder="freeVaccine"
               disabled={loading}
-              onChange={(e) => this.handleInputChange(e.currentTarget.value)}
+              onChange={this.handleInputChange}
             />
             <Button
               disabled={loading || (isset(error) ? (error !== '') : true)}

@@ -42,7 +42,7 @@ export default class extends React.Component<IProps, IState>  {
     };
 
     this.price = new Decimal(props.user.data.clickUser)
-      .mul(2500)
+      .mul(500)
       .toNumber();
 
     this.leaveGroup = this.leaveGroup.bind(this);

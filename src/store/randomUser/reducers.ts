@@ -15,7 +15,8 @@ export interface RandomUserReducerInterface {
     data: UserDataInterface,
     status: {
       code: string
-    }
+    },
+    isClosed?: boolean
   },
   error: any,
   loading: boolean,
@@ -26,7 +27,7 @@ export interface RandomUserReducerInterface {
 }
 
 const defaultState = {
-  loading: false,
+  loading: true,
   data: {
     stat: {},
     data: {}

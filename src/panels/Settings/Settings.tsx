@@ -36,6 +36,29 @@ export default class extends React.Component<IProps> {
     this.state = {};
   }
 
+  customSimpleCell(key: string, name: string, description?: string) {
+    const { user, changeAdditional } = this.props;
+    const _key = user.data.additional[key];
+
+    return (
+      <SimpleCell
+        after={
+          <Switch
+            checked={_key || false}
+            onChange={() => changeAdditional({
+              [key]: !_key
+            })}
+          />
+        }
+        description={description}
+        multiline
+        disabled
+      >
+        {name}
+      </SimpleCell>
+    );
+  }
+
   render() {
     const {
       id,
@@ -48,7 +71,13 @@ export default class extends React.Component<IProps> {
       changeAdditional
     } = this.props;
     const { role } = data;
-    const { easyAnimation, showRating, snackbarTabNotification, vaccineClickNotification } = user.data.additional;
+    const {
+      easyAnimation,
+      showRating,
+      snackbarTabNotification,
+      vaccineClickNotification,
+      accountClosed
+    } = user.data.additional;
 
     return (
       <Panel id={id}>
@@ -64,91 +93,49 @@ export default class extends React.Component<IProps> {
         <Div className={style.block}>
           <Header mode="secondary">Оформление</Header>
           <Card mode="shadow">
-            <SimpleCell
-              after={
-                <Switch
-                  checked={easyAnimation || false}
-                  onChange={() => changeAdditional({
-                    easyAnimation: !easyAnimation
-                  })}
-                />
-              }
-              disabled
-            >
-              Упростить анимацию
-            </SimpleCell>
-            {/*<SimpleCell*/}
-            {/*  after={<Switch defaultChecked />}*/}
-            {/*  disabled*/}
-            {/*>*/}
-            {/*  Оформление*/}
-            {/*</SimpleCell>*/}
+            {this.customSimpleCell(
+              'easyAnimation',
+              'Упростить анимацию',
+              'Наиболее эффективно на слабых устройствах'
+            )}
           </Card>
         </Div>
         <Div className={style.block}>
           <Header mode="secondary">Уведомления</Header>
           <Card mode="shadow">
-            <SimpleCell
-              after={
-                <Switch
-                  checked={vaccineClickNotification || false}
-                  onChange={() => changeAdditional({
-                    vaccineClickNotification: !vaccineClickNotification
-                  })}
-                />
-              }
-              disabled
-            >
-              Получение бонуса при кликах
-            </SimpleCell>
-            <SimpleCell
-              after={
-                <Switch
-                  checked={snackbarTabNotification || false}
-                  onChange={() => changeAdditional({
-                    snackbarTabNotification: !snackbarTabNotification
-                  })}
-                />
-              }
-              multiline
-              disabled
-            >
-              Скрыть уведомления при переходах
-            </SimpleCell>
+            {this.customSimpleCell(
+              'vaccineClickNotification',
+              'Получение бонуса при кликах',
+              'Если надоело уведомление каждый раз когда заполняется колба'
+            )}
+            {this.customSimpleCell(
+              'snackbarTabNotification',
+              'Скрыть уведомления при переходах',
+              'Уведомления больше не будут показываться заново'
+            )}
           </Card>
         </Div>
         <Div className={style.block}>
           <Header mode="secondary">Аккаунт</Header>
           <Card mode="shadow">
-            {/*<SimpleCell*/}
-            {/*  after={<Switch disabled />}*/}
-            {/*  disabled*/}
-            {/*>*/}
-            {/*  Push уведомления*/}
-            {/*</SimpleCell>*/}
-            <SimpleCell
-              after={
-                <Switch
-                  checked={showRating || false}
-                  onChange={() => changeAdditional({
-                    showRating: !showRating
-                  })}
-                />
-              }
-              disabled
-            >
-              Отображение в рейтинге
-            </SimpleCell>
+            {this.customSimpleCell(
+              'showRating',
+              'Отображение в рейтинге',
+              'Аккаунт больше не будет показываться в рейтинге'
+            )}
+            {this.customSimpleCell(
+              'accountClosed',
+              'Закрытый профиль',
+              'Если вы закроете профиль, он будет доступен только вам'
+            )}
+            {this.customSimpleCell(
+              'disableTransfer',
+              'Запретить переводы',
+              'Если хочешь добиться всего своими руками'
+            )}
             {/*<SimpleCell onClick={() => changeModal('dropProgress')}>*/}
             {/*  Сбросить прогресс*/}
             {/*</SimpleCell>*/}
-            <SimpleCell
-              indicator="Name"
-              expandable
-              onClick={() => changePanel('linkedGroup')}
-            >
-              Сообщество
-            </SimpleCell>
             {/*<SimpleCell*/}
             {/*  onClick={() => changePanel('donate')}*/}
             {/*>*/}
@@ -159,23 +146,6 @@ export default class extends React.Component<IProps> {
                 Будка бомжа
               </SimpleCell>
             )}
-            {/*<SimpleCell*/}
-            {/*  onClick={() => {*/}
-            {/*    changeSnackbar(*/}
-            {/*      <Snackbar*/}
-            {/*        className="success-snack"*/}
-            {/*        layout="vertical"*/}
-            {/*        duration={10000000}*/}
-            {/*        onClose={() => changeSnackbar(null)}*/}
-            {/*        before={<Avatar size={24} style={{background: '#fff'}}><Icon16Done fill="#6A9EE5" width={14} height={14}/></Avatar>}*/}
-            {/*      >*/}
-            {/*        Я туточки*/}
-            {/*      </Snackbar>*/}
-            {/*    );*/}
-            {/*  }}*/}
-            {/*>*/}
-            {/*  Бесконечный снекбар*/}
-            {/*</SimpleCell>*/}
           </Card>
           <Spacing size={55} />
         </Div>

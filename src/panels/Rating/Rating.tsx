@@ -174,8 +174,8 @@ export default class extends React.Component<IProps, IState> {
               )}
               {type === 'laboratories' && (
                 !rating.loading ? (
-                  rating.data.laboratories.list.length !== 0 ? (
-                    rating.data.laboratories.list.map((item, index) => (
+                  rating.data.laboratories.length !== 0 ? (
+                    rating.data.laboratories.map((item, index) => (
                       <div className={style.userItem} key={index}>
                         <div className={style.topNumber}>{index + 1}.</div>
                         <SimpleCell
@@ -184,7 +184,7 @@ export default class extends React.Component<IProps, IState> {
                             <Avatar
                               className={style.avatar}
                               size={48}
-                              src={item.info.photo}
+                              src={item.group.info.photo}
                             />
                           }
                           description={locale(item.balance)}
@@ -192,7 +192,7 @@ export default class extends React.Component<IProps, IState> {
                           disabled
                         >
                           <div className={style.name}>
-                            {item.info.name}
+                            {item.group.info.name}
                           </div>
                         </SimpleCell>
                       </div>

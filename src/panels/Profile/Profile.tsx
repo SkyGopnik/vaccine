@@ -369,7 +369,7 @@ export default class extends React.Component<IProps, IState> {
               </SimpleCell>
             </Card>
             <Footer onClick={() => this.setAdmin()}>
-              <div>Версия 2.2.0</div>
+              <div>Версия 2.3.0</div>
               <div>Сделано с <span style={{ color: 'var(--destructive)' }}>❤</span> от <Link target="_blank" href="https://vk.com/public191809582">SkyReglis Studio</Link></div>
             </Footer>
             <Spacing size={55} />
