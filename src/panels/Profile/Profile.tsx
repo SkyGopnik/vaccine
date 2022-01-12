@@ -47,6 +47,7 @@ import Img7 from "src/img/profile/7.svg";
 import style from './index.module.scss';
 import platformApi from "src/js/platformApi";
 import Decimal from "decimal.js";
+import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -149,6 +150,10 @@ export default class extends React.Component<IProps, IState> {
     const { stat } = data;
 
     return new Decimal(Math.pow(3, stat.level)).minus(new Decimal(user.data.record).toNumber()).toNumber();
+  }
+
+  addToCommunity() {
+    return bridge.send("VKWebAppAddToCommunity");
   }
 
   render() {
@@ -331,9 +336,8 @@ export default class extends React.Component<IProps, IState> {
               <SimpleCell
                 before={<Icon28BuildingOutline />}
                 description="Хочешь свою лабораторию? Так создай её"
-                href={config.addCommunity}
-                target="_blank"
                 expandable
+                onClick={this.addToCommunity}
               >
                 Новая лаборатория
               </SimpleCell>
