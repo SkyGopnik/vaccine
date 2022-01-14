@@ -1,4 +1,9 @@
 .rating {
+  .tabsItem {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
   .card {
     padding: 0 12px;
 

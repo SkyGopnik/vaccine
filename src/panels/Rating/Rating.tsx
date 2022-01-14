@@ -22,7 +22,7 @@ import { UserDataInterface, UserInterface } from "src/store/user/reducers";
 
 import { locale } from "src/functions/balanceFormat";
 
-import style from './Rating.scss';
+import style from './index.module.scss';
 import bridge from "@vkontakte/vk-bridge";
 
 interface IProps extends RatingReducerInterface {
@@ -57,9 +57,13 @@ export default class extends React.Component<IProps, IState> {
   }
 
   changeType(type: IState["type"]) {
-    const { getRating } = this.props;
+    const {rating, getRating} = this.props;
 
-    getRating({ loading: true, type });
+    if (rating.loading) {
+      return;
+    }
+
+    getRating({loading: true, type});
 
     this.setState({
       type
