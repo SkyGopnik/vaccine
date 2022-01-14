@@ -53,7 +53,7 @@ export default class extends React.Component<IProps, IState> {
   async componentDidMount() {
     const { getRating } = this.props;
 
-    await getRating();
+    await getRating({ loading: true });
   }
 
   changeType(type: IState["type"]) {
