@@ -347,8 +347,7 @@ export default class extends React.Component<IProps, IState> {
               <SimpleCell
                 before={<Icon28QuestionOutline />}
                 description="Потерялся? Мы поможем"
-                href={config.faqUrl}
-                target="_blank"
+                onClick={() => changePanel('faq')}
                 expandable
               >
                 Часто задаваемые вопросы

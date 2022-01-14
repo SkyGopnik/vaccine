@@ -46,7 +46,7 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       type: 'scientists',
-      ptr: false
+      ptr: false,
     };
   }
 
@@ -85,6 +85,10 @@ export default class extends React.Component<IProps, IState> {
 
       this.setState({ ptr: false })
     }, 1000);
+  }
+
+  openLaboratory(id){
+    window.open('https://vk.com/club' + id, '_blank').focus();
   }
 
   render() {
@@ -185,13 +189,14 @@ export default class extends React.Component<IProps, IState> {
                               className={style.avatar}
                               size={48}
                               src={item.group.info.photo}
+                              onClick={() => this.openLaboratory(item.groupId)}
                             />
                           }
                           description={locale(item.balance)}
                           multiline
                           disabled
                         >
-                          <div className={style.name}>
+                          <div className={style.name} onClick={() => this.openLaboratory(item.groupId)}>
                             {item.group.info.name}
                           </div>
                         </SimpleCell>
