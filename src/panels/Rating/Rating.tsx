@@ -93,7 +93,10 @@ export default class extends React.Component<IProps, IState> {
   }
 
   openLaboratory(id) {
-    window.open('https://vk.com/club' + id, '_blank').focus();
+    const link = document.createElement('a');
+    link.href = 'https://vk.com/club'  + id;
+    link.target = "_blank";
+    link.click();
   }
 
   render() {
