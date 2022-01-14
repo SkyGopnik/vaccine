@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, { ReactNode } from 'react';
 import {
   Panel,
   PanelHeader,
@@ -13,12 +13,12 @@ import {
   PullToRefresh, Placeholder, Button
 } from '@vkontakte/vkui';
 
-import {Icon28MoneySendOutline, Icon56UsersOutline} from "@vkontakte/icons";
+import { Icon28MoneySendOutline, Icon56UsersOutline } from "@vkontakte/icons";
 
 import Spacing from "src/components/Spacing";
 
-import {RatingReducerInterface} from "src/store/rating/reducers";
-import {UserDataInterface, UserInterface} from "src/store/user/reducers";
+import { RatingReducerInterface } from "src/store/rating/reducers";
+import { UserDataInterface, UserInterface } from "src/store/user/reducers";
 
 import { locale } from "src/functions/balanceFormat";
 
@@ -46,7 +46,7 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       type: 'scientists',
-      ptr: false,
+      ptr: false
     };
   }
 
@@ -80,14 +80,14 @@ export default class extends React.Component<IProps, IState> {
       await getRating({ loading: false, type });
 
       sendWsMessage({
-         type: 'SyncUser'
+        type: 'SyncUser'
       });
 
       this.setState({ ptr: false })
     }, 1000);
   }
 
-  openLaboratory(id){
+  openLaboratory(id) {
     window.open('https://vk.com/club' + id, '_blank').focus();
   }
 
@@ -106,15 +106,15 @@ export default class extends React.Component<IProps, IState> {
       key: IState["type"],
       name: string
     }> = [
-      {
-        key: 'scientists',
-        name: 'Учёные'
-      },
-      {
-        key: 'laboratories',
-        name: 'Лаборатории'
-      }
-    ];
+        {
+          key: 'scientists',
+          name: 'Учёные'
+        },
+        {
+          key: 'laboratories',
+          name: 'Лаборатории'
+        }
+      ];
 
     return (
       <Panel id={id} className={style.rating}>
@@ -171,10 +171,10 @@ export default class extends React.Component<IProps, IState> {
                     </SimpleCell>
                   </div>
                 )) : (
-                  <Div>
-                    <Spinner />
-                  </Div>
-                )
+                    <Div>
+                      <Spinner />
+                    </Div>
+                  )
               )}
               {type === 'laboratories' && (
                 !rating.loading ? (
@@ -203,19 +203,19 @@ export default class extends React.Component<IProps, IState> {
                       </div>
                     ))
                   ) : (
-                    <Placeholder
-                      icon={<Icon56UsersOutline />}
-                      header="Лаборатории отсутсвуют"
-                      action={<Button size="m" onClick={this.addToCommunity}>Подключить</Button>}
-                    >
-                      Подключите Вакцину в свое сообщество, чтобы оно появилось в рейтинге
-                    </Placeholder>
-                  )
+                      <Placeholder
+                        icon={<Icon56UsersOutline />}
+                        header="Лаборатории отсутсвуют"
+                        action={<Button size="m" onClick={this.addToCommunity}>Подключить</Button>}
+                      >
+                        Подключите Вакцину в свое сообщество, чтобы оно появилось в рейтинге
+                      </Placeholder>
+                    )
                 ) : (
-                  <Div>
-                    <Spinner />
-                  </Div>
-                )
+                    <Div>
+                      <Spinner />
+                    </Div>
+                  )
               )}
             </Card>
             <Spacing size={140} />
