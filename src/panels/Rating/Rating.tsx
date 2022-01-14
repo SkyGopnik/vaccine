@@ -24,6 +24,7 @@ import { locale } from "src/functions/balanceFormat";
 
 import style from './index.module.scss';
 import bridge from "@vkontakte/vk-bridge";
+import ReactSwipe from 'react-swipe';
 
 interface IProps extends RatingReducerInterface {
   id: string,
@@ -108,21 +109,23 @@ export default class extends React.Component<IProps, IState> {
       changePanel,
       changeModal
     } = this.props;
-    const { type, ptr } = this.state;
+    const {type, ptr} = this.state;
 
     const tabs: Array<{
       key: IState["type"],
       name: string
     }> = [
-        {
-          key: 'scientists',
-          name: 'Учёные'
-        },
-        {
-          key: 'laboratories',
-          name: 'Лаборатории'
-        }
-      ];
+      {
+        key: 'scientists',
+        name: 'Учёные'
+      },
+      {
+        key: 'laboratories',
+        name: 'Лаборатории'
+      }
+    ];
+
+    let reactSwipeEl;
 
     return (
       <Panel id={id} className={style.rating}>
@@ -165,7 +168,7 @@ export default class extends React.Component<IProps, IState> {
                       after={(item.userId !== user.id) && (
                         <IconButton
                           className={style.transferIcon}
-                          icon={<Icon28MoneySendOutline />}
+                          icon={<Icon28MoneySendOutline/>}
                           onClick={() => changeModal('transferMoney', item.user.info)}
                         />
                       )}
@@ -179,10 +182,10 @@ export default class extends React.Component<IProps, IState> {
                     </SimpleCell>
                   </div>
                 )) : (
-                    <Div>
-                      <Spinner />
-                    </Div>
-                  )
+                  <Div>
+                    <Spinner/>
+                  </Div>
+                )
               )}
               {type === 'laboratories' && (
                 !rating.loading ? (
@@ -211,22 +214,22 @@ export default class extends React.Component<IProps, IState> {
                       </div>
                     ))
                   ) : (
-                      <Placeholder
-                        icon={<Icon56UsersOutline />}
-                        header="Лаборатории отсутсвуют"
-                        action={<Button size="m" onClick={this.addToCommunity}>Подключить</Button>}
-                      >
-                        Подключите Вакцину в свое сообщество, чтобы оно появилось в рейтинге
-                      </Placeholder>
-                    )
-                ) : (
-                    <Div>
-                      <Spinner />
-                    </Div>
+                    <Placeholder
+                      icon={<Icon56UsersOutline/>}
+                      header="Лаборатории отсутсвуют"
+                      action={<Button size="m" onClick={this.addToCommunity}>Подключить</Button>}
+                    >
+                      Подключите Вакцину в свое сообщество, чтобы оно появилось в рейтинге
+                    </Placeholder>
                   )
+                ) : (
+                  <Div>
+                    <Spinner/>
+                  </Div>
+                )
               )}
             </Card>
-            <Spacing size={140} />
+            <Spacing size={140}/>
           </Div>
         </PullToRefresh>
         {snackbar}
