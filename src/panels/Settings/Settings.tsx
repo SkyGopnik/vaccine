@@ -19,6 +19,9 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 
+import platformApi from 'src/js/platformApi';
+import appearance from 'src/js/appearance';
+
 import style from "./index.module.scss";
 
 interface IProps extends ProfileReducerInterface {
@@ -60,6 +63,24 @@ export default class extends React.Component<IProps> {
         {name}
       </SimpleCell>
     );
+  }
+
+  changeScheme(scheme: 'bright_light' | 'space_gray' | 'auto') {
+    const { changeAdditional } = this.props;
+
+    console.log(appearance[scheme].status);
+    console.log(appearance[scheme].color);
+
+    if(scheme === 'auto') {
+      changeAdditional({
+        scheme: scheme
+      });
+    } else {
+      changeAdditional({
+        scheme: scheme
+      });
+      platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
+    }
   }
 
   render() {
@@ -107,17 +128,25 @@ export default class extends React.Component<IProps> {
           <Header mode="secondary">Тема</Header>
           <Card mode="shadow">
             <FormItem>
-                <Radio name="radio" value="3">
+                <Radio
+                  name="radio"
+                  value="3"
+                  onClick={() => this.changeScheme('auto')}
+                >
                   Автоматически
                 </Radio>
                 <Radio
                   name="radio"
                   value="1"
-                  defaultChecked
+                  onClick={() => this.changeScheme('bright_light')}
                 >
                   Светлая
                 </Radio>
-                <Radio name="radio" value="2">
+                <Radio
+                  name="radio"
+                  value="2"
+                  onClick={() => this.changeScheme('space_gray')}
+                >
                   Темная
                 </Radio>
             </FormItem>
