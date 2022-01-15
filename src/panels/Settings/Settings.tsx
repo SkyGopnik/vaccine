@@ -19,11 +19,10 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 
-import style from "./index.module.scss";
-import {changeAdditional} from "src/store/user/actions";
+import platformApi from 'src/js/platformApi';
+import appearance from 'src/js/appearance';
 
-import platformApi from "src/js/platformApi";
-import appearance from "src/js/appearance";
+import style from "./index.module.scss";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -128,27 +127,29 @@ export default class extends React.Component<IProps> {
         <Div className={style.block}>
           <Header mode="secondary">Тема</Header>
           <Card mode="shadow">
-            <Radio
-              name="radio"
-              value="1"
-              onClick={() => this.changeScheme('auto')}
-            >
-              Автоматически
-            </Radio>
-            <Radio
-              name="radio"
-              value="1"
-              onClick={() => this.changeScheme('bright_light')}
-            >
-              Светлая
-            </Radio>
-            <Radio
-              name="radio"
-              value="2"
-              onClick={() => this.changeScheme('space_gray')}
-            >
-              Темная
-            </Radio>
+            <FormItem>
+                <Radio
+                  name="radio"
+                  value="3"
+                  onClick={() => this.changeScheme('auto')}
+                >
+                  Автоматически
+                </Radio>
+                <Radio
+                  name="radio"
+                  value="1"
+                  onClick={() => this.changeScheme('bright_light')}
+                >
+                  Светлая
+                </Radio>
+                <Radio
+                  name="radio"
+                  value="2"
+                  onClick={() => this.changeScheme('space_gray')}
+                >
+                  Темная
+                </Radio>
+            </FormItem>
           </Card>
         </Div>
         <Div className={style.block}>
