@@ -24,7 +24,6 @@ import { locale } from "src/functions/balanceFormat";
 
 import style from './index.module.scss';
 import bridge from "@vkontakte/vk-bridge";
-import ReactSwipe from 'react-swipe';
 
 interface IProps extends RatingReducerInterface {
   id: string,
