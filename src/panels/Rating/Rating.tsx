@@ -124,8 +124,6 @@ export default class extends React.Component<IProps, IState> {
       }
     ];
 
-    let reactSwipeEl;
-
     return (
       <Panel id={id} className={style.rating}>
         <PanelHeader separator={false}>
