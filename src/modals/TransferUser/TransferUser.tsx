@@ -101,7 +101,7 @@ export default class extends React.Component<IProps, IState> {
       error = undefined;
     }
 
-    if (!/^[a-z0-9_\.=\/\:-]{0,50}$/gm.test(value)) {
+    if (!/^[a-z0-9_\.=\.@\/\:-]{0,50}$/gm.test(value)) {
       error = 'Разрешены только ссылки или прямые ID и короткие адреса';
     }
 
@@ -129,6 +129,8 @@ export default class extends React.Component<IProps, IState> {
     if (matchUrl && matchUrl[matchUrl.length - 1]) {
       value = matchUrl[matchUrl.length - 1].replace('/', '');
     }
+
+    value = value.replace('@', '');
 
     try {
       const { data } = await axios.get("/v1/user/" + value);
