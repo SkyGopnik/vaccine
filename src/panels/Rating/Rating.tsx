@@ -106,11 +106,12 @@ export default class extends React.Component<IProps, IState> {
   }
 
   swipe(motion: 'left' | 'right') {
-    console.log(motion);
+    const {type} = this.state;
+
     if (motion === 'left') {
-      this.changeType('laboratories');
-    } else if (motion === 'right') {
-      this.changeType('scientists');
+      this.changeType(type === 'laboratories' ? 'scientists' : 'laboratories');
+    } else if (motion === 'right' || type === 'laboratories') {
+      this.changeType(type === 'scientists' ? 'laboratories' : 'scientists');
     }
   }
 
