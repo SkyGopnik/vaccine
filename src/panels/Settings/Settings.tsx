@@ -6,7 +6,10 @@ import {
   Card,
   Div,
   SimpleCell,
-  Switch
+  Switch,
+  FormLayout,
+  FormItem,
+  Radio
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -16,7 +19,7 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 
-import style from "./Settings.scss";
+import style from "./index.module.scss";
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -98,6 +101,26 @@ export default class extends React.Component<IProps> {
               'Упростить анимацию',
               'Наиболее эффективно на слабых устройствах'
             )}
+          </Card>
+        </Div>
+        <Div className={style.block}>
+          <Header mode="secondary">Тема</Header>
+          <Card mode="shadow">
+            <FormItem>
+                <Radio name="radio" value="3">
+                  Автоматически
+                </Radio>
+                <Radio
+                  name="radio"
+                  value="1"
+                  defaultChecked
+                >
+                  Светлая
+                </Radio>
+                <Radio name="radio" value="2">
+                  Темная
+                </Radio>
+            </FormItem>
           </Card>
         </Div>
         <Div className={style.block}>
