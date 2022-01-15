@@ -16,7 +16,15 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 
+<<<<<<< Updated upstream
 import style from "./Settings.scss";
+=======
+import style from "./index.module.scss";
+import {changeAdditional} from "src/store/user/actions";
+
+import platformApi from "src/js/platformApi";
+import appearance from "src/js/appearance";
+>>>>>>> Stashed changes
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -57,6 +65,24 @@ export default class extends React.Component<IProps> {
         {name}
       </SimpleCell>
     );
+  }
+
+  changeScheme(scheme: 'bright_light' | 'space_gray' | 'auto') {
+    const { changeAdditional } = this.props;
+
+    console.log(appearance[scheme].status);
+    console.log(appearance[scheme].color);
+
+    if(scheme === 'auto') {
+      changeAdditional({
+        scheme: scheme
+      });
+    } else {
+      changeAdditional({
+        scheme: scheme
+      });
+      platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
+    }
   }
 
   render() {
@@ -101,6 +127,35 @@ export default class extends React.Component<IProps> {
           </Card>
         </Div>
         <Div className={style.block}>
+<<<<<<< Updated upstream
+=======
+          <Header mode="secondary">Тема</Header>
+          <Card mode="shadow">
+            <Radio
+              name="radio"
+              value="1"
+              onClick={() => this.changeScheme('auto')}
+            >
+              Автоматически
+            </Radio>
+            <Radio
+              name="radio"
+              value="1"
+              onClick={() => this.changeScheme('bright_light')}
+            >
+              Светлая
+            </Radio>
+            <Radio
+              name="radio"
+              value="2"
+              onClick={() => this.changeScheme('space_gray')}
+            >
+              Темная
+            </Radio>
+          </Card>
+        </Div>
+        <Div className={style.block}>
+>>>>>>> Stashed changes
           <Header mode="secondary">Уведомления</Header>
           <Card mode="shadow">
             {this.customSimpleCell(
