@@ -6,7 +6,10 @@ import {
   Card,
   Div,
   SimpleCell,
-  Switch
+  Switch,
+  FormLayout,
+  FormItem,
+  Radio
 } from "@vkontakte/vkui";
 
 import HistoryBackBtn from "src/components/HistoryBackBtn";
@@ -16,15 +19,11 @@ import Promocode from "src/components/Promocode/PromocodeContainer";
 import {UserInterface} from "src/store/user/reducers";
 import {ProfileReducerInterface} from "src/store/profile/reducers";
 
-<<<<<<< Updated upstream
-import style from "./Settings.scss";
-=======
 import style from "./index.module.scss";
 import {changeAdditional} from "src/store/user/actions";
 
 import platformApi from "src/js/platformApi";
 import appearance from "src/js/appearance";
->>>>>>> Stashed changes
 
 interface IProps extends ProfileReducerInterface {
   id: string,
@@ -127,8 +126,6 @@ export default class extends React.Component<IProps> {
           </Card>
         </Div>
         <Div className={style.block}>
-<<<<<<< Updated upstream
-=======
           <Header mode="secondary">Тема</Header>
           <Card mode="shadow">
             <Radio
@@ -155,7 +152,6 @@ export default class extends React.Component<IProps> {
           </Card>
         </Div>
         <Div className={style.block}>
->>>>>>> Stashed changes
           <Header mode="secondary">Уведомления</Header>
           <Card mode="shadow">
             {this.customSimpleCell(
