@@ -51,10 +51,7 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-    platformApi.changeViewSettings('dark', '#6A9EE5');
-    this.setState({
-      scheme: Scheme.SPACE_GRAY
-    });
+
     const {
       changeView,
       connectWs,
@@ -105,14 +102,6 @@ export default class extends React.Component<IProps, IState> {
     const { scheme } = this.state;
 
     console.log('COMPONENT DID UPDATE: ' + prevState.scheme + ' / ' + scheme);
-
-    /*
-    if(prevState.scheme !== scheme) {
-      this.setState({
-        scheme: Scheme.BRIGHT_LIGHT
-      });
-    }
-    */
 
     // Если меняется история
     // или если меняется панель

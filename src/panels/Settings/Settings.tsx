@@ -80,6 +80,7 @@ export default class extends React.Component<IProps> {
         scheme: scheme
       });
       platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
+      console.log('appearance[scheme].status: ' + appearance[scheme].status + ', appearance[scheme].status: ' + appearance[scheme].color)
     }
   }
 
