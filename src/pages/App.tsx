@@ -51,6 +51,10 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
+    platformApi.changeViewSettings('dark', '#6A9EE5');
+    this.setState({
+      scheme: Scheme.SPACE_GRAY
+    });
     const {
       changeView,
       connectWs,
@@ -98,6 +102,17 @@ export default class extends React.Component<IProps, IState> {
 
   componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
     const { snackbar, story, panel } = this.props;
+    const { scheme } = this.state;
+
+    console.log('COMPONENT DID UPDATE: ' + prevState.scheme + ' / ' + scheme);
+
+    /*
+    if(prevState.scheme !== scheme) {
+      this.setState({
+        scheme: Scheme.BRIGHT_LIGHT
+      });
+    }
+    */
 
     // Если меняется история
     // или если меняется панель
@@ -127,9 +142,11 @@ export default class extends React.Component<IProps, IState> {
       console.log(type, data);
 
       if (type === 'VKWebAppUpdateConfig') {
+        console.log('VKWebAppUpdateConfig')
         let scheme = Scheme.BRIGHT_LIGHT;
 
         if (data.scheme === 'client_dark' || data.scheme === 'space_gray') {
+          console.log('Change scheme to dark');
           scheme = Scheme.SPACE_GRAY;
         }
 
