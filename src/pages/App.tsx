@@ -21,7 +21,6 @@ import {AppReducerInterface} from "src/store/app/reducers";
 import {WebSocketReducerInterface} from "src/store/webSocket/reducers";
 
 import platformApi from "src/js/platformApi";
-import appearance from "src/js/appearance";
 import {config} from 'src/js/config';
 
 import '../styles/all.scss';
@@ -52,25 +51,20 @@ export default class extends React.Component<IProps, IState> {
   }
 
   async componentDidMount() {
-
-    // platformApi.changeViewSettings('dark', '#6A9EE5');
-
     const {
       changeView,
       connectWs,
       syncUser
     } = this.props;
 
+    // Subscribe on events
+    this.subscribe();
+
     try {
       const { data } = await axios.get('/v1/user');
 
       console.log(data);
-
-      if(data.scheme === 'auto') {
-        this.subscribe();
-      } else {
-        platformApi.changeViewSettings(appearance[data.scheme].status, appearance[data.scheme].color);
-      }
+      console.log(JSON.stringify(data));
 
       syncUser(data);
       await connectWs(config.wsUrl);
@@ -138,6 +132,17 @@ export default class extends React.Component<IProps, IState> {
         if (data.scheme === 'client_dark' || data.scheme === 'space_gray') {
           scheme = Scheme.SPACE_GRAY;
         }
+
+        const appearance = {
+          [Scheme.BRIGHT_LIGHT]: {
+            status: Appearance.DARK,
+            color: '#6A9EE5'
+          },
+          [Scheme.SPACE_GRAY]: {
+            status: Appearance.LIGHT,
+            color: '#19191a'
+          }
+        };
 
         platformApi.changeViewSettings(appearance[scheme].status, appearance[scheme].color);
 
