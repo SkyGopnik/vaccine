@@ -125,6 +125,7 @@ export default class extends React.Component<IProps> {
             )}
           </Card>
         </Div>
+        {/*
         <Div className={style.block}>
           <Header mode="secondary">Тема</Header>
           <Card mode="shadow">
@@ -153,6 +154,7 @@ export default class extends React.Component<IProps> {
             </FormItem>
           </Card>
         </Div>
+        */}
         <Div className={style.block}>
           <Header mode="secondary">Уведомления</Header>
           <Card mode="shadow">
