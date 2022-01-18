@@ -16,6 +16,8 @@ import {ProfileReducerInterface} from "src/store/profile/reducers";
 import lo from "lodash";
 import {syncUser} from "src/store/user/actions";
 
+import style from "./index.module.scss";
+
 interface IProps extends AppReducerInterface, ProfileReducerInterface {
   id: string,
   user: UserInterface,
@@ -98,7 +100,7 @@ export default class extends React.Component<IProps, IState>  {
       <ModalCard
         header="Покинуть лабораторию"
         subheader={<>
-          <div>Ты уверен, что хочешь покинуть <span className="bold">{data.name}</span>?</div>
+          <div className={style.modalDiv}>Ты уверен, что хочешь покинуть <span className="bold">{data.name}</span>?</div>
           <div>Стоимость выхода <span className="bold">{locale(this.price)}</span> вакцины.</div>
         </>}
         actions={!isClose ? (
