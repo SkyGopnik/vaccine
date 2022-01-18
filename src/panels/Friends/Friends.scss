@@ -2,6 +2,9 @@
   padding: 12px;
 
   :global {
+    .Avatar {
+      cursor: pointer;
+    }
     .Placeholder__in {
       padding: 0;
 
@@ -28,7 +31,6 @@
     .SimpleCell {
       &:first-child {
         padding-top: 12px;
-        cursor: pointer;
       }
 
       &:last-child {
