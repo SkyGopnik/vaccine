@@ -228,7 +228,7 @@ export default class extends React.Component<IProps, IState> {
           <>
             <Div className={style.block}>
               <Header mode="secondary">Хочу бонус за друга</Header>
-              <Text weight="regular">Для того чтобы твой друг получил бонус, ему необходимо самостоятельно достигнуть 2 уровня в игре, после чего он сможет активировать твой код и вы вместе получите бонус! Не тормози, спаси своих друзей!</Text>
+              <Text weight="regular">Для того чтобы твой друг получил бонус, ему необходимо самостоятельно достигнуть 2 уровня в игре, после чего он сможет активировать твой код, и вы вместе получите бонус! Не тормози, спаси своих друзей!</Text>
               <Card>
                 <div className={style.refCode} onClick={this.copyCode}>
                   <Title level="1" weight="semibold">{code || 0}</Title>
