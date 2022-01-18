@@ -28,6 +28,7 @@
     .SimpleCell {
       &:first-child {
         padding-top: 12px;
+        cursor: pointer;
       }
 
       &:last-child {

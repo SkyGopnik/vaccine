@@ -161,7 +161,7 @@ export default class extends React.Component<IProps> {
             {this.customSimpleCell(
               'vaccineClickNotification',
               'Получение бонуса при кликах',
-              'Если надоело уведомление каждый раз когда заполняется колба'
+              'Если надоело уведомление каждый раз, когда заполняется колба'
             )}
             {this.customSimpleCell(
               'snackbarTabNotification',
@@ -176,7 +176,7 @@ export default class extends React.Component<IProps> {
             {this.customSimpleCell(
               'showRating',
               'Отображение в рейтинге',
-              'Аккаунт больше не будет показываться в рейтинге'
+              'Аккаунт будет показываться в рейтинге'
             )}
             {this.customSimpleCell(
               'accountClosed',
