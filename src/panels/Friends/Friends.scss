@@ -28,6 +28,10 @@
   overflow: hidden;
 
   :global {
+    .Avatar {
+      cursor: pointer;
+    }
+
     .SimpleCell {
       &:first-child {
         padding-top: 12px;
