@@ -30,6 +30,7 @@
       }
 
       .avatar, .name {
+        -webkit-touch-callout: none;
         cursor: pointer;
       }
 
