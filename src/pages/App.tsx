@@ -44,13 +44,15 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       lastView: 'main',
-      scheme: Scheme.BRIGHT_LIGHT
+      scheme: ''
     };
 
     this.menu = this.menu.bind(this);
   }
 
   async componentDidMount() {
+
+    console.log(Appearance);
 
     const {
       changeView,
@@ -101,8 +103,6 @@ export default class extends React.Component<IProps, IState> {
     const { snackbar, story, panel } = this.props;
     const { scheme } = this.state;
 
-    console.log('COMPONENT DID UPDATE: ' + prevState.scheme + ' / ' + scheme);
-
     // Если меняется история
     // или если меняется панель
     // или если меняется сам снекбар
@@ -123,7 +123,7 @@ export default class extends React.Component<IProps, IState> {
   subscribe() {
     bridge.subscribe(async (e: any) => {
       if (!e.detail) {
-        return;
+        return console.log('!e.detail');
       }
 
       const { type, data } = e.detail;
@@ -135,7 +135,6 @@ export default class extends React.Component<IProps, IState> {
         let scheme = Scheme.BRIGHT_LIGHT;
 
         if (data.scheme === 'client_dark' || data.scheme === 'space_gray') {
-          console.log('Change scheme to dark');
           scheme = Scheme.SPACE_GRAY;
         }
 
