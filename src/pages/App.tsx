@@ -44,7 +44,7 @@ export default class extends React.Component<IProps, IState> {
 
     this.state = {
       lastView: 'main',
-      scheme: ''
+      scheme: Scheme.BRIGHT_LIGHT
     };
 
     this.menu = this.menu.bind(this);
@@ -131,7 +131,7 @@ export default class extends React.Component<IProps, IState> {
       console.log(type, data);
 
       if (type === 'VKWebAppUpdateConfig') {
-        console.log('VKWebAppUpdateConfig')
+        console.log('VKWebAppUpdateConfig');
         let scheme = Scheme.BRIGHT_LIGHT;
 
         if (data.scheme === 'client_dark' || data.scheme === 'space_gray') {
