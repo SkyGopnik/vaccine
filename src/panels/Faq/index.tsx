@@ -68,8 +68,8 @@ export default class extends React.Component<IProps, IState> {
           description: "За нарушение правил вам выдается статус нарушителя, либо перманентная блокировка на усмотрение администрации."
         },
         {
-          title: "У меня остался вопрос, что мне делать?",
-          description: (<> Если остались вопросы, их можно задать нам в лс сообщества: <Link
+          title: "У меня остался вопрос, что делать?",
+          description: (<> Если остались вопросы, их можно задать нам в ЛС сообщества: <Link
             href="https://vk.me/skyreglis" target="_blank"> vk.me/skyreglis </Link> </>)
         }
       ]

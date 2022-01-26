@@ -102,6 +102,7 @@ export default class extends React.Component<IProps, IState>  {
         subheader={<>
           <div className={style.modalDiv}>Ты уверен, что хочешь покинуть <span className="bold">{data.name}</span>?</div>
           <div>Стоимость выхода <span className="bold">{locale(this.price)}</span> вакцины.</div>
+          {isClose && <div><span>К сожалению, у вас недостаточно вакцины.</span></div>}
         </>}
         actions={!isClose ? (
           <Button
@@ -114,10 +115,12 @@ export default class extends React.Component<IProps, IState>  {
           </Button>
         ) : (
           <Button
+            mode="destructive"
             size="l"
             onClick={this.close}
+            disabled
           >
-            Закрыть
+            Покинуть
           </Button>
         )}
         onClose={() => window.history.back()}
