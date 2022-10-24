@@ -2,21 +2,21 @@ export let config;
 
 if (process.env.localConfig === 'production') {
   config = {
-    appId: 7999835,
+    appId: 51457526,
     wsUrl: 'wss://vaccine-wss.skyreglis.studio',
     apiUrl: 'https://vaccine-api.skyreglis.studio',
     appUrl: 'https://vk.com/app7999835'
   };
 } else if (process.env.localConfig === 'development') {
   config = {
-    appId: 8006453,
+    appId: 51457526,
     wsUrl: 'wss://vaccine-development-wss.skyreglis.studio',
     apiUrl: 'https://vaccine-development-api.skyreglis.studio',
     appUrl: 'https://vk.com/app8006453'
   };
 } else if (process.env.localConfig === 'local') {
   config = {
-    appId: 7999835,
+    appId: 51457526,
     wsUrl: 'ws://localhost:3245',
     apiUrl: 'http://127.0.0.1:3244'
   };
