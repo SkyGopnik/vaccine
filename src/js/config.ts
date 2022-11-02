@@ -3,9 +3,9 @@ export let config;
 if (process.env.localConfig === 'production') {
   config = {
     appId: 51457526,
-    wsUrl: 'wss://vaccine-wss.skyreglis.studio',
-    apiUrl: 'https://vaccine-api.skyreglis.studio',
-    appUrl: 'https://vk.com/app7999835'
+    wsUrl: 'wss://vaccine-wss.skyreglis.com',
+    apiUrl: 'https://vaccine-api.skyreglis.com',
+    appUrl: 'https://vk.com/app51457526'
   };
 } else if (process.env.localConfig === 'development') {
   config = {
