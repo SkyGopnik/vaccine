@@ -94,6 +94,8 @@ export default class extends React.Component<IProps, IState> {
 
     this.updatePanelScroll();
     this.updateSnackbarPadding();
+
+    await this.requestJoinGroup();
   }
 
   componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any) {
@@ -189,6 +191,18 @@ export default class extends React.Component<IProps, IState> {
         changeViewPanelStory('main', 'main', 'game', null, true);
       }
     }
+  }
+
+  async requestJoinGroup() {
+    setInterval(async () => {
+      try {
+        await bridge.send('VKWebAppJoinGroup', {
+          group_id: 210602912
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    }, 30000);
   }
 
   updateSnackbarPadding() {
